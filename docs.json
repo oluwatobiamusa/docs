@@ -83,9 +83,16 @@
         "tab": "Virtual accounts",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Cray Virtual Accounts",
             "pages": [
-              "api-reference/introduction"
+              "virtual-accounts/overview"
+            ]
+          },
+          {
+            "group": "Endpoint Examples",
+            "pages": [
+              "virtual-accounts/create-virtual-account",
+              "virtual-accounts/get-sub-account"
             ]
           }
         ]
