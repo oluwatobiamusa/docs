@@ -48,6 +48,17 @@
         ]
       },
       {
+        "tab": "Cray Docs",
+        "groups": [
+          {
+            "group": "API documentation",
+            "pages": [
+              "api-reference/introduction"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "API reference",
         "groups": [
           {
