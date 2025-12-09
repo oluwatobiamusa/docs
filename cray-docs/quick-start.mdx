@@ -20,7 +20,7 @@ Most endpoints require secure access. To locate your API Key, follow these steps
   </Step>
 </Steps>
 
-### 3. Configure your request
+### 3. Configure Your Request
 
 - **Method:** Select the HTTP method required for the endpoint (e.g., `GET` for retrieving data, `POST` for creating data)
 - **URL: **Enter the full endpoint URL (e.g., https://api.crayfinance.com/api/get-subaccount).
@@ -40,3 +40,24 @@ If you are sending data to the API (like creating a new transaction), click the 
     "return_url": "https://returnurl.com"
 }
 ```
+
+### 4. Custom Headers
+
+Click the **Send Request** button. The response will appear at the bottom of the tool:
+
+| Status Code          | Error message                   |
+| -------------------- | ------------------------------- |
+| `OK (200)`           | Success                         |
+| `Unauthorized (401`) | Check your Bearer Token         |
+| `Bad request (400)`  | Check your JSON body formatting |
+
+<Tip>
+  **Response Body:** The data returned by the server, automatically formatted for readability
+</Tip>
+
+<Warning>
+  Quick troubleshooting
+
+  - System Error: IF the request fails immediately, ensure you are not blocked by a firewall or VPN.
+  - JSON Error: Ensure your keys and string values are wrapped in double quotes `""`. Single quotes `''` are not valid in JSON.
+</Warning>

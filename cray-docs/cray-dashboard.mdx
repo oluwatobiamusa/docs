@@ -1,0 +1,64 @@
+---
+title: "The Cray Finance Dashboard"
+description: "Learn how the Dashboard supports your integration needs"
+---
+
+<img
+  src="/images/Cray-Dashboard.png"
+  alt="Cray Dashboard Pn"
+  title="Cray Dashboard Pn"
+  style={{ width:"83%" }}
+/>
+
+The Cray Finance Dashboard gives you all the tools and insights you need to integrate, monitor, and manage everything happening on your application through the Cray Finance API.
+
+As you’ll see throughout this documentation, the Dashboard provides powerful back-office functionality across all our products — including creating accounts, viewing transaction details, freezing or unfreezing accounts, and more. Everything available on the Dashboard can also be performed directly via the API.
+
+Below are a few important things to note:
+
+### Balances
+
+Your Cray finance dashboard is the central place for tracking all inflows and outflows across your organisation. You'll find your balances clearly displayed here.
+
+Cray Finance provides two types of balances on the Dashboard:
+
+- Main Balance
+- Settlement Balance
+
+  <Note>
+    _Currently, Cray Finance supports _**_multiple currencies_**_, including _**_NGN, USD, and KES_**_, for both balances_
+  </Note>
+
+### Main Balance
+
+Your **Main Balance** is the primary wallet on the Cray Finance Dashboard. It works just like a business account for your organisation within Cray Finance. All fees, commissions, transfers, and similar transactions are debited from this balance.
+
+<Info>
+  _Withdrawals from the Main Balance can only be done using the Transfers feature on the Dashboard._
+</Info>
+
+### Settlement Balance
+
+The **Settlement Balance** is a temporary holding balance. This is where all payments received through Checkout and Collection Accounts are settled.
+
+When you receive funds through these channels, the money is added to your Settlement Balance. **The next working day**, Cray Finance collates the total amount received and pays it out either to your designated settlement bank account or your Main Balance.
+
+<Info>
+  **Can I withdraw from my Settlement Balance?**
+
+  _No. The Settlement Balance cannot be withdrawn from directly because it is a temporary balance.\
+  To access the funds, you must wait until the next working day for the payout into either your bank account or your Main Balance._
+</Info>
+
+### KYB Verification
+
+<img
+  src="/images/Cray-KYB.png"
+  alt="Cray KYB Pn"
+  title="Cray KYB Pn"
+  style={{ width:"78%" }}
+/>
+
+Every organisation onboarded to Cray Finance is required to complete KYB verification. This process ensures compliance with regulatory standards and helps us maintain a secure and trusted financial ecosystem.
+
+During KYB verification, you will not be able to go live. However, you can still explore and test the Cray Finance API in **Test Mode**.

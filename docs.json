@@ -55,7 +55,9 @@
             "pages": [
               "cray-docs/overview",
               "cray-docs/using-cray-docs",
-              "cray-docs/quick-start"
+              "cray-docs/quick-start",
+              "cray-docs/cray-dashboard",
+              "cray-docs/environment"
             ]
           }
         ]

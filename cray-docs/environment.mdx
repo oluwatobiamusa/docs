@@ -1,0 +1,32 @@
+---
+title: "Environments"
+description: "Learn how to build on staging and production with Cray Finance"
+---
+
+Cray offers two distinct API environments: Sandbox (Test) and Live (Production). Understanding how each works ensures smooth integration and deployment.
+
+### Sandbox Environment
+
+This environment is built for testing. It mimics real-world scenarios with simulated data — so you can build, test, and debug safely without affecting actual accounts or funds.
+
+The **Sandbox** environment provides a secure and isolated space to test Ramp’s APIs. It replicates the live environment, allowing you to experiment without affecting real-world transactions.
+
+In the sandbox, you can simulate different card payment scenarios to ensure your integration handles them correctly.
+
+<Info>
+  _These features are vital for validating your integration before moving to live operations._
+</Info>
+
+### Live Environment
+
+This is the production environment where real customers, data, and transactions are handled. Only move here after successful testing in the sandbox.
+
+<Info>
+  **Key things to note**
+
+  - **Separation**: Sandbox and Live environments are fully isolated — with different API keys, business IDs, and credentials
+  - **Real vs Simulated Data:** Sandbox transactions are simulated. Live transactions involve actual money and customer data.
+  - Environment URLs
+    - **Staging**: `https://dev-gateman.v3.connectramp.com/`
+    - **Live:** `https://pay.connectramp.com`
+</Info>
