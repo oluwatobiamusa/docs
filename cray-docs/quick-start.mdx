@@ -9,18 +9,34 @@ The [API Reference](https://docs.crayfi.com/api-reference/) tool is an interacti
 
 ### 2. Authentication
 
-Most endpoints require secure access.
+Most endpoints require secure access. To locate your API Key, follow these steps:
 
-- Locate your API Key by following these steps: 
+<Steps>
+  <Step title="Settings" icon="gear">
+    On your cray finance dashboard, navigate to the settings page and scroll down to the **"API Keys"** section.
+  </Step>
+  <Step title="Generate Key" icon="code">
+    Click on the "Create secret key" button to generate you API key.
+  </Step>
+</Steps>
 
-  <Steps>
-    <Step title="Developer" icon="code">
-      
-    </Step>
-    <Step title="API" icon="key-skeleton">
-      API
-    </Step>
-    <Step title="API Key" icon="key">
-      API Key
-    </Step>
-  </Steps>
+### 3. Configure your request
+
+- **Method:** Select the HTTP method required for the endpoint (e.g., `GET` for retrieving data, `POST` for creating data)
+- **URL: **Enter the full endpoint URL (e.g., https://api.crayfinance.com/api/get-subaccount).
+
+### 4. **Adding Parameters**
+
+If you are sending data to the API (like creating a new transaction), click the **Body** tab and enter your data in JSON format. For example
+
+```
+{
+    "customer_reference": "e4d7c3b8-5f29-4b46-81a6-8d98c1e75812",
+    "amount": "10",
+    "currency": "NGN",
+    "phone_no": "07020615945",
+    "payment_provider": "opay",
+    "otp": false,
+    "return_url": "https://returnurl.com"
+}
+```
