@@ -53,7 +53,7 @@
           {
             "group": "API documentation",
             "pages": [
-              "cray-docs/overvieww",
+              "cray-docs/overview",
               "cray-docs/using-cray-docs",
               "cray-docs/quick-start"
             ]
