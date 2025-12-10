@@ -94,8 +94,8 @@
           {
             "group": "Endpoint Examples",
             "pages": [
-              "virtual-accounts/endpoint/create-virtual-account",
-              "virtual-accounts/endpoint/get-subaccounts"
+              "virtual-accounts/endpoint/create",
+              "virtual-accounts/endpoint/get"
             ]
           }
         ]
