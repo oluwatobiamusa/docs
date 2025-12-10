@@ -68,8 +68,7 @@
           {
             "group": "API documentation",
             "pages": [
-              "api-reference/introduction",
-              "api-reference/newfile"
+              "api-reference/introduction"
             ]
           },
           {
@@ -95,8 +94,8 @@
           {
             "group": "Endpoint Examples",
             "pages": [
-              "virtual-accounts/create-virtual-account",
-              "virtual-accounts/get-sub-account"
+              "virtual-accounts/endpoint/create-virtual-account",
+              "virtual-accounts/endpoint/get-subaccounts"
             ]
           }
         ]
@@ -191,15 +190,15 @@
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "footer": {
     "socials": {
