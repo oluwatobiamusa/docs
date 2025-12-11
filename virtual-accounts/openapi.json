@@ -242,12 +242,6 @@
           "message": {
             "type": "string",
             "example": "Action was Successful"
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/BankAccount"
-            }
           }
         }
       },
