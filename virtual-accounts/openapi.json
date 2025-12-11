@@ -126,35 +126,19 @@
   "components": {
     "schemas": {
       "VirtualAccountRequest": {
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/CorporateAccountRequest"
-          },
-          {
-            "$ref": "#/components/schemas/IndividualAccountRequest"
-          }
-        ],
-        "discriminator": {
-          "propertyName": "type",
-          "mapping": {
-            "Corporate": "#/components/schemas/CorporateAccountRequest",
-            "Individual": "#/components/schemas/IndividualAccountRequest"
-          }
-        }
-      },
-      "BaseAccountRequest": {
-        "type": "object",
         "required": [
           "bvn",
           "type",
           "nin",
           "virtual_account_type",
           "account_name",
+          "rc_number",
           "currency",
           "reference",
           "customer_email",
           "provider"
         ],
+        "type": "object",
         "properties": {
           "bvn": {
             "description": "Bank Verification Number (must be exactly 11 digits)",
@@ -165,7 +149,8 @@
           "type": {
             "description": "Type of account holder",
             "type": "string",
-            "enum": ["Corporate", "Individual"]
+            "enum": ["Corporate", "Individual"],
+            "example": "Corporate"
           },
           "nin": {
             "description": "National Identification Number",
@@ -182,6 +167,11 @@
             "description": "Name for the virtual account",
             "type": "string",
             "example": "BOlaOla"
+          },
+          "rc_number": {
+            "description": "Registration Certificate number",
+            "type": "string",
+            "example": "99988828822"
           },
           "currency": {
             "description": "Currency code",
@@ -204,50 +194,10 @@
           "provider": {
             "description": "Virtual account provider",
             "type": "string",
-            "enum": ["monnify", "WEMA"],
-            "example": "monnify"
-          }
+            "enum": ["monnify / WEMA"],
+            "example": "monnify / WEMA"
+          },
         }
-      },
-      "CorporateAccountRequest": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/BaseAccountRequest"
-          },
-          {
-            "type": "object",
-            "required": ["rc_number"],
-            "properties": {
-              "type": {
-                "type": "string",
-                "enum": ["Corporate"],
-                "example": "Corporate"
-              },
-              "rc_number": {
-                "description": "Registration Certificate number (required for Corporate accounts)",
-                "type": "string",
-                "example": "99988828822"
-              }
-            }
-          }
-        ]
-      },
-      "IndividualAccountRequest": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/BaseAccountRequest"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "type": {
-                "type": "string",
-                "enum": ["Individual"],
-                "example": "Individual"
-              }
-            }
-          }
-        ]
       },
       "VirtualAccountResponse": {
         "type": "object",
@@ -265,6 +215,40 @@
             "items": {
               "$ref": "#/components/schemas/BankAccount"
             }
+          }
+        }
+      },
+      "GenerateAccountRequest": {
+        "required": [
+          "otp",
+          "customer_email",
+        ],
+        "type": "object",
+        "properties": {
+          "otp": {
+            "description": "OTP (One-Time Password) is sent to the customer’s registered email address",
+            "type": "string",
+            "pattern": "^[0-9]{6}$",
+            "example": "768238"
+          },
+          "customer_email": {
+            "description": "Customer's email address",
+            "type": "string",
+            "format": "email",
+            "example": "hello@gmail.com"
+          }
+        }
+      },
+      "GenerateAccountResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "Action was Successful"
           }
         }
       },
