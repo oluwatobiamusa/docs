@@ -19,7 +19,7 @@
     }
   ],
   "paths": {
-    "/virtual-accounts/create": {
+    "/create-account": {
       "post": {
         "description": "Creates a new virtual bank account for a customer or business entity",
         "requestBody": {
