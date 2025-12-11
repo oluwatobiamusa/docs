@@ -196,7 +196,7 @@
             "type": "string",
             "enum": ["monnify / WEMA"],
             "example": "monnify / WEMA"
-          },
+          }
         }
       },
       "VirtualAccountResponse": {
