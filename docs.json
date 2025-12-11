@@ -95,6 +95,7 @@
             "group": "Endpoint Examples",
             "pages": [
               "virtual-accounts/endpoint/create",
+              "virtual-accounts/endpoint/otp",
               "virtual-accounts/endpoint/get"
             ]
           }
