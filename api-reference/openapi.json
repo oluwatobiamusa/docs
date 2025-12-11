@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
+    "title": "Virtual Accounts API",
+    "description": "Use this endpoint to generate a new, unique virtual bank account number for a customer or business entity.",
     "license": {
       "name": "MIT"
     },
@@ -10,39 +10,63 @@
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
+      "url": "https://dev-gateman.v3.connectramp.com/api"
     }
   ],
   "security": [
     {
-      "bearerAuth": []
+      "apiKey": []
     }
   ],
   "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
+    "/virtual-accounts/create": {
+      "post": {
+        "description": "Creates a new virtual bank account for a customer or business entity",
+        "requestBody": {
+          "description": "Virtual account creation details",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VirtualAccountRequest"
+              }
             }
-          }
-        ],
+          },
+          "required": true
+        },
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "Virtual account created successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
+                  "$ref": "#/components/schemas/VirtualAccountResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subaccounts": {
+      "get": {
+        "description": "Returns list of all subaccounts currently associated with your primary Cray Finance account",
+        "responses": {
+          "200": {
+            "description": "Subaccount list retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubAccountResponse"
                 }
               }
             }
@@ -58,137 +82,161 @@
             }
           }
         }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "webhooks": {
-    "/plant/webhook": {
-      "post": {
-        "description": "Information about a new plant added to the store",
-        "requestBody": {
-          "description": "Plant added to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
-          }
-        }
       }
     }
   },
   "components": {
     "schemas": {
-      "Plant": {
+      "VirtualAccountRequest": {
         "required": [
-          "name"
+          "bvn",
+          "type",
+          "nin",
+          "virtual_account_type",
+          "account_name",
+          "rc_number",
+          "currency",
+          "reference",
+          "customer_email"
         ],
         "type": "object",
         "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
+          "bvn": {
+            "description": "Bank Verification Number (must be exactly 11 digits)",
+            "type": "string",
+            "pattern": "^[0-9]{11}$",
+            "example": "22192474887"
           },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
+          "type": {
+            "description": "Type of account holder",
+            "type": "string",
+            "enum": ["Corporate"],
+            "example": "Corporate"
+          },
+          "nin": {
+            "description": "National Identification Number",
+            "type": "string",
+            "example": "11111122221"
+          },
+          "virtual_account_type": {
+            "description": "Type of virtual account",
+            "type": "string",
+            "enum": ["Permanent", "Temporary"],
+            "example": "Permanent"
+          },
+          "account_name": {
+            "description": "Name for the virtual account",
+            "type": "string",
+            "example": "BOlaOla"
+          },
+          "rc_number": {
+            "description": "Registration Certificate number",
+            "type": "string",
+            "example": "99988828822"
+          },
+          "currency": {
+            "description": "Currency code",
+            "type": "string",
+            "enum": ["NGN"],
+            "example": "NGN"
+          },
+          "reference": {
+            "description": "Unique reference for the transaction",
+            "type": "string",
+            "format": "uuid",
+            "example": "cbf0d060-1544-4a53-a00b-7cb75a3eb59d"
+          },
+          "customer_email": {
+            "description": "Customer's email address",
+            "type": "string",
+            "format": "email",
+            "example": "hello@gmail.com"
           }
         }
       },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
+      "VirtualAccountResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
           },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
+          "message": {
+            "type": "string",
+            "example": "Action was Successful"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BankAccount"
             }
           }
-        ]
+        }
+      },
+      "BankAccount": {
+        "type": "object",
+        "properties": {
+          "bankCode": {
+            "description": "Bank code identifier",
+            "type": "string",
+            "example": "035"
+          },
+          "bankName": {
+            "description": "Name of the bank",
+            "type": "string",
+            "example": "Wema bank"
+          },
+          "accountNumber": {
+            "description": "Generated virtual account number",
+            "type": "string",
+            "example": "4114669663"
+          },
+          "accountName": {
+            "description": "Account holder name",
+            "type": "string",
+            "example": "BOl"
+          }
+        }
+      },
+      "SubAccountResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "SubAccount Details"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubAccount"
+            }
+          }
+        }
+      },
+      "SubAccount": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "description": "Unique identifier for the subaccount",
+            "type": "string",
+            "example": "9999999999"
+          },
+          "company_name": {
+            "description": "Name of the company",
+            "type": "string",
+            "example": "test"
+          },
+          "company_email": {
+            "description": "Company email address",
+            "type": "string",
+            "format": "email",
+            "example": "test@gmail.com"
+          }
+        }
       },
       "Error": {
         "required": [
@@ -208,9 +256,10 @@
       }
     },
     "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
+      "apiKey": {
+        "type": "apiKey",
+        "name": "api-key",
+        "in": "header"
       }
     }
   }
