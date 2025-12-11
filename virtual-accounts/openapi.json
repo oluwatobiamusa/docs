@@ -19,7 +19,7 @@
     }
   ],
   "paths": {
-    "/create-account": {
+    "virtual-accounts/create": {
       "post": {
         "description": "Creates a new virtual bank account for a customer or business entity",
         "requestBody": {
@@ -40,6 +40,44 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/VirtualAccountResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "virtual-accounts/generate-wallet": {
+      "post": {
+        "description": "Generates one or more virtual account numbers associated with the provided customer details.",
+        "requestBody": {
+          "description": "Virtual account generation details",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateAccountRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Action was successfull",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerateAccountResponse"
                 }
               }
             }
@@ -155,6 +193,46 @@
         }
       },
       "VirtualAccountResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "Action was Successful"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BankAccount"
+            }
+          }
+        }
+      },
+      "GenerateAccountRequest": {
+        "required": [
+          "otp",
+          "customer_email",
+        ],
+        "type": "object",
+        "properties": {
+          "otp": {
+            "description": "OTP (One-Time Password) is sent to the customer’s registered email address",
+            "type": "string",
+            "pattern": "^[0-9]{6}$",
+            "example": "768238"
+          },
+          "customer_email": {
+            "description": "Customer's email address",
+            "type": "string",
+            "format": "email",
+            "example": "hello@gmail.com"
+          }
+        }
+      },
+      "GenerateAccountResponse": {
         "type": "object",
         "properties": {
           "success": {
