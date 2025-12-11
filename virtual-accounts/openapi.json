@@ -19,7 +19,7 @@
     }
   ],
   "paths": {
-    "virtual-accounts/create": {
+    "/create": {
       "post": {
         "description": "Creates a new virtual bank account for a customer or business entity",
         "requestBody": {
@@ -57,7 +57,7 @@
         }
       }
     },
-    "virtual-accounts/generate-wallet": {
+    "/generate-wallet": {
       "post": {
         "description": "Generates one or more virtual account numbers associated with the provided customer details.",
         "requestBody": {
@@ -95,7 +95,7 @@
         }
       }
     },
-    "/subaccounts": {
+    "/get-subaccount": {
       "get": {
         "description": "Returns list of all subaccounts currently associated with your primary Cray Finance account",
         "responses": {
