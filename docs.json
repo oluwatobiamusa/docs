@@ -124,13 +124,21 @@
         "tab": "Pay-ins",
         "groups": [
           {
-            "group": "Overview",
+            "group": "Cray Pay-in Channels",
             "pages": [
               "pay-ins/overview"
             ]
           },
           {
             "group": "Endpoint Examples (Card collection)",
+            "pages": [
+              "pay-ins/card-endpoint/initiate",
+              "pay-ins/card-endpoint/charge",
+              "pay-ins/card-endpoint/query"
+            ]
+          },
+          {
+            "group": "Endpoint Examples (MoMo collection)",
             "pages": [
               "pay-ins/card-endpoint/initiate",
               "pay-ins/card-endpoint/charge",
