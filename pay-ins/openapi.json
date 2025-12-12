@@ -146,7 +146,46 @@
           }
         }
       }
+    },
+    "/momo/initiate": {
+  "post": {
+    "summary": "Initiate Mobile Money Collection",
+    "description": "Attempts to trigger a payment request to a user's mobile wallet, using their phone number and preferred payment provider.",
+    "requestBody": {
+      "description": "Mobile money request details",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/MomoInitiateRequest"
+          }
+        }
+      },
+      "required": true
+    },
+    "responses": {
+      "200": {
+        "description": "Transaction is processing",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MomoInitiateResponse"
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Bad request - validation error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
     }
+  }
+}
   },
   "components": {
     "schemas": {
@@ -432,6 +471,132 @@
           }
         }
       },
+      "MomoInitiateRequest": {
+  "required": [
+    "customer_reference",
+    "amount",
+    "currency",
+    "phone_no",
+    "payment_provider"
+  ],
+  "type": "object",
+  "properties": {
+    "customer_reference": {
+      "description": "A unique identifier for the transaction",
+      "type": "string",
+      "example": "e4d7c3b8-5f29-4b46-81a6-8d98c1e75812"
+    },
+    "amount": {
+      "description": "The transaction amount to be charged",
+      "type": "string",
+      "example": "3950"
+    },
+    "currency": {
+      "description": "The currency in which the payment is being made",
+      "type": "string",
+      "enum": ["KES", "NGN", "GHS", "ZMW", "XOF"],
+      "example": "XOF"
+    },
+    "phone_no": {
+      "description": "Customer's phone number (format varies by country)",
+      "type": "string",
+      "example": "2290161248277"
+    },
+    "payment_provider": {
+      "description": "Mobile money provider(s). Can be comma-separated for multiple options",
+      "type": "string",
+      "example": "MTN,moov,celtis,wave,mixx,coris"
+    },
+    "otp": {
+      "description": "Whether OTP verification is required",
+      "type": "boolean",
+      "example": false
+    },
+    "firstname": {
+      "description": "Customer's first name (required for XOF currency)",
+      "type": "string",
+      "example": "Cray"
+    },
+    "lastname": {
+      "description": "Customer's last name (required for XOF currency)",
+      "type": "string",
+      "example": "Momo"
+    },
+    "country": {
+      "description": "Country or countries for the transaction (required for XOF currency)",
+      "type": "string",
+      "example": "benin,senegal,togo,ivory coast"
+    },
+    "return_url": {
+      "description": "URL to redirect the user after payment completion",
+      "type": "string",
+      "format": "uri",
+      "example": "https://returnurl.com"
+    }
+  }
+},
+      "MomoInitiateResponse": {
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "boolean",
+      "example": true
+    },
+    "message": {
+      "type": "string",
+      "example": "Transaction is processing"
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "Processing"
+        },
+        "reference": {
+          "type": "string",
+          "example": "TNW4UKB1XQZSVP86E7AR"
+        },
+        "customer_reference": {
+          "type": "string",
+          "example": "b6f4268e-2e20-4167-af84-a13f46f8344a"
+        },
+        "amount": {
+          "type": "string",
+          "example": "3950.00"
+        },
+        "currency": {
+          "type": "string",
+          "example": "XOF"
+        },
+        "phone_no": {
+          "type": "string",
+          "example": "+2290161248277"
+        },
+        "provider_message": {
+          "type": "string",
+          "nullable": true,
+          "example": null
+        },
+        "payment_provider": {
+          "type": "string",
+          "example": "mixx"
+        },
+        "redirect_url": {
+          "type": "string",
+          "format": "uri",
+          "nullable": true,
+          "example": null
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-11-24T14:42:19.000000Z"
+        }
+      }
+    }
+  }
+},
       "QueryResponse": {
         "type": "object",
         "properties": {
