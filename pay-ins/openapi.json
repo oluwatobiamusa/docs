@@ -1,0 +1,549 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Cray Finance Pay-ins API",
+    "description": "Use this endpoint to collect payments seamlessly across Cray Finance's card and mobile money channels",
+    "license": {
+      "name": "MIT"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://pay.connectramp.com/api/v2"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/initiate": {
+      "post": {
+        "summary": "Initiate Payment",
+        "description": "Initiates a card payment transaction and returns authentication details",
+        "requestBody": {
+          "description": "Card payment initiation details",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InitiateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction initialized successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InitiateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/charge": {
+      "post": {
+        "summary": "Charge Transaction",
+        "description": "Attempts to charge a previously initialized transaction",
+        "requestBody": {
+          "description": "Transaction charge details",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChargeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Charge attempted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChargeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/query/{customer_reference}": {
+      "get": {
+        "summary": "Query Transaction",
+        "description": "Retrieves the status and details of a transaction using the customer reference",
+        "parameters": [
+          {
+            "name": "customer_reference",
+            "in": "path",
+            "description": "Customer reference or transaction ID to query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "F6L2RN8TM7AHZ491SCGQ"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "InitiateRequest": {
+        "required": [
+          "reference",
+          "amount",
+          "currency",
+          "card_data",
+          "customer_information"
+        ],
+        "type": "object",
+        "properties": {
+          "reference": {
+            "description": "A unique identifier for the transaction. It's used to track or reference the payment later. Usually a UUID.",
+            "type": "string",
+            "format": "uuid",
+            "example": "4aeb118e-5009-450a-94fc-d74f6cd88646"
+          },
+          "amount": {
+            "description": "The transaction amount to be charged",
+            "type": "string",
+            "example": "1"
+          },
+          "narration": {
+            "description": "A short description of the transaction's purpose",
+            "type": "string",
+            "example": "Payment for services"
+          },
+          "currency": {
+            "description": "The currency in which the payment is being made",
+            "type": "string",
+            "enum": ["USD", "NGN"],
+            "example": "USD"
+          },
+          "card_data": {
+            "$ref": "#/components/schemas/CardData"
+          },
+          "callback_url": {
+            "description": "The endpoint on your server to receive payment status updates after processing",
+            "type": "string",
+            "format": "uri",
+            "example": "https://redirect_url.com"
+          },
+          "metadata": {
+            "description": "Custom key-value pairs for internal use",
+            "type": "object",
+            "additionalProperties": true,
+            "example": {
+              "reason": "Payment for F1"
+            }
+          },
+          "device_information": {
+            "$ref": "#/components/schemas/DeviceInformation"
+          },
+          "billing_information": {
+            "$ref": "#/components/schemas/BillingInformation"
+          },
+          "customer_information": {
+            "$ref": "#/components/schemas/CustomerInformation"
+          },
+          "subaccount_id": {
+            "description": "The unique ID of the subaccount responsible for the transaction. This is obtained via the 'Get Subaccount' API",
+            "type": "string",
+            "format": "uuid",
+            "example": "b0e1a8c2-5d9f-4f3b-9d72-6a3e2f8e5c14"
+          }
+        }
+      },
+      "CardData": {
+        "required": [
+          "pan",
+          "cvv",
+          "expiryMonth",
+          "expiryYear"
+        ],
+        "type": "object",
+        "description": "Contains the credit card information for the transaction",
+        "properties": {
+          "pan": {
+            "description": "Card number",
+            "type": "string",
+            "example": "5399832641760090"
+          },
+          "cvv": {
+            "description": "3-digit security code on the card",
+            "type": "string",
+            "pattern": "^[0-9]{3,4}$",
+            "example": "146"
+          },
+          "expiryMonth": {
+            "description": "2-digit expiration month of the card",
+            "type": "string",
+            "pattern": "^(0[1-9]|1[0-2])$",
+            "example": "05"
+          },
+          "expiryYear": {
+            "description": "2-digit expiration year (e.g., '50' = 2050)",
+            "type": "string",
+            "pattern": "^[0-9]{2}$",
+            "example": "50"
+          }
+        }
+      },
+      "DeviceInformation": {
+        "type": "object",
+        "description": "Information about the device and browser used for the transaction",
+        "properties": {
+          "http_browser_language": {
+            "type": "string",
+            "example": "en-US"
+          },
+          "http_browser_java_enabled": {
+            "type": "boolean",
+            "example": false
+          },
+          "http_browser_javascript_enabled": {
+            "type": "boolean",
+            "example": true
+          },
+          "http_browser_color_depth": {
+            "type": "string",
+            "example": "24"
+          },
+          "http_browser_screen_height": {
+            "type": "string",
+            "example": "820"
+          },
+          "http_browser_screen_width": {
+            "type": "string",
+            "example": "360"
+          },
+          "http_browser_time_difference": {
+            "type": "string",
+            "example": ""
+          },
+          "user_agent_browser_value": {
+            "type": "string",
+            "example": "Mozilla/5.0 (Linux; Android 12; Infinix X6819) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Mobile Safari/537.36"
+          },
+          "device_channel": {
+            "type": "string",
+            "example": "Browser"
+          },
+          "ip_address": {
+            "type": "string",
+            "format": "ipv4",
+            "example": "54.144.139.131"
+          }
+        }
+      },
+      "BillingInformation": {
+        "type": "object",
+        "description": "The billing address of the cardholder",
+        "properties": {
+          "postcodezip": {
+            "description": "ZIP or postal code",
+            "type": "string",
+            "example": "100001"
+          },
+          "street": {
+            "description": "Street name or address",
+            "type": "string",
+            "example": "lagos"
+          },
+          "city": {
+            "description": "City name",
+            "type": "string",
+            "example": "lagos"
+          },
+          "country": {
+            "description": "3-letter ISO country code",
+            "type": "string",
+            "example": "NGA"
+          },
+          "stateProvince": {
+            "description": "State or province name",
+            "type": "string",
+            "example": "lagos"
+          }
+        }
+      },
+      "CustomerInformation": {
+        "required": [
+          "email",
+          "firstName",
+          "lastName"
+        ],
+        "type": "object",
+        "description": "Basic details about the customer",
+        "properties": {
+          "email": {
+            "description": "Customer's email address",
+            "type": "string",
+            "format": "email",
+            "example": "test@testmail.com"
+          },
+          "firstName": {
+            "description": "Customer's first name",
+            "type": "string",
+            "example": "testFirstName"
+          },
+          "lastName": {
+            "description": "Customer's last name",
+            "type": "string",
+            "example": "testLastName"
+          },
+          "mobilePhone": {
+            "description": "Customer's phone number in international format",
+            "type": "string",
+            "example": "+1 555 1234 567"
+          }
+        }
+      },
+      "InitiateResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "Transaction Initialized"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "example": "AUTHENTICATION_INITIATED"
+              },
+              "transaction_id": {
+                "type": "string",
+                "example": "X27TKSDUPL8VNRHJ9Z3Y"
+              }
+            }
+          }
+        }
+      },
+      "ChargeRequest": {
+        "required": [
+          "transaction_id"
+        ],
+        "type": "object",
+        "properties": {
+          "transaction_id": {
+            "description": "The transaction ID returned from the /initiate endpoint",
+            "type": "string",
+            "example": "SRK4NC92PFHLGZW78A3E"
+          }
+        }
+      },
+      "ChargeResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "Charge attempted"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "example": "redirect_auth"
+              },
+              "reference": {
+                "type": "string",
+                "format": "uuid",
+                "example": "286ba835-6ec4-4545-b008-0338881b741c"
+              },
+              "redirect_auth_data": {
+                "type": "string",
+                "format": "uri",
+                "example": "https://dev-gateman.v3.connectramp.com/api/load-threeds?modal_url=https%3A%2F%2Fstandard.paystack.co%2Fcharge%2Fauth%2Fd2d50f49neovqb5cce2%3Flang%3Den&redirect_url=https%3A%2F%2Fdev-gateman.v3.connectramp.com%2Fapi%2Fvalidate-3ds%2F286ba835-6ec4-4545-b008-0338881b741c"
+              }
+            }
+          }
+        }
+      },
+      "QueryResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "Charge attempted"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "example": "Successful"
+              },
+              "reference": {
+                "type": "string",
+                "format": "uuid",
+                "example": "87c89286-afbc-4776-adfd-665c9927b2db"
+              },
+              "provider_reference": {
+                "type": "string",
+                "example": "F6L2RN8TM7AHZ491SCGQ"
+              },
+              "amount": {
+                "type": "number",
+                "example": 5
+              },
+              "net_amount": {
+                "type": "number",
+                "example": 4.73
+              },
+              "fee": {
+                "type": "number",
+                "example": 0.28
+              },
+              "payment_channel": {
+                "type": "string",
+                "example": "card"
+              },
+              "redirect_url": {
+                "type": "string",
+                "format": "uri",
+                "example": "https://redirect_url.com"
+              },
+              "callback_url": {
+                "type": "string",
+                "format": "uri",
+                "example": "https://redirect_url.com"
+              },
+              "customer": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Deion Haag"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "user@joinramp.co"
+                  }
+                }
+              },
+              "metadata": {
+                "type": "string",
+                "example": ""
+              },
+              "retrieval_reference_number": {
+                "type": "string",
+                "example": "774848"
+              },
+              "stan": {
+                "type": "string",
+                "example": "999595958"
+              },
+              "created": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2025-03-21T07:47:03.000000Z"
+              }
+            }
+          }
+        }
+      },
+      "Error": {
+        "required": [
+          "error",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Enter your bearer token in the format: Bearer <token>"
+      }
+    }
+  }
+}

@@ -109,6 +109,14 @@
             "pages": [
               "api-reference/introduction"
             ]
+          },
+          {
+            "group": "Endpoint Examples",
+            "pages": [
+              "virtual-accounts/endpoint/create",
+              "virtual-accounts/endpoint/otp",
+              "virtual-accounts/endpoint/get"
+            ]
           }
         ]
       },
@@ -116,9 +124,17 @@
         "tab": "Pay-ins",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Overview",
             "pages": [
-              "api-reference/introduction"
+              "pay-ins/overview"
+            ]
+          },
+          {
+            "group": "Endpoint Examples (Card collection)",
+            "pages": [
+              "pay-ins/card-endpoint/initiate",
+              "pay-ins/card-endpoint/charge",
+              "pay-ins/card-endpoint/query"
             ]
           }
         ]

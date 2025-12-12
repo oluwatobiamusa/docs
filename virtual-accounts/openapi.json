@@ -147,7 +147,7 @@
             "example": "22192474887"
           },
           "type": {
-            "description": "Type of account holder",
+            "description": "Type of account holder. Please note: There is no need to send RC Number as part of the payload when \"Individual\" account type is selected",
             "type": "string",
             "enum": ["Corporate", "Individual"],
             "example": "Corporate"
