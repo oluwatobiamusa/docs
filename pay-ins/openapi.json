@@ -185,7 +185,57 @@
       }
     }
   }
-}
+},
+    "/requery/{customer_reference}": {
+      "get": {
+        "summary": "Requery Transaction",
+        "description": "Your quick check-in to see exactly what happened with a Mobile Money transaction",
+        "parameters": [
+          {
+            "name": "customer_reference",
+            "in": "path",
+            "description": "Customer reference to requery",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "F6L2RN8TM7AHZ491SCGQ"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction confirmation status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequeryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
   },
   "components": {
     "schemas": {
@@ -680,6 +730,58 @@
                 "type": "string",
                 "format": "date-time",
                 "example": "2025-03-21T07:47:03.000000Z"
+              }
+            }
+          }
+        }
+      },
+      "RequeryResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "Transaction confirmation status"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "example": "Successful"
+              },
+              "reference": {
+                "type": "string",
+                "format": "uuid",
+                "example": "87c89286-afbc-4776-adfd-665c9927b2db"
+              },
+              "customer_reference": {
+                "type": "string",
+                "example": "F6L2RN8TM7AHZ491SCGQ"
+              },
+              "amount": {
+                "type": "number",
+                "example": 5
+              },
+              "currency": {
+                "type": "string",
+                "example": "GHS"
+              },
+              "phone_no": {
+                "type": "string",
+                "example": "233801234567"
+              },
+              "payment_provider": {
+                "type": "string",
+                "example": "MTN"
+              },
+              "date": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2025-07-30T09:31:29.000000Z"
               }
             }
           }

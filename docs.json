@@ -141,7 +141,7 @@
             "group": "Endpoint Examples (MoMo collection)",
             "pages": [
               "pay-ins/momo-endpoint/initiate",
-              "pay-ins/momo-endpoint/query"
+              "pay-ins/momo-endpoint/requery"
             ]
           }
         ]
