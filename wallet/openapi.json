@@ -1,7 +1,7 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Get Wallet Balance",
+    "title": "Cray Wallets",
     "description": "Get your cray finance wallet balance",
     "license": {
       "name": "MIT"
@@ -14,129 +14,108 @@
     }
   ],
   "security": [
-  {
-    "apiKeyAuth": []
-  }
-],
+    {
+      "apiKey": []
+    }
+  ],
   "paths": {
     "/balance": {
-  "get": {
-    "summary": "Get Wallet Balance",
-    "description": "Returns all Cray accounts/wallets and their respective balances",
-    "parameters": [
-      {
-        "name": "currency",
-        "in": "query",
-        "description": "Filter accounts by currency type (optional)",
-        "required": false,
-        "schema": {
-          "type": "string",
-          "enum": ["NGN", "GHS", "KES", "ZMW", "XOF", "USD"]
-        },
-        "example": "NGN"
-      }
-    ],
-    "responses": {
-      "200": {
-        "description": "Account balance retrieved successfully",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/BalanceResponse"
+      "get": {
+        "description": "Returns all Cray accounts/wallets and their respective balances",
+        "responses": {
+          "200": {
+            "description": "Account balance retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalanceResponse"
+                }
+              }
             }
-          }
-        }
-      },
-      "400": {
-        "description": "Bad request - validation error",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
             }
           }
         }
       }
     }
-  }
-}
   },
   "components": {
     "schemas": {
       "BalanceResponse": {
-  "type": "object",
-  "properties": {
-    "status": {
-      "type": "string",
-      "example": "success"
-    },
-    "message": {
-      "type": "string",
-      "example": "Account balance retrieved successfully"
-    },
-    "data": {
-      "type": "object",
-      "properties": {
-        "accounts": {
-          "type": "array",
-          "items": {
-            "$ref": "#/components/schemas/AccountBalance"
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Account balance retrieved successfully"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/accounts"
+            }
           }
         }
-      }
-    }
-  }
-},
-"AccountBalance": {
-  "type": "object",
-  "properties": {
-    "id": {
-      "description": "Unique account identifier",
-      "type": "string",
-      "example": "account-uuid-1"
-    },
-    "account_name": {
-      "description": "Name of the account",
-      "type": "string",
-      "example": "Main Account"
-    },
-    "currency": {
-      "description": "Account currency",
-      "type": "string",
-      "enum": ["NGN", "GHS", "KES", "ZMW", "XOF", "USD"],
-      "example": "NGN"
-    },
-    "account_type": {
-      "description": "Type of account",
-      "type": "string",
-      "enum": ["SAVINGS", "CURRENT"],
-      "example": "SAVINGS"
-    },
-    "account_number": {
-      "description": "Account number",
-      "type": "string",
-      "example": "1234567890"
-    },
-    "available_balance": {
-      "description": "Available balance for transactions",
-      "type": "number",
-      "format": "double",
-      "example": 50000.00
-    },
-    "locked_balance": {
-      "description": "Balance that is locked/reserved",
-      "type": "number",
-      "format": "double",
-      "example": 5000.00
-    },
-    "actual_balance": {
-      "description": "Total balance (available + locked)",
-      "type": "number",
-      "format": "double",
-      "example": 55000.00
-    }
-  }
-},
+      },
+      "accounts": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier for the subaccount",
+            "type": "string",
+            "example": "account-uuid-1"
+          },
+          "account_name": {
+            "description": "Name of the account",
+            "type": "string",
+            "example": "Main Account"
+          },
+          "currency": {
+            "description": "Account currency code",
+            "type": "string",
+            "example": "NGN"
+          },
+          "account_type": {
+            "description": "Type of account",
+            "type": "string",
+            "example": "SAVINGS"
+          },
+          "account_number": {
+            "description": "Account number",
+            "type": "string",
+            "example": "1234567890"
+          },
+          "available_balance": {
+            "description": "Available balance that can be used for transactions",
+            "type": "number",
+            "format": "double",
+            "example": 50000.00
+          },
+          "locked_balance": {
+            "description": "Balance that is locked or reserved and cannot be used",
+            "type": "number",
+            "format": "double",
+            "example": 5000.00
+          },
+          "actual_balance": {
+            "description": "Total account balance (available + locked)",
+            "type": "number",
+            "format": "double",
+            "example": 55000.00
+          },
+        }
+      },
       "Error": {
         "required": [
           "error",
@@ -155,12 +134,11 @@
       }
     },
     "securitySchemes": {
-  "apiKeyAuth": {
-    "type": "apiKey",
-    "in": "header",
-    "name": "api-key",
-    "description": "API key for authentication"
-  }
-}
+      "apiKey": {
+        "type": "apiKey",
+        "name": "api-key",
+        "in": "header"
+      }
+    }
   }
 }
