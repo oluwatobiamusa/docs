@@ -140,9 +140,8 @@
           {
             "group": "Endpoint Examples (MoMo collection)",
             "pages": [
-              "pay-ins/card-endpoint/initiate",
-              "pay-ins/card-endpoint/charge",
-              "pay-ins/card-endpoint/query"
+              "pay-ins/momo-endpoint/initiate",
+              "pay-ins/momo-endpoint/query"
             ]
           }
         ]
