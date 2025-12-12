@@ -107,15 +107,13 @@
           {
             "group": "API documentation",
             "pages": [
-              "api-reference/introduction"
+              "wallet/overview"
             ]
           },
           {
             "group": "Endpoint Examples",
             "pages": [
-              "virtual-accounts/endpoint/create",
-              "virtual-accounts/endpoint/otp",
-              "virtual-accounts/endpoint/get"
+              "wallet/endpoint/get-wallet-balance"
             ]
           }
         ]

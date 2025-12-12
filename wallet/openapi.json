@@ -1,0 +1,166 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Get Wallet Balance",
+    "description": "Get your cray finance wallet balance",
+    "license": {
+      "name": "MIT"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://pay.connectramp.com/api"
+    }
+  ],
+  "security": [
+  {
+    "apiKeyAuth": []
+  }
+]
+  "paths": {
+    "/balance": {
+  "get": {
+    "summary": "Get Wallet Balance",
+    "description": "Returns all Cray accounts/wallets and their respective balances",
+    "parameters": [
+      {
+        "name": "currency",
+        "in": "query",
+        "description": "Filter accounts by currency type (optional)",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "enum": ["NGN", "GHS", "KES", "ZMW", "XOF", "USD"]
+        },
+        "example": "NGN"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Account balance retrieved successfully",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/BalanceResponse"
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Bad request - validation error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+  },
+  "components": {
+    "schemas": {
+      "BalanceResponse": {
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "example": "success"
+    },
+    "message": {
+      "type": "string",
+      "example": "Account balance retrieved successfully"
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "accounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/AccountBalance"
+          }
+        }
+      }
+    }
+  }
+},
+"AccountBalance": {
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "Unique account identifier",
+      "type": "string",
+      "example": "account-uuid-1"
+    },
+    "account_name": {
+      "description": "Name of the account",
+      "type": "string",
+      "example": "Main Account"
+    },
+    "currency": {
+      "description": "Account currency",
+      "type": "string",
+      "enum": ["NGN", "GHS", "KES", "ZMW", "XOF", "USD"],
+      "example": "NGN"
+    },
+    "account_type": {
+      "description": "Type of account",
+      "type": "string",
+      "enum": ["SAVINGS", "CURRENT"],
+      "example": "SAVINGS"
+    },
+    "account_number": {
+      "description": "Account number",
+      "type": "string",
+      "example": "1234567890"
+    },
+    "available_balance": {
+      "description": "Available balance for transactions",
+      "type": "number",
+      "format": "double",
+      "example": 50000.00
+    },
+    "locked_balance": {
+      "description": "Balance that is locked/reserved",
+      "type": "number",
+      "format": "double",
+      "example": 5000.00
+    },
+    "actual_balance": {
+      "description": "Total balance (available + locked)",
+      "type": "number",
+      "format": "double",
+      "example": 55000.00
+    }
+  }
+},
+      "Error": {
+        "required": [
+          "error",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+  "apiKeyAuth": {
+    "type": "apiKey",
+    "in": "header",
+    "name": "api-key",
+    "description": "API key for authentication"
+  }
+}
+  }
+}
