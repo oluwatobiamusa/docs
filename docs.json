@@ -12,6 +12,17 @@
   "navigation": {
     "tabs": [
       {
+        "tab": "Welcome To Cray Finance API Documentation",
+        "groups": [
+          {
+            "group": "Welcome",
+            "pages": [
+              "index"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "Cray Docs",
         "groups": [
           {
