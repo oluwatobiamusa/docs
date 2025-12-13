@@ -1,12 +1,13 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Cray Finance API Documentation",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
-  },
+  "primary": "#184790",
+  "light": "#3B6CB0",
+  "dark": "#0F2E60"
+}
+,
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
