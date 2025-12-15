@@ -12,27 +12,10 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Welcome To Cray Finance API Documentation",
+        "tab": "Welcome To Cray Docs!",
         "groups": [
           {
-            "group": "Getting started",
-            "pages": ["index", "quickstart", "development"]
-          },
-          {
-            "group": "Customization",
-            "pages": ["essentials/settings", "essentials/navigation"]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
+            "group": "Welcome",
             "pages": [
               "index"
             ]
@@ -49,10 +32,7 @@
               "cray-docs/using-cray-docs",
               "cray-docs/quick-start",
               "cray-docs/cray-dashboard",
-              "cray-docs/environment",
-              "cray-docs/authentication",
-              "cray-docs/webhooks",
-              "cray-docs/status-codes"
+              "cray-docs/environment"
             ]
           }
         ]
@@ -61,8 +41,10 @@
         "tab": "Virtual accounts",
         "groups": [
           {
-            "group": "API documentation",
-            "pages": ["api-reference/introduction", "api-reference/newfile"]
+            "group": "Cray Virtual Accounts",
+            "pages": [
+              "virtual-accounts/overview"
+            ]
           },
           {
             "group": "Endpoint Examples",
@@ -78,8 +60,10 @@
         "tab": "Wallet",
         "groups": [
           {
-            "group": "Cray Virtual Accounts",
-            "pages": ["virtual-accounts/overview"]
+            "group": "API documentation",
+            "pages": [
+              "wallet/overview"
+            ]
           },
           {
             "group": "Endpoint Examples",
@@ -112,17 +96,6 @@
               "pay-ins/momo-endpoint/initiate",
               "pay-ins/momo-endpoint/requery"
             ]
-            "group": "API documentation",
-            "pages": ["api-reference/introduction"]
-          }
-        ]
-      },
-      {
-        "tab": "Pay-ins",
-        "groups": [
-          {
-            "group": "API documentation",
-            "pages": ["api-reference/introduction"]
           }
         ]
       },
@@ -130,17 +103,9 @@
         "tab": "Pay-outs",
         "groups": [
           {
-            "group": "Pay-outs",
-            "pages": ["pay-outs/payout"]
-          },
-          {
-            "group": "Endpoint examples",
+            "group": "API documentation",
             "pages": [
-              "pay-outs/endpoint/get-banks",
-              "pay-outs/endpoint/get-payment-methods",
-              "pay-outs/endpoint/account-name-lookup",
-              "pay-outs/endpoint/process-transfer",
-              "pay-outs/endpoint/verify-transaction"
+              "api-reference/introduction"
             ]
           }
         ]
@@ -150,7 +115,9 @@
         "groups": [
           {
             "group": "API documentation",
-            "pages": ["api-reference/introduction"]
+            "pages": [
+              "api-reference/introduction"
+            ]
           }
         ]
       },
@@ -159,7 +126,9 @@
         "groups": [
           {
             "group": "API documentation",
-            "pages": ["api-reference/introduction"]
+            "pages": [
+              "api-reference/introduction"
+            ]
           }
         ]
       }
