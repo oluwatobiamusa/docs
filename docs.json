@@ -15,18 +15,11 @@
         "groups": [
           {
             "group": "Getting started",
-            "pages": [
-              "index",
-              "quickstart",
-              "development"
-            ]
+            "pages": ["index", "quickstart", "development"]
           },
           {
             "group": "Customization",
-            "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
+            "pages": ["essentials/settings", "essentials/navigation"]
           },
           {
             "group": "Writing content",
@@ -57,7 +50,10 @@
               "cray-docs/using-cray-docs",
               "cray-docs/quick-start",
               "cray-docs/cray-dashboard",
-              "cray-docs/environment"
+              "cray-docs/environment",
+              "cray-docs/authentication",
+              "cray-docs/webhooks",
+              "cray-docs/status-codes"
             ]
           }
         ]
@@ -67,10 +63,7 @@
         "groups": [
           {
             "group": "API documentation",
-            "pages": [
-              "api-reference/introduction",
-              "api-reference/newfile"
-            ]
+            "pages": ["api-reference/introduction", "api-reference/newfile"]
           },
           {
             "group": "Endpoint examples",
@@ -88,9 +81,7 @@
         "groups": [
           {
             "group": "Cray Virtual Accounts",
-            "pages": [
-              "virtual-accounts/overview"
-            ]
+            "pages": ["virtual-accounts/overview"]
           },
           {
             "group": "Endpoint Examples",
@@ -106,9 +97,7 @@
         "groups": [
           {
             "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
+            "pages": ["api-reference/introduction"]
           }
         ]
       },
@@ -117,9 +106,7 @@
         "groups": [
           {
             "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
+            "pages": ["api-reference/introduction"]
           }
         ]
       },
@@ -127,9 +114,17 @@
         "tab": "Pay-outs",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Pay-outs",
+            "pages": ["pay-outs/payout"]
+          },
+          {
+            "group": "Endpoint examples",
             "pages": [
-              "api-reference/introduction"
+              "pay-outs/endpoint/get-banks",
+              "pay-outs/endpoint/get-payment-methods",
+              "pay-outs/endpoint/account-name-lookup",
+              "pay-outs/endpoint/process-transfer",
+              "pay-outs/endpoint/verify-transaction"
             ]
           }
         ]
@@ -139,9 +134,7 @@
         "groups": [
           {
             "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
+            "pages": ["api-reference/introduction"]
           }
         ]
       },
@@ -150,9 +143,7 @@
         "groups": [
           {
             "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
+            "pages": ["api-reference/introduction"]
           }
         ]
       }
@@ -191,15 +182,15 @@
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "footer": {
     "socials": {
