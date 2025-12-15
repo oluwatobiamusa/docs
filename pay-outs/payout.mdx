@@ -20,7 +20,7 @@ The GET Banks endpoint is your one-stop shop to easily grab a comprehensive list
 
 ## Get Payment Methods
 
-The GET Payment Methods endpoint is your handy way to instantly see all available payout options for a specific country! You just use the {countryCode} in the path, and it tells you exactly which payment methods—like bank transfer, mobile money, or wallet options—are supported in that region. This is super useful for dynamically showing only valid payout channels and making sure your users can select the correct options during disbursement setup!
+The GET Payment Methods endpoint is your handy way to instantly see all available payout options for a specific country! You just use the countryCode in the path, and it tells you exactly which payment methods—like bank transfer, mobile money, or wallet options—are supported in that region. This is super useful for dynamically showing only valid payout channels and making sure your users can select the correct options during disbursement setup!
 
 | Method | URL                                                                  |
 | ------ | -------------------------------------------------------------------- |
@@ -60,149 +60,137 @@ The POST Disburse endpoint is what you use to easily send money from your mercha
 
 <Tabs>
   <Tab title="NGN">
-
-| Parameter          | Description                                                                                                                                                  |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| customer_reference | A unique reference string for tracking the transaction. Should be unique per request. Example: “2772h727dycncwddfdfdfnnccffhrfjjhhf2dfdhfhhb7dfr3fddhdd2ery” |
-| account_number     | The beneficiary’s bank or wallet account number. Example: “0171605931”                                                                                       |
-| bank_code          | The code of the beneficiary’s bank or mobile money provider. Example: “058” for GTBank                                                                       |
-| amount             | The amount to be transferred. Must be a numeric value as a string. Example: “120”                                                                            |
-| narration          | A short description or reason for the transfer. Example: “Test Transfer”                                                                                     |
-| recipient_name     | Full name of the beneficiary. Example: “John DOE”                                                                                                            |
-| ref_id             | A unique reference ID used to track the transaction.                                                                                                         |
-| sender_info        | Object containing sender details.                                                                                                                            |
-| sender_info.name   | The sender’s full name.                                                                                                                                      |
-| sender_info.phone  | The sender’s phone number.                                                                                                                                   |
-| sender_info.email  | The sender’s email address.                                                                                                                                  |
-
+    | Parameter          | Description                                                                                                                                                  |
+    | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+    | customer_reference | A unique reference string for tracking the transaction. Should be unique per request. Example: “2772h727dycncwddfdfdfnnccffhrfjjhhf2dfdhfhhb7dfr3fddhdd2ery” |
+    | account_number     | The beneficiary’s bank or wallet account number. Example: “0171605931”                                                                                       |
+    | bank_code          | The code of the beneficiary’s bank or mobile money provider. Example: “058” for GTBank                                                                       |
+    | amount             | The amount to be transferred. Must be a numeric value as a string. Example: “120”                                                                            |
+    | narration          | A short description or reason for the transfer. Example: “Test Transfer”                                                                                     |
+    | recipient_name     | Full name of the beneficiary. Example: “John DOE”                                                                                                            |
+    | ref_id             | A unique reference ID used to track the transaction.                                                                                                         |
+    | sender_info        | Object containing sender details.                                                                                                                            |
+    | sender_info.name   | The sender’s full name.                                                                                                                                      |
+    | sender_info.phone  | The sender’s phone number.                                                                                                                                   |
+    | sender_info.email  | The sender’s email address.                                                                                                                                  |
   </Tab>
   <Tab title="USD">
-
-| Parameter                          | Description                                                                                                                                                  |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| customer_reference                 | A unique reference string for tracking the transaction. Should be unique per request. Example: “2772h727dycncwddfdfdfnnccffhrfjjhhf2dfdhfhhb7dfr3fddhdd2ery” |
-| account_number                     | The beneficiary’s bank or wallet account number. Example: “0171605931”                                                                                       |
-| bank_code                          | The code of the beneficiary’s bank or mobile money provider. Example: “058” for GTBank                                                                       |
-| amount                             | The amount to be transferred. Must be a numeric value as a string. Example: “120”                                                                            |
-| narration                          | A short description or reason for the transfer. Example: “Test Transfer”                                                                                     |
-| recipient_name                     | Full name of the beneficiary. Example: “John DOE”                                                                                                            |
-| sender_info                        | Object containing sender details.                                                                                                                            |
-| sender_info.name                   | The sender’s full name.                                                                                                                                      |
-| sender_info.phone                  | The sender’s phone number.                                                                                                                                   |
-| sender_info.email                  | The sender’s email address.                                                                                                                                  |
-| receipient_info                    | Object containing the beneficiary’s information.                                                                                                             |
-| receipient_info.account_number     | The beneficiary’s bank account number.                                                                                                                       |
-| receipient_info.account_name       | The beneficiary’s account name.                                                                                                                              |
-| receipient_info.routing_number     | Routing number of the beneficiary’s bank (typically used for U.S. transfers).                                                                                |
-| receipient_info.account_type       | Type of recipient’s account (e.g., checking, savings).                                                                                                       |
-| receipient_info.receipient_address | Object with the beneficiary’s address details.                                                                                                               |
-| receipient_address.countryCode     | Beneficiary’s country code.                                                                                                                                  |
-| receipient_address.state           | Beneficiary’s state.                                                                                                                                         |
-| receipient_address.city            | Beneficiary’s city.                                                                                                                                          |
-| receipient_address.address         | Beneficiary’s street address.                                                                                                                                |
-| receipient_address.postalCode      | Beneficiary’s postal or ZIP code.                                                                                                                            |
-| currency                           | The currency of the transaction (e.g., USD).                                                                                                                 |
-| countryCode                        | Country where the transaction is initiated or processed from.                                                                                                |
-| payment_method                     | Selected method of payment (e.g., wire).                                                                                                                     |
-
+    | Parameter                          | Description                                                                                                                                                  |
+    | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+    | customer_reference                 | A unique reference string for tracking the transaction. Should be unique per request. Example: “2772h727dycncwddfdfdfnnccffhrfjjhhf2dfdhfhhb7dfr3fddhdd2ery” |
+    | account_number                     | The beneficiary’s bank or wallet account number. Example: “0171605931”                                                                                       |
+    | bank_code                          | The code of the beneficiary’s bank or mobile money provider. Example: “058” for GTBank                                                                       |
+    | amount                             | The amount to be transferred. Must be a numeric value as a string. Example: “120”                                                                            |
+    | narration                          | A short description or reason for the transfer. Example: “Test Transfer”                                                                                     |
+    | recipient_name                     | Full name of the beneficiary. Example: “John DOE”                                                                                                            |
+    | sender_info                        | Object containing sender details.                                                                                                                            |
+    | sender_info.name                   | The sender’s full name.                                                                                                                                      |
+    | sender_info.phone                  | The sender’s phone number.                                                                                                                                   |
+    | sender_info.email                  | The sender’s email address.                                                                                                                                  |
+    | receipient_info                    | Object containing the beneficiary’s information.                                                                                                             |
+    | receipient_info.account_number     | The beneficiary’s bank account number.                                                                                                                       |
+    | receipient_info.account_name       | The beneficiary’s account name.                                                                                                                              |
+    | receipient_info.routing_number     | Routing number of the beneficiary’s bank (typically used for U.S. transfers).                                                                                |
+    | receipient_info.account_type       | Type of recipient’s account (e.g., checking, savings).                                                                                                       |
+    | receipient_info.receipient_address | Object with the beneficiary’s address details.                                                                                                               |
+    | receipient_address.countryCode     | Beneficiary’s country code.                                                                                                                                  |
+    | receipient_address.state           | Beneficiary’s state.                                                                                                                                         |
+    | receipient_address.city            | Beneficiary’s city.                                                                                                                                          |
+    | receipient_address.address         | Beneficiary’s street address.                                                                                                                                |
+    | receipient_address.postalCode      | Beneficiary’s postal or ZIP code.                                                                                                                            |
+    | currency                           | The currency of the transaction (e.g., USD).                                                                                                                 |
+    | countryCode                        | Country where the transaction is initiated or processed from.                                                                                                |
+    | payment_method                     | Selected method of payment (e.g., wire).                                                                                                                     |
   </Tab>
   <Tab title="ZMW">
-
-| Parameter                      | Description                                                                                                                                                  |
-| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| customer_reference             | A unique reference string for tracking the transaction. Should be unique per request. Example: “2772h727dycncwddfdfdfnnccffhrfjjhhf2dfdhfhhb7dfr3fddhdd2ery” |
-| account_number                 | The beneficiary’s bank or wallet account number. Example: “0171605931”                                                                                       |
-| amount                         | The amount to be transferred. Must be a numeric value as a string. Example: “120”                                                                            |
-| narration                      | A short description or reason for the transfer. Example: “Test Transfer”                                                                                     |
-| receipient_info                | Object containing the beneficiary’s information.                                                                                                             |
-| receipient_info.account_number | The beneficiary’s bank account number.                                                                                                                       |
-| countryCode                    | A two letter code used to identify a country. (e.g. ZM)                                                                                                      |
-| currency                       | The currency of the transaction (e.g., XOF).                                                                                                                 |
-
+    | Parameter                      | Description                                                                                                                                                  |
+    | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+    | customer_reference             | A unique reference string for tracking the transaction. Should be unique per request. Example: “2772h727dycncwddfdfdfnnccffhrfjjhhf2dfdhfhhb7dfr3fddhdd2ery” |
+    | account_number                 | The beneficiary’s bank or wallet account number. Example: “0171605931”                                                                                       |
+    | amount                         | The amount to be transferred. Must be a numeric value as a string. Example: “120”                                                                            |
+    | narration                      | A short description or reason for the transfer. Example: “Test Transfer”                                                                                     |
+    | receipient_info                | Object containing the beneficiary’s information.                                                                                                             |
+    | receipient_info.account_number | The beneficiary’s bank account number.                                                                                                                       |
+    | countryCode                    | A two letter code used to identify a country. (e.g. ZM)                                                                                                      |
+    | currency                       | The currency of the transaction (e.g., XOF).                                                                                                                 |
   </Tab>
   <Tab title="KES">
-
-| Parameter                          | Description                                                                                                                                                  |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| customer_reference                 | A unique reference string for tracking the transaction. Should be unique per request. Example: “2772h727dycncwddfdfdfnnccffhrfjjhhf2dfdhfhhb7dfr3fddhdd2ery” |
-| account_number                     | The beneficiary’s bank or wallet account number. Example: “0171605931”                                                                                       |
-| bank_code                          | The code of the beneficiary’s bank or mobile money provider. Example: “058” for GTBank                                                                       |
-| amount                             | The amount to be transferred. Must be a numeric value as a string. Example: “120”                                                                            |
-| narration                          | A short description or reason for the transfer. Example: “Test Transfer”                                                                                     |
-| recipient_name                     | Full name of the beneficiary. Example: “John DOE”                                                                                                            |
-| sender_info                        | Object containing sender details.                                                                                                                            |
-| sender_info.name                   | The sender’s full name.                                                                                                                                      |
-| sender_info.phone                  | The sender’s phone number.                                                                                                                                   |
-| sender_info.email                  | The sender’s email address.                                                                                                                                  |
-| receipient_info                    | Object containing the beneficiary’s information.                                                                                                             |
-| receipient_info.account_number     | The beneficiary’s bank account number.                                                                                                                       |
-| receipient_info.account_name       | The beneficiary’s account name.                                                                                                                              |
-| receipient_info.routing_number     | Routing number of the beneficiary’s bank (typically used for U.S. transfers).                                                                                |
-| receipient_info.account_type       | Type of recipient’s account (e.g., checking, savings).                                                                                                       |
-| receipient_info.receipient_address | Object with the beneficiary’s address details.                                                                                                               |
-| receipient_address.countryCode     | Beneficiary’s country code.                                                                                                                                  |
-| receipient_address.state           | Beneficiary’s state.                                                                                                                                         |
-| receipient_address.city            | Beneficiary’s city.                                                                                                                                          |
-| receipient_address.address         | Beneficiary’s street address.                                                                                                                                |
-| receipient_address.postalCode      | Beneficiary’s postal or ZIP code.                                                                                                                            |
-| currency                           | The currency of the transaction (e.g., KES).                                                                                                                 |
-
+    | Parameter                          | Description                                                                                                                                                  |
+    | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+    | customer_reference                 | A unique reference string for tracking the transaction. Should be unique per request. Example: “2772h727dycncwddfdfdfnnccffhrfjjhhf2dfdhfhhb7dfr3fddhdd2ery” |
+    | account_number                     | The beneficiary’s bank or wallet account number. Example: “0171605931”                                                                                       |
+    | bank_code                          | The code of the beneficiary’s bank or mobile money provider. Example: “058” for GTBank                                                                       |
+    | amount                             | The amount to be transferred. Must be a numeric value as a string. Example: “120”                                                                            |
+    | narration                          | A short description or reason for the transfer. Example: “Test Transfer”                                                                                     |
+    | recipient_name                     | Full name of the beneficiary. Example: “John DOE”                                                                                                            |
+    | sender_info                        | Object containing sender details.                                                                                                                            |
+    | sender_info.name                   | The sender’s full name.                                                                                                                                      |
+    | sender_info.phone                  | The sender’s phone number.                                                                                                                                   |
+    | sender_info.email                  | The sender’s email address.                                                                                                                                  |
+    | receipient_info                    | Object containing the beneficiary’s information.                                                                                                             |
+    | receipient_info.account_number     | The beneficiary’s bank account number.                                                                                                                       |
+    | receipient_info.account_name       | The beneficiary’s account name.                                                                                                                              |
+    | receipient_info.routing_number     | Routing number of the beneficiary’s bank (typically used for U.S. transfers).                                                                                |
+    | receipient_info.account_type       | Type of recipient’s account (e.g., checking, savings).                                                                                                       |
+    | receipient_info.receipient_address | Object with the beneficiary’s address details.                                                                                                               |
+    | receipient_address.countryCode     | Beneficiary’s country code.                                                                                                                                  |
+    | receipient_address.state           | Beneficiary’s state.                                                                                                                                         |
+    | receipient_address.city            | Beneficiary’s city.                                                                                                                                          |
+    | receipient_address.address         | Beneficiary’s street address.                                                                                                                                |
+    | receipient_address.postalCode      | Beneficiary’s postal or ZIP code.                                                                                                                            |
+    | currency                           | The currency of the transaction (e.g., KES).                                                                                                                 |
   </Tab>
   <Tab title="GHS">
-
-| Parameter                          | Description                                                                                                                                                  |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| customer_reference                 | A unique reference string for tracking the transaction. Should be unique per request. Example: “2772h727dycncwddfdfdfnnccffhrfjjhhf2dfdhfhhb7dfr3fddhdd2ery” |
-| account_number                     | The beneficiary’s bank or wallet account number. Example: “0171605931”                                                                                       |
-| bank_code                          | The code of the beneficiary’s bank or mobile money provider. Example: “058” for GTBank                                                                       |
-| amount                             | The amount to be transferred. Must be a numeric value as a string. Example: “120”                                                                            |
-| narration                          | A short description or reason for the transfer. Example: “Test Transfer”                                                                                     |
-| recipient_name                     | Full name of the beneficiary. Example: “John DOE”                                                                                                            |
-| sender_info                        | Object containing sender details.                                                                                                                            |
-| sender_info.name                   | The sender’s full name.                                                                                                                                      |
-| sender_info.phone                  | The sender’s phone number.                                                                                                                                   |
-| sender_info.email                  | The sender’s email address.                                                                                                                                  |
-| receipient_info                    | Object containing the beneficiary’s information.                                                                                                             |
-| receipient_info.account_number     | The beneficiary’s bank account number.                                                                                                                       |
-| receipient_info.account_name       | The beneficiary’s account name.                                                                                                                              |
-| receipient_info.routing_number     | Routing number of the beneficiary’s bank (typically used for U.S. transfers).                                                                                |
-| receipient_info.account_type       | Type of recipient’s account (e.g., checking, savings).                                                                                                       |
-| receipient_info.receipient_address | Object with the beneficiary’s address details.                                                                                                               |
-| receipient_address.countryCode     | Beneficiary’s country code.                                                                                                                                  |
-| receipient_address.state           | Beneficiary’s state.                                                                                                                                         |
-| receipient_address.city            | Beneficiary’s city.                                                                                                                                          |
-| receipient_address.address         | Beneficiary’s street address.                                                                                                                                |
-| receipient_address.postalCode      | Beneficiary’s postal or ZIP code.                                                                                                                            |
-| currency                           | The currency of the transaction (e.g., GHS).                                                                                                                 |
-
+    | Parameter                          | Description                                                                                                                                                  |
+    | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+    | customer_reference                 | A unique reference string for tracking the transaction. Should be unique per request. Example: “2772h727dycncwddfdfdfnnccffhrfjjhhf2dfdhfhhb7dfr3fddhdd2ery” |
+    | account_number                     | The beneficiary’s bank or wallet account number. Example: “0171605931”                                                                                       |
+    | bank_code                          | The code of the beneficiary’s bank or mobile money provider. Example: “058” for GTBank                                                                       |
+    | amount                             | The amount to be transferred. Must be a numeric value as a string. Example: “120”                                                                            |
+    | narration                          | A short description or reason for the transfer. Example: “Test Transfer”                                                                                     |
+    | recipient_name                     | Full name of the beneficiary. Example: “John DOE”                                                                                                            |
+    | sender_info                        | Object containing sender details.                                                                                                                            |
+    | sender_info.name                   | The sender’s full name.                                                                                                                                      |
+    | sender_info.phone                  | The sender’s phone number.                                                                                                                                   |
+    | sender_info.email                  | The sender’s email address.                                                                                                                                  |
+    | receipient_info                    | Object containing the beneficiary’s information.                                                                                                             |
+    | receipient_info.account_number     | The beneficiary’s bank account number.                                                                                                                       |
+    | receipient_info.account_name       | The beneficiary’s account name.                                                                                                                              |
+    | receipient_info.routing_number     | Routing number of the beneficiary’s bank (typically used for U.S. transfers).                                                                                |
+    | receipient_info.account_type       | Type of recipient’s account (e.g., checking, savings).                                                                                                       |
+    | receipient_info.receipient_address | Object with the beneficiary’s address details.                                                                                                               |
+    | receipient_address.countryCode     | Beneficiary’s country code.                                                                                                                                  |
+    | receipient_address.state           | Beneficiary’s state.                                                                                                                                         |
+    | receipient_address.city            | Beneficiary’s city.                                                                                                                                          |
+    | receipient_address.address         | Beneficiary’s street address.                                                                                                                                |
+    | receipient_address.postalCode      | Beneficiary’s postal or ZIP code.                                                                                                                            |
+    | currency                           | The currency of the transaction (e.g., GHS).                                                                                                                 |
   </Tab>
   <Tab title="XOF">
-
-| Parameter                          | Description                                                                                                                                                  |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| customer_reference                 | A unique reference string for tracking the transaction. Should be unique per request. Example: “2772h727dycncwddfdfdfnnccffhrfjjhhf2dfdhfhhb7dfr3fddhdd2ery” |
-| account_number                     | The beneficiary’s bank or wallet account number. Example: “0171605931”                                                                                       |
-| bank_code                          | The code of the beneficiary’s bank or mobile money provider. Example: “058” for GTBank                                                                       |
-| amount                             | The amount to be transferred. Must be a numeric value as a string. Example: “120”                                                                            |
-| narration                          | A short description or reason for the transfer. Example: “Test Transfer”                                                                                     |
-| recipient_name                     | Full name of the beneficiary. Example: “John DOE”                                                                                                            |
-| sender_info                        | Object containing sender details.                                                                                                                            |
-| sender_info.name                   | The sender’s full name.                                                                                                                                      |
-| sender_info.phone                  | The sender’s phone number.                                                                                                                                   |
-| sender_info.email                  | The sender’s email address.                                                                                                                                  |
-| receipient_info                    | Object containing the beneficiary’s information.                                                                                                             |
-| receipient_info.account_number     | The beneficiary’s bank account number.                                                                                                                       |
-| receipient_info.account_name       | The beneficiary’s account name.                                                                                                                              |
-| receipient_info.routing_number     | Routing number of the beneficiary’s bank (typically used for U.S. transfers).                                                                                |
-| receipient_info.account_type       | Type of recipient’s account (e.g., checking, savings).                                                                                                       |
-| receipient_info.receipient_address | Object with the beneficiary’s address details.                                                                                                               |
-| receipient_address.countryCode     | Beneficiary’s country code.                                                                                                                                  |
-| receipient_address.state           | Beneficiary’s state.                                                                                                                                         |
-| receipient_address.city            | Beneficiary’s city.                                                                                                                                          |
-| receipient_address.address         | Beneficiary’s street address.                                                                                                                                |
-| receipient_address.postalCode      | Beneficiary’s postal or ZIP code.                                                                                                                            |
-| currency                           | The currency of the transaction (e.g., XOF).                                                                                                                 |
-
+    | Parameter                          | Description                                                                                                                                                  |
+    | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+    | customer_reference                 | A unique reference string for tracking the transaction. Should be unique per request. Example: “2772h727dycncwddfdfdfnnccffhrfjjhhf2dfdhfhhb7dfr3fddhdd2ery” |
+    | account_number                     | The beneficiary’s bank or wallet account number. Example: “0171605931”                                                                                       |
+    | bank_code                          | The code of the beneficiary’s bank or mobile money provider. Example: “058” for GTBank                                                                       |
+    | amount                             | The amount to be transferred. Must be a numeric value as a string. Example: “120”                                                                            |
+    | narration                          | A short description or reason for the transfer. Example: “Test Transfer”                                                                                     |
+    | recipient_name                     | Full name of the beneficiary. Example: “John DOE”                                                                                                            |
+    | sender_info                        | Object containing sender details.                                                                                                                            |
+    | sender_info.name                   | The sender’s full name.                                                                                                                                      |
+    | sender_info.phone                  | The sender’s phone number.                                                                                                                                   |
+    | sender_info.email                  | The sender’s email address.                                                                                                                                  |
+    | receipient_info                    | Object containing the beneficiary’s information.                                                                                                             |
+    | receipient_info.account_number     | The beneficiary’s bank account number.                                                                                                                       |
+    | receipient_info.account_name       | The beneficiary’s account name.                                                                                                                              |
+    | receipient_info.routing_number     | Routing number of the beneficiary’s bank (typically used for U.S. transfers).                                                                                |
+    | receipient_info.account_type       | Type of recipient’s account (e.g., checking, savings).                                                                                                       |
+    | receipient_info.receipient_address | Object with the beneficiary’s address details.                                                                                                               |
+    | receipient_address.countryCode     | Beneficiary’s country code.                                                                                                                                  |
+    | receipient_address.state           | Beneficiary’s state.                                                                                                                                         |
+    | receipient_address.city            | Beneficiary’s city.                                                                                                                                          |
+    | receipient_address.address         | Beneficiary’s street address.                                                                                                                                |
+    | receipient_address.postalCode      | Beneficiary’s postal or ZIP code.                                                                                                                            |
+    | currency                           | The currency of the transaction (e.g., XOF).                                                                                                                 |
   </Tab>
 </Tabs>
 

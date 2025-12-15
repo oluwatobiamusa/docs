@@ -14,23 +14,6 @@
         "tab": "Welcome To Cray Docs!",
         "groups": [
           {
-            "group": "Getting started",
-            "pages": ["index", "quickstart", "development"]
-          },
-          {
-            "group": "Customization",
-            "pages": ["essentials/settings", "essentials/navigation"]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
             "group": "Welcome",
             "pages": ["index"]
           }
@@ -46,7 +29,9 @@
               "cray-docs/using-cray-docs",
               "cray-docs/quick-start",
               "cray-docs/cray-dashboard",
-              "cray-docs/environment"
+              "cray-docs/environment",
+              "cray-docs/authentication",
+              "cray-docs/webhooks"
             ]
           }
         ]
