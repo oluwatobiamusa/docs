@@ -1,0 +1,403 @@
+---
+title: "Webhooks"
+description: "Learn how to use webhooks to receive real-time notifications from Cray Finance."
+---
+
+Webhooks are automated messages sent from Cray Finance to your application. They are the most reliable way to receive real-time updates when events happen in your account, such as a successful payment, a new customer, or a completed payout.
+
+Instead of your application constantly asking our API if an event has occurred (known as “polling”), our system will instantly send a notification (a POST request) to your server when the event happens.
+
+To start receiving these notifications, you must register a secure URL (a webhook endpoint) on your server.
+
+## How to Set Up Your Webhook
+
+Follow these steps to tell Cray Finance where to send your event notifications:
+
+- Log in to your Cray Finance Dashboard.
+
+- Navigate to the Your Business section from the main navigation menu.
+
+- Click on the Webhook tab.
+
+- On this page, find the Webhook Configuration section.
+
+- Enable Webhooks: Check the box labeled “Enable Webhooks.” This activates the feature.
+
+- Enter Your Endpoint URL: In the “URL” field, paste the secure URL from your application that is built to listen for incoming webhook data.
+
+<Note>
+  _**_Important:_**_ For security, this URL must be an HTTPS endpoint (it must
+  start with https://). HTTP URLs will not be accepted.
+</Note>
+
+- Save Your Configuration: Click the “Set Webhook” or “Save” button.
+
+- Once saved, Cray Finance will immediately begin sending live event data to this URL whenever a relevant event occurs in your account.
+
+## Webhook Security: Verifying Signatures
+
+To ensure that the webhook events you receive are truly sent by our system and have not been tampered with, we sign every webhook request using a Hash-based Message Authentication Code (HMAC).
+
+We strongly recommend that you verify this signature before processing any webhook event.
+
+The Signature Header
+Every webhook request will include a custom HTTP header containing the signature:
+
+X-Webhook-Signature
+How the Signature is Generated
+We generate the signature using the following formula:
+
+```php
+Signature = base64_encode( hash_hmac('sha256', `<JSON_PAYLOAD>`, `<YOUR_SECRET>`, true) )
+```
+
+- Algorithm: HMAC-SHA256
+
+- Key: Your unique Webhook Secret Key (provided in your dashboard).
+
+- Payload: The raw JSON body of the request.
+
+- Encoding: The binary hash output is encoded in Base64.
+
+## Verifying the Signature (Step-by-Step)
+
+To verify the webhook, your server should follow these steps:
+
+Retrieve the Header: Extract the signature string from the X-Webhook-Signature header.
+
+Get the Raw Body: Read the raw request body bytes. Do not parse the JSON into an object yet; you must use the exact raw string bytes as they were sent.
+
+Compute the Hash: Use your Secret Key and the Raw Body to compute the HMAC-SHA256 hash.
+
+Encode: Convert the computed hash to a Base64 string.
+
+Compare: Compare your computed signature with the signature in the header. Use a constant-time string comparison function to prevent timing attacks.
+
+Code Examples
+
+1. PHP
+
+```php
+<?php
+
+$secret = 'whsec_...'; // Your secret key
+$headerSignature = $_SERVER['HTTP_X_WEBHOOK_SIGNATURE'] ?? '';
+
+// Get the raw input stream
+$payload = file_get_contents('php://input');
+
+// Calculate the expected signature
+$expectedSignature = base64_encode(hash_hmac('sha256', $payload, $secret, true));
+
+// Verify securely
+if (hash_equals($expectedSignature, $headerSignature)) {
+    // Signature valid - Process the webhook
+    $data = json_decode($payload, true);
+} else {
+    // Signature invalid - Reject request
+    http_response_code(403);
+    exit();
+}
+```
+
+2. Node.js (Express)
+
+```javascript
+const crypto = require("crypto");
+const express = require("express");
+const app = express();
+
+const SECRET = "whsec_...";
+
+// Middleware to capture raw body for verification
+app.use(
+  express.json({
+    verify: (req, res, buf) => {
+      req.rawBody = buf;
+    },
+  })
+);
+
+app.post("/webhook", (req, res) => {
+  const signature = req.headers["x-webhook-signature"];
+
+  // Create the hash
+  const expectedSignature = crypto
+    .createHmac("sha256", SECRET)
+    .update(req.rawBody)
+    .digest("base64");
+
+  // Constant-time comparison
+  if (
+    crypto.timingSafeEqual(
+      Buffer.from(signature),
+      Buffer.from(expectedSignature)
+    )
+  ) {
+    // Verified!
+    console.log("Webhook verified");
+    res.status(200).send("Received");
+  } else {
+    res.status(403).send("Invalid Signature");
+  }
+});
+```
+
+## Cray Finance Webhook Events
+
+### Collection Success Webhook
+
+This event is triggered immediately after a successful payment or fund collection has been processed and credited to your Cray Finance account.
+
+```json
+{
+  "event": "payment.success",
+  "data": {
+    "amount": 15000,
+    "currency": "NGN",
+    "reference": "CRF_TXN_0012345" // Added common field for better context
+  }
+}
+```
+
+### Charge Status Webhook
+
+This event notifies you when a customer interaction, such as a checkout or a direct card charge, is completed, regardless of the final status.
+
+```json
+{
+  "event": "charge.success",
+  "data": {
+    "method": "card",
+    "status": "completed",
+    "transaction_id": "CRF_CHG_987654" // Added common field for better context
+  }
+}
+```
+
+### Retrieving Failed Webhook Events
+
+Webhooks that could not be successfully delivered after the standard retry period are logged as failed events. It’s critical to regularly check this list to ensure you don’t miss important financial notifications.
+
+This endpoint is your primary tool for monitoring and troubleshooting webhook delivery issues.
+
+Endpoint: Get All Permanently Failed Webhooks
+Method URL Description
+GET /api/payout/failedWebhook Retrieves a list of all webhook delivery attempts that have permanently failed.
+Example Request
+You must include your Secret Key in the Authorization header to access this endpoint.
+
+```bash
+curl -X GET 'https://pay.connectramp.com/payout/failedWebhook' \
+-H 'Authorization: Bearer sk_live_your_secret_key'
+```
+
+Example Response
+The response returns an array of objects, where each object represents a single failed webhook delivery attempt.
+
+```json
+{
+  "success": true,
+  "data": {
+    "success": true,
+    "data": [
+      {
+        "id": 50,
+        "created_at": "2025-10-01T08:44:45.399Z",
+        "updated_at": "2025-10-01T08:44:45.399Z",
+        "url": "https://v01zqdg3-7148.euw.devtunnels.ms/v-1/payment/callback",
+        "user_id": "127",
+        "data": {
+          "data": {
+            "amount": "1.00",
+            "charge": "300.00",
+            "merchant_reference": "97_uztmeh_qi628a",
+            "processor_reference": "999999250930072041448704496616",
+            "recipient_account_number": "898789",
+            "recipient_bank_code": "78978",
+            "recipient_name": null,
+            "reference": "48LWAY7FE5RTNGD1759213240",
+            "status": "Successful"
+          },
+          "event": "transaction_complete",
+          "hash": "pEdGMWXpneeROpaML/L7w6UPTLfciP4SCsbYaAJBAHg="
+        },
+        "headers": {
+          "Content-Type": "application/json",
+          "x-api-key": "bHJwX1ZHbU51TVFjY1pzT2J3Vkt6NDFRc3pwenlncEJHdkZKO2xyc193bHRsdWI1eVZpM1NGWEhtMzBrWE1IVXgzMUVFVVVyVA=="
+        }
+      },
+      {
+        "id": 51,
+        "created_at": "2025-10-02T00:06:25.225Z",
+        "updated_at": "2025-10-02T00:06:25.225Z",
+        "url": "https://v01zqdg3-7148.euw.devtunnels.ms/v-1/payment/callback",
+        "user_id": "127",
+        "data": {
+          "data": {
+            "amount": "1600.00",
+            "charge": "300.00",
+            "failure_reason": "Transaction rejected by authorizer",
+            "merchant_reference": "58_eubzqp_vjmprx",
+            "processor_reference": null,
+            "recipient_account_number": "898789",
+            "recipient_bank_code": "78978",
+            "recipient_name": null,
+            "reference": "76F38215SRTXENH1759359170",
+            "status": "Failed"
+          },
+          "event": "transaction_complete",
+          "hash": "KqeuzxTTts/DfLOW2kFfIRIi+jquDHLzEcDmGcBW01M="
+        },
+        "headers": {
+          "Content-Type": "application/json",
+          "x-api-key": "bHJwX1ZHbU51TVFjY1pzT2J3Vkt6NDFRc3pwenlncEJHdkZKO2xyc193bHRsdWI1eVZpM1NGWEhtMzBrWE1IVXgzMUVFVVVyVA=="
+        }
+      },
+      {
+        "id": 52,
+        "created_at": "2025-10-02T00:11:45.405Z",
+        "updated_at": "2025-10-02T00:11:45.405Z",
+        "url": "https://v01zqdg3-7148.euw.devtunnels.ms/v-1/payment/callback",
+        "user_id": "127",
+        "data": {
+          "data": {
+            "amount": "1600.00",
+            "charge": "300.00",
+            "failure_reason": "failed",
+            "merchant_reference": "19_kuoiil_mr26pn",
+            "processor_reference": "e586837d-5c0a-416b-a4ee-9c1d34badb3b",
+            "recipient_account_number": "898789",
+            "recipient_bank_code": "78978",
+            "recipient_name": null,
+            "reference": "PBA4V7G9HEU8DT21759359172",
+            "status": "Failed"
+          },
+          "event": "transaction_complete",
+          "hash": "mD08+mr2H9zdmIG+8P/fumw+rtH/kk8kVmODSwdwWog="
+        },
+        "headers": {
+          "Content-Type": "application/json",
+          "x-api-key": "bHJwX1ZHbU51TVFjY1pzT2J3Vkt6NDFRc3pwenlncEJHdkZKO2xyc193bHRsdWI1eVZpM1NGWEhtMzBrWE1IVXgzMUVFVVVyVA=="
+        }
+      }
+    ],
+    "message": "Failed webhook retrieved"
+  },
+  "message": "Action was Succesfull"
+}
+```
+
+Retry Failed Webhook
+If a webhook delivery fails (e.g., your server was down or returned a non-200 status code), Cray Finance will retry the delivery automatically for a period. If all retries are exhausted, the event will remain in the failed log.
+
+You can use this endpoint to manually reprocess a specific failed webhook notification after you have resolved the issue with your endpoint (network errors, server downtime, etc.).
+
+Endpoint: Retry a Specific Failed Webhook
+
+| Method | URL                                   |
+| ------ | ------------------------------------- |
+| `GET`  | /api/payout/failedWebhook/{webhookId} |
+
+To retry the delivery of the failed webhook with the ID 50:
+
+```bash
+curl -X GET 'https://pay.connectramp.com/payout/failedWebhook/50' \
+-H 'Authorization: Bearer sk_live_your_secret_key'
+```
+
+Example Response: Successful Retry
+A successful response indicates that the system has accepted the request and is attempting to redeliver the webhook payload to your endpoint.
+
+```json
+{
+  "success": true,
+  "data": {
+    "success": true,
+    "data": [
+      {
+        "id": 50,
+        "created_at": "2025-10-01T08:44:45.399Z",
+        "updated_at": "2025-10-01T08:44:45.399Z",
+        "url": "https://v01zqdg3-7148.euw.devtunnels.ms/v-1/payment/callback",
+        "user_id": "127",
+        "data": {
+          "data": {
+            "amount": "1.00",
+            "charge": "300.00",
+            "merchant_reference": "97_uztmeh_qi628a",
+            "processor_reference": "999999250930072041448704496616",
+            "recipient_account_number": "898789",
+            "recipient_bank_code": "78978",
+            "recipient_name": null,
+            "reference": "48LWAY7FE5RTNGD1759213240",
+            "status": "Successful"
+          },
+          "event": "transaction_complete",
+          "hash": "pEdGMWXpneeROpaML/L7w6UPTLfciP4SCsbYaAJBAHg="
+        },
+        "headers": {
+          "Content-Type": "application/json",
+          "x-api-key": "bHJwX1ZHbU51TVFjY1pzT2J3Vkt6NDFRc3pwenlncEJHdkZKO2xyc193bHRsdWI1eVZpM1NGWEhtMzBrWE1IVXgzMUVFVVVyVA=="
+        }
+      },
+      {
+        "id": 51,
+        "created_at": "2025-10-02T00:06:25.225Z",
+        "updated_at": "2025-10-02T00:06:25.225Z",
+        "url": "https://v01zqdg3-7148.euw.devtunnels.ms/v-1/payment/callback",
+        "user_id": "127",
+        "data": {
+          "data": {
+            "amount": "1600.00",
+            "charge": "300.00",
+            "failure_reason": "Transaction rejected by authorizer",
+            "merchant_reference": "58_eubzqp_vjmprx",
+            "processor_reference": null,
+            "recipient_account_number": "898789",
+            "recipient_bank_code": "78978",
+            "recipient_name": null,
+            "reference": "76F38215SRTXENH1759359170",
+            "status": "Failed"
+          },
+          "event": "transaction_complete",
+          "hash": "KqeuzxTTts/DfLOW2kFfIRIi+jquDHLzEcDmGcBW01M="
+        },
+        "headers": {
+          "Content-Type": "application/json",
+          "x-api-key": "bHJwX1ZHbU51TVFjY1pzT2J3Vkt6NDFRc3pwenlncEJHdkZKO2xyc193bHRsdWI1eVZpM1NGWEhtMzBrWE1IVXgzMUVFVVVyVA=="
+        }
+      },
+      {
+        "id": 52,
+        "created_at": "2025-10-02T00:11:45.405Z",
+        "updated_at": "2025-10-02T00:11:45.405Z",
+        "url": "https://v01zqdg3-7148.euw.devtunnels.ms/v-1/payment/callback",
+        "user_id": "127",
+        "data": {
+          "data": {
+            "amount": "1600.00",
+            "charge": "300.00",
+            "failure_reason": "failed",
+            "merchant_reference": "19_kuoiil_mr26pn",
+            "processor_reference": "e586837d-5c0a-416b-a4ee-9c1d34badb3b",
+            "recipient_account_number": "898789",
+            "recipient_bank_code": "78978",
+            "recipient_name": null,
+            "reference": "PBA4V7G9HEU8DT21759359172",
+            "status": "Failed"
+          },
+          "event": "transaction_complete",
+          "hash": "mD08+mr2H9zdmIG+8P/fumw+rtH/kk8kVmODSwdwWog="
+        },
+        "headers": {
+          "Content-Type": "application/json",
+          "x-api-key": "bHJwX1ZHbU51TVFjY1pzT2J3Vkt6NDFRc3pwenlncEJHdkZKO2xyc193bHRsdWI1eVZpM1NGWEhtMzBrWE1IVXgzMUVFVVVyVA=="
+        }
+      }
+    ],
+    "message": "Failed webhook retrieved"
+  },
+  "message": "Action was Succesfull"
+}
+```

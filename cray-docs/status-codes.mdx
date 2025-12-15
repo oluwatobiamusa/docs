@@ -1,0 +1,34 @@
+---
+title: "Status Codes"
+description: "Cray Finance categorizes transaction outcomes into distinct statuses."
+---
+
+## CLR001 – Security Violation
+
+This transaction was flagged and declined due to exceeding the allowed number of transactions within a specific time frame (velocity limit) for the card. This is a preventive measure against potential misuse or automated fraudulent activity.
+
+## CLR002 – Security Violation
+
+This transaction failed an internal fraud detection mechanism. It may have been identified as suspicious due to unusual patterns such as high-risk geolocation, blacklisted accounts, or anomalies in behavior based on historical data.
+
+## CLR003 – Single Transaction Limit Exceeded
+
+The transaction amount exceeded the maximum allowed limit for a single transaction, as defined by cardholder or account policy. To proceed, the transaction must be split or limits adjusted.
+
+## Pending — Initiated Charge
+
+The transaction has been initiated and is awaiting further processing. It may be awaiting auser action (e.g., OTP or 3D Secure authentication).
+
+## Successful
+
+The transaction was processed and authorized without any issues.
+
+## Failed
+
+The transaction could not be completed due to an error. This may be due to insufficient funds, declined authorization, or system-level interruptions.
+
+## Abandoned
+
+The user initiated the transaction but did not complete the required steps. This typically happens when users close the app/browser, get redirected without finalizing payment, or fail to respond to authentication prompts.
+
+Understanding these statuses helps in monitoring transaction outcomes and implementing appropriate business logic.
