@@ -10,7 +10,12 @@
   },
   "servers": [
     {
-      "url": "https://dev-gateman.v3.connectramp.com/api/virtual-accounts"
+      “url”: “https://pay.connectramp.com/api”,
+      “description”: “Live URL”
+    },
+    {
+      “url”: “https://dev-gateman.v3.connectramp.com/api”,
+      “description”: “Staging URL”
     }
   ],
   "security": [
