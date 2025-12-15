@@ -37,25 +37,7 @@
           }
         ]
       },
-      {
-        "tab": "Virtual accounts",
-        "groups": [
-          {
-            "group": "Cray Virtual Accounts",
-            "pages": [
-              "virtual-accounts/overview"
-            ]
-          },
-          {
-            "group": "Endpoint Examples",
-            "pages": [
-              "virtual-accounts/endpoint/create",
-              "virtual-accounts/endpoint/otp",
-              "virtual-accounts/endpoint/get"
-            ]
-          }
-        ]
-      },
+      
       {
         "tab": "Wallet",
         "groups": [
