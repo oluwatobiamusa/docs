@@ -12,6 +12,17 @@
   "navigation": {
     "tabs": [
       {
+        "tab": "Welcome To Cray Docs!",
+        "groups": [
+          {
+            "group": "Welcome",
+            "pages": [
+              "index"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "Cray Docs",
         "groups": [
           {
@@ -26,25 +37,7 @@
           }
         ]
       },
-      {
-        "tab": "Virtual accounts",
-        "groups": [
-          {
-            "group": "Cray Virtual Accounts",
-            "pages": [
-              "virtual-accounts/overview"
-            ]
-          },
-          {
-            "group": "Endpoint Examples",
-            "pages": [
-              "virtual-accounts/endpoint/create",
-              "virtual-accounts/endpoint/otp",
-              "virtual-accounts/endpoint/get"
-            ]
-          }
-        ]
-      },
+      
       {
         "tab": "Wallet",
         "groups": [
@@ -63,12 +56,20 @@
         ]
       },
       {
-        "tab": "Pay-ins",
+        "tab": "Collections",
         "groups": [
           {
-            "group": "Cray Pay-in Channels",
+            "group": "Cray collection Channels",
             "pages": [
               "pay-ins/overview"
+            ]
+          },
+          {
+            "group": "Endpoint Examples (Virtual accounts)",
+            "pages": [
+              "virtual-accounts/endpoint/create",
+              "virtual-accounts/endpoint/otp",
+              "virtual-accounts/endpoint/get"
             ]
           },
           {
@@ -80,7 +81,7 @@
             ]
           },
           {
-            "group": "Endpoint Examples (MoMo collection)",
+            "group": "Endpoint Examples (Mobile Money collection)",
             "pages": [
               "pay-ins/momo-endpoint/initiate",
               "pay-ins/momo-endpoint/requery"
@@ -89,7 +90,7 @@
         ]
       },
       {
-        "tab": "Pay-outs",
+        "tab": "Pay outs",
         "groups": [
           {
             "group": "API documentation",
@@ -131,13 +132,13 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:hello@crayfi.com"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Get started",
+      "href": "https://app.crayfi.com/"
     }
   },
   "contextual": {

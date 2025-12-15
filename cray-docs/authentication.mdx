@@ -1,0 +1,52 @@
+Learn how to authenticate your connection to the Cray Finance API.
+
+To interact with the Cray Finance API, you must first authenticate your requests. We use API keys to identify and authorize every call you make. Without a valid API key, your requests will fail.
+
+🚧 **Important:**
+
+Requests with a missing, invalid, or incorrect API key will fail with a `401 Unauthorised` error.
+
+## Finding Your API Keys
+
+To find your API keys, sign in to your Cray Finance Dashboard. Go to **Settings → Developer**. You will see two types of keys: a **Public Key** and a **Secret Key**.
+
+## Understanding Your API Keys
+
+### 1. Public Key (`pk_...`)
+
+Your Public Key is your organization’s identifier. It is safe to use in your client-side code (like your website or mobile app).
+
+Its primary use is to initialize our client-side widgets and identify your account when creating tokens. Public keys cannot modify your account or access sensitive data.
+
+### 2. Secret Key (`sk_...`)
+
+Your Secret Key is highly confidential and must never be shared publicly (e.g., in front-end code, public repositories, or insecure messages).
+
+This key is used for all server-side API calls and grants full access to your account, including accessing data, moving funds, and modifying settings. Treat your Secret Key like a password.
+
+Always store your secret keys securely and consider rotating them periodically.
+
+📘 **Tip**
+
+You can revoke and generate new API keys at any time from the Developer settings page. If you suspect a key has been compromised, generate a new one immediately and update your integration.
+
+## Authenticating Your API Call
+
+To authenticate a server-side request, include your Secret Key in the `Authorization` header using the `Bearer` scheme.
+
+```
+Authorization: Bearer sk_test_xxxxxxxxxxxxxxxxx
+```
+
+📘 **Note**
+
+When adding this to your code, replace `sk_test_xxxxxxxxxxxxxxxxx` with your actual Secret Key. Remember to use your **Test Key** for development and your **Live Key** for production.
+
+## Troubleshooting 401 Errors
+
+If you are consistently receiving `401 Unauthorised` error responses, check for these common issues:
+
+- **Using an old or revoked key:** When you generate a new API key, any previous key is automatically revoked. Ensure all your services are updated with the new key.
+- **Using the wrong key type:** You cannot use a Public Key (`pk_...`) for server-side authentication. Server-side requests always require a Secret Key (`sk_...`).
+- **Typo in the key:** API keys are long, complex strings. It’s best to copy and paste your key directly from the dashboard. Do not type it manually.
+- **Wrong environment:** Your Test Mode keys are different from your Live Mode keys. They are not interchangeable. Confirm you are using the correct key for the environment you are targeting.

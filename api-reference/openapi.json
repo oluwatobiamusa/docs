@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
+    "title": "Cray Finance API",
+    "description": "A sample API for Cray Finance",
     "license": {
       "name": "MIT"
     },
@@ -10,7 +10,12 @@
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
+      "url": "https://pay.connectramp.com/api",
+      "description": "Live URL"
+    },
+    {
+      "url": "https://dev-gateman.v3.connectramp.com/api",
+      "description": "Staging URL"
     }
   ],
   "security": [
@@ -19,76 +24,65 @@
     }
   ],
   "paths": {
-    "/plants": {
+    "/payout/banks": {
       "get": {
-        "description": "Returns all plants from the system that the user has access to",
+        "summary": "Get Banks",
+        "description": "The GET Banks endpoint is your one-stop shop to easily grab a comprehensive list of all supported banks! This is super useful for making your app smooth for users. You can use it to instantly populate bank options during user onboarding or when they’re setting up payout and transfer operations, which helps ensure total accuracy and cuts down on frustrating input errors!",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
         "parameters": [
           {
-            "name": "limit",
+            "name": "countryCode",
             "in": "query",
-            "description": "The maximum number of results to return",
+            "description": "Used only for Mobile Money or Ghanaian account verification. Example: “GH”",
+            "required": false,
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "Action was Succesfull",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "message": {
+                      "type": "string"
+                    }
                   }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "success": true,
+                  "data": [
+                    {
+                      "code": "120001",
+                      "name": "9 PAYMENT SERVICE BANK"
+                    }
+                  ],
+                  "message": "Action was Succesfull"
                 }
               }
             }
@@ -96,121 +90,544 @@
         }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
+    "/payout/payment-methods/{countryCode}": {
+      "get": {
+        "summary": "Get Payment Methods",
+        "description": "The GET Payment Methods endpoint is your handy way to instantly see all available payout options for a specific country! You just use the {countryCode} in the path, and it tells you exactly which payment methods—like bank transfer, mobile money, or wallet options—are supported in that region. This is super useful for dynamically showing only valid payout channels and making sure your users can select the correct options during disbursement setup!",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
         "parameters": [
           {
-            "name": "id",
+            "name": "countryCode",
             "in": "path",
-            "description": "ID of plant to delete",
+            "description": "The country code (e.g., 'GH', 'NG').",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string"
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
+          "200": {
+            "description": "Action was Succesfull",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+                "example": {
+                  "success": true,
+                  "data": {
+                    "success": true,
+                    "data": [
+                      {
+                        "alias": "ach",
+                        "code": "ach",
+                        "maxAmount": "10000000",
+                        "minAmount": "1",
+                        "name": "ACH",
+                        "requiresConfirmation": false
+                      },
+                      {
+                        "alias": "rtp",
+                        "code": "rtp",
+                        "maxAmount": "10000000",
+                        "minAmount": "1",
+                        "name": "RTP",
+                        "requiresConfirmation": false
+                      },
+                      {
+                        "alias": "wire",
+                        "code": "wire",
+                        "maxAmount": "10000000",
+                        "minAmount": "1",
+                        "name": "FEDWIRE",
+                        "requiresConfirmation": false
+                      },
+                      {
+                        "alias": "fednow",
+                        "code": "fednow",
+                        "maxAmount": "10000000",
+                        "minAmount": "1",
+                        "name": "FEDNOW",
+                        "requiresConfirmation": false
+                      },
+                      {
+                        "alias": "swift",
+                        "code": "US",
+                        "maxAmount": "10000000",
+                        "minAmount": "1",
+                        "name": "Global Swift Transfer",
+                        "requiresConfirmation": false
+                      }
+                    ],
+                    "message": "Payment methods retrieved"
+                  },
+                  "message": "Action was Succesfull"
                 }
               }
             }
           }
         }
       }
-    }
-  },
-  "webhooks": {
-    "/plant/webhook": {
+    },
+    "/payout/accounts/validate": {
       "post": {
-        "description": "Information about a new plant added to the store",
+        "summary": "Account Name Lookup",
+        "description": "The Validate endpoint is your handy tool for making sure money goes to the right person! It allows you to validate a bank account number instantly using just the provided account number and bank code. It quickly returns the corresponding account name, which is super helpful for you to confirm the beneficiary’s details before processing any payouts or transfers. This quick verification step totally prevents errors and ensures your funds are always sent to the correct recipient!",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
         "requestBody": {
-          "description": "Plant added to the store",
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewPlant"
+                "type": "object",
+                "properties": {
+                  "account_number": {
+                    "type": "string",
+                    "description": "The recipient’s bank or mobile money account number to verify.",
+                    "example": "0112345678"
+                  },
+                  "bank_code": {
+                    "type": "string",
+                    "description": "The bank or mobile money provider code.",
+                    "example": "058"
+                  },
+                  "country_code": {
+                    "type": "string",
+                    "description": "Used only for Mobile Money or Ghanaian account verification.",
+                    "example": "GH"
+                  }
+                },
+                "required": ["account_number", "bank_code"]
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
+            "description": "Action was Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "account_name": {
+                          "type": "string"
+                        },
+                        "account_number": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "account_name": "JOHN DOE",
+                    "account_number": "0112345678",
+                    "red_id": "sess_692824141b221c00d70876e5"
+                  },
+                  "message": "Action was Successful"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payout/disburse": {
+      "post": {
+        "x-mintlify-docs-path": "pay-outs/payout",
+        "summary": "Process Transfer",
+        "description": "The POST Disburse endpoint is what you use to easily send money from your merchant wallet right into a beneficiary’s bank account! This request is super important for seamless and secure disbursements to your vendors, partners, or customers. It requires your api-key for authorization and accepts a simple JSON payload containing the transfer amount, a unique customer reference, the destination bank code, account number, recipient name, and an optional narration. It ensures all your transfers are traceable and processed quickly!",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "customer_reference": {
+                    "type": "string"
+                  },
+                  "account_number": {
+                    "type": "string"
+                  },
+                  "bank_code": {
+                    "type": "string"
+                  },
+                  "amount": {
+                    "type": "string"
+                  },
+                  "narration": {
+                    "type": "string"
+                  },
+                  "recipient_name": {
+                    "type": "string"
+                  },
+                  "ref_id": {
+                    "type": "string"
+                  },
+                  "sender_info": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "phone": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "receipient_info": {
+                    "type": "object",
+                    "properties": {
+                      "account_number": {
+                        "type": "string"
+                      },
+                      "account_name": {
+                        "type": "string"
+                      },
+                      "routing_number": {
+                        "type": "string"
+                      },
+                      "account_type": {
+                        "type": "string"
+                      },
+                      "receipient_address": {
+                        "type": "object",
+                        "properties": {
+                          "countryCode": {
+                            "type": "string"
+                          },
+                          "state": {
+                            "type": "string"
+                          },
+                          "city": {
+                            "type": "string"
+                          },
+                          "address": {
+                            "type": "string"
+                          },
+                          "postalCode": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "currency": {
+                    "type": "string"
+                  },
+                  "countryCode": {
+                    "type": "string"
+                  },
+                  "payment_method": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "NGN": {
+                  "summary": "NGN Transfer",
+                  "value": {
+                    "customer_reference": "",
+                    "account_number": "898789",
+                    "bank_code": "78978",
+                    "amount": "10",
+                    "narration": "Testing",
+                    "recipient_name": "",
+                    "ref_id": "sess_692824141b221c00d70876e5",
+                    "sender_info": {
+                      "name": "Johnson",
+                      "phone": "",
+                      "email": ""
+                    }
+                  }
+                },
+                "USD": {
+                  "summary": "USD Transfer",
+                  "value": {
+                    "customer_reference": "",
+                    "account_number": "898789",
+                    "amount": "10",
+                    "narration": "Testing",
+                    "sender_info": {
+                      "name": "Johnson",
+                      "phone": "",
+                      "email": ""
+                    },
+                    "receipient_info": {
+                      "account_number": "22997000000",
+                      "account_name": "Sam",
+                      "routing_number": "123456789",
+                      "account_type": "checking",
+                      "receipient_address": {
+                        "countryCode": "US",
+                        "state": "California",
+                        "city": "Los Angeles",
+                        "address": "123 Sunlvd",
+                        "postalCode": "900981"
+                      }
+                    },
+                    "currency": "USD",
+                    "countryCode": "BN",
+                    "payment_method": "wire"
+                  }
+                },
+                "ZMW": {
+                  "summary": "ZMW Transfer",
+                  "value": {
+                    "customer_reference": "{{reference}}",
+                    "account_number": "260760237434",
+                    "amount": "41",
+                    "narration": "Testing",
+                    "currency": "ZMW",
+                    "countryCode": "ZM",
+                    "receipient_info": {
+                      "account_number": "260760237434"
+                    }
+                  }
+                },
+                "GHS": {
+                  "summary": "GHS Transfer",
+                  "value": {
+                    "customer_reference": "{{reference}}",
+                    "account_number": "898789",
+                    "amount": "10",
+                    "narration": "Testing",
+                    "recipient_name": "",
+                    "sender_info": {
+                      "name": "Johnson",
+                      "phone": "",
+                      "email": ""
+                    },
+                    "receipient_info": {
+                      "account_number": "22997000000",
+                      "account_name": "Sam",
+                      "bank_name": "MTN",
+                      "bank_code": "mtn"
+                    },
+                    "currency": "GHS"
+                  }
+                },
+                "XOF": {
+                  "summary": "XOF Transfer",
+                  "value": {
+                    "customer_reference": "{{reference}}",
+                    "account_number": "898789",
+                    "amount": "10",
+                    "narration": "Testing",
+                    "recipient_name": "",
+                    "sender_info": {
+                      "name": "Johnson",
+                      "phone": "",
+                      "email": ""
+                    },
+                    "receipient_info": {
+                      "account_number": "22997000000",
+                      "account_name": "Sam"
+                    },
+                    "currency": "XOF"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Action was Succesfull",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "reference": {
+                          "type": "string"
+                        },
+                        "amount": {
+                          "type": "string"
+                        },
+                        "charge": {
+                          "type": "integer"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "recipient_name": {
+                          "type": "string"
+                        },
+                        "recipient_bank_code": {
+                          "type": "string"
+                        },
+                        "recipient_account_number": {
+                          "type": "string"
+                        },
+                        "processor_reference": {
+                          "type": "null"
+                        },
+                        "merchant_reference": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "reference": "TZPNQ7SH3GWB846",
+                    "amount": "120",
+                    "charge": 20,
+                    "status": "pending",
+                    "recipient_name": "John DOE",
+                    "recipient_bank_code": "058",
+                    "recipient_account_number": "0171605931",
+                    "processor_reference": null,
+                    "merchant_reference": "2772h727dycncwddfdfdfnnccffhrfjjhhf2dfdhfhhb7dfr3fddhdd2ery"
+                  },
+                  "message": "Action was Succesfull"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payout/requery/{transaction_id}": {
+      "get": {
+        "x-mintlify-docs-path": "pay-outs/payout",
+        "summary": "Verify Transaction",
+        "description": "The GET Requery endpoint is your instant way to check on any money you’ve sent out! It allows you to immediately retrieve the current status of a specific payout using its unique transaction_id as a path parameter. This is super useful for confirming whether a disbursement was successful, pending, or failed, which ensures transparency and makes troubleshooting or reconciliation processes a total breeze!",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "transaction_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "63SUKNX9A5CRZH41754953377"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "reference": {
+                          "type": "string"
+                        },
+                        "amount": {
+                          "type": "string"
+                        },
+                        "charge": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "recipient_name": {
+                          "type": "string"
+                        },
+                        "recipient_bank_code": {
+                          "type": "string"
+                        },
+                        "recipient_account_number": {
+                          "type": "string"
+                        },
+                        "processor_reference": {
+                          "type": "string"
+                        },
+                        "merchant_reference": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "reference": "TZPNQ7SH3GWB846",
+                    "amount": "120.00",
+                    "charge": "20.00",
+                    "status": "approved",
+                    "recipient_name": "John DOE",
+                    "recipient_bank_code": "058",
+                    "recipient_account_number": "0171605931",
+                    "processor_reference": "TZPNQ7SH3GWB846",
+                    "merchant_reference": "2772h727dycncwddfdfdfnnccffhrfjjhhf2dfdhfhhb7dfr3fddhdd2ery"
+                  },
+                  "message": "Action was Succesfull"
+                }
+              }
+            }
           }
         }
       }
     }
   },
   "components": {
-    "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "securitySchemes": {
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer"
+      },
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "api-key"
       }
     }
   }
