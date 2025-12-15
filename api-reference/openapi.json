@@ -616,8 +616,699 @@
           }
         }
       }
+    },
+    "/v2/refund/initiate": {
+      "post": {
+        "x-mintlify-docs-path": "refund/overview",
+        "summary": "Initiate Refund",
+        "description": "This endpoint allows you to initiate a full or partial refund for a transaction.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "pan": {
+                    "type": "string"
+                  },
+                  "subaccount_id": {
+                    "type": "string"
+                  },
+                  "amount": {
+                    "type": "string",
+                    "description": "The amount to be refunded. If not provided, a full refund is initiated."
+                  }
+                }
+              },
+              "examples": {
+                "Full Refund": {
+                  "summary": "Initiate a full refund",
+                  "value": {
+                    "pan": "4696660001638370",
+                    "subaccount_id": "9999999999"
+                  }
+                },
+                "Partial Refund": {
+                  "summary": "Initiate a partial refund",
+                  "value": {
+                    "pan": "4696660001638370",
+                    "subaccount_id": "9999999999",
+                    "amount": "1.2"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string"
+                        },
+                        "reference": {
+                          "type": "string"
+                        },
+                        "customer_reference": {
+                          "type": "string"
+                        },
+                        "amount": {
+                          "type": "string"
+                        },
+                        "currency": {
+                          "type": "string"
+                        },
+                        "phone_no": {
+                          "type": "string"
+                        },
+                        "payment_provider": {
+                          "type": "string"
+                        },
+                        "date": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Full Refund": {
+                    "summary": "Full refund response",
+                    "value": {
+                      "status": true,
+                      "message": "Refund request initiated successfully",
+                      "data": {
+                        "reference": "22cbff5f-68d0-432e-b0fa-708cad9b45a2"
+                      }
+                    }
+                  },
+                  "Partial Refund": {
+                    "summary": "Partial refund response",
+                    "value": {
+                      "status": true,
+                      "message": "Transaction is processing",
+                      "data": {
+                        "status": "Failed",
+                        "reference": "2JDSN4LBZWCRQEA9GXFH",
+                        "customer_reference": "ad75b9bb-2501-4761-8980-42b525e21c37",
+                        "amount": "20.00",
+                        "currency": "GHS",
+                        "phone_no": "233801234567",
+                        "payment_provider": "MTN",
+                        "date": "2025-07-30T09:31:29.000000Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/refund/query/{reference}": {
+      "get": {
+        "x-mintlify-docs-path": "refund/overview",
+        "summary": "Check Refund Status",
+        "description": "The GET Query endpoint is your quick and easy way to check on any refund you’ve initiated! It allows you to instantly retrieve all the details and the current status of a specific refund just by using its reference ID as a path variable ( /v2/refund/query/:reference ). This functionality is super useful for tracking the refund process in real-time, helping your business monitor everything seamlessly and provide accurate updates to your customers!",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "reference",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "44caab25-1ef7-4564-b3ce-3bd2f5990ccb"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string"
+                        },
+                        "reference": {
+                          "type": "string"
+                        },
+                        "transaction": {
+                          "type": "object",
+                          "properties": {
+                            "currency": {
+                              "type": "string"
+                            },
+                            "amount": {
+                              "type": "string"
+                            },
+                            "reference": {
+                              "type": "string"
+                            },
+                            "provider_reference": {
+                              "type": "string"
+                            },
+                            "pan number": {
+                              "type": "string"
+                            },
+                            "created": {
+                              "type": "string",
+                              "format": "date-time"
+                            }
+                          }
+                        },
+                        "metadata": {
+                          "type": "string"
+                        },
+                        "created": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": true,
+                  "message": "Success",
+                  "data": {
+                    "status": "Refunded",
+                    "reference": "44caab25-1ef7-4564-b3ce-3bd2f5990ccb",
+                    "transaction": {
+                      "currency": "USD",
+                      "amount": "2.26",
+                      "reference": "A74HULEKBXCRGQ2",
+                      "provider_reference": "5316876492355694350",
+                      "pan number": "424242 **** **** 4242",
+                      "created": "2025-03-31T23:58:00.000000Z"
+                    },
+                    "metadata": "",
+                    "created": "2025-04-17T16:53:47.000000Z"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/merchant/rates": {
+      "get": {
+        "x-mintlify-docs-path": "conversions/overview",
+        "summary": "Get Specific Exchange Rate",
+        "description": "Retrieves the current exchange rate, Service Level Agreement (SLA), and settlement type for a specific currency pair.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "source_currency": {
+                    "type": "string",
+                    "example": "USD"
+                  },
+                  "destination_currency": {
+                    "type": "string",
+                    "example": "NGN"
+                  }
+                },
+                "required": ["source_currency", "destination_currency"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "source_currency": {
+                          "type": "string"
+                        },
+                        "destination_currency": {
+                          "type": "string"
+                        },
+                        "rate": {
+                          "type": "string"
+                        },
+                        "sla": {
+                          "type": "integer"
+                        },
+                        "settlement": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "id": 19,
+                    "source_currency": "USD",
+                    "destination_currency": "NGN",
+                    "rate": "1450.000000",
+                    "sla": 3,
+                    "settlement": "automatic",
+                    "status": "active",
+                    "created_at": "2025-04-11T14:40:45.000000Z",
+                    "updated_at": "2025-11-10T13:20:05.000000Z"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/merchant/rates/destination": {
+      "get": {
+        "x-mintlify-docs-path": "conversions/overview",
+        "summary": "Get Rates by Destination Currency",
+        "description": "Retrieves all available exchange rates for a given destination currency.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "destination_currency": {
+                    "type": "string",
+                    "example": "NGN"
+                  }
+                },
+                "required": ["destination_currency"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "source_currency": {
+                            "type": "string"
+                          },
+                          "destination_currency": {
+                            "type": "string"
+                          },
+                          "rate": {
+                            "type": "string"
+                          },
+                          "sla": {
+                            "type": "integer"
+                          },
+                          "settlement": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": [
+                    {
+                      "id": 4,
+                      "source_currency": "EUR",
+                      "destination_currency": "NGN",
+                      "rate": "5002.000000",
+                      "sla": 0,
+                      "settlement": "automatic",
+                      "status": "Active"
+                    },
+                    {
+                      "id": 19,
+                      "source_currency": "USD",
+                      "destination_currency": "NGN",
+                      "rate": "1450.000000",
+                      "sla": 3,
+                      "settlement": "automatic",
+                      "status": "active"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/merchant/quotes": {
+      "post": {
+        "x-mintlify-docs-path": "conversions/quotes",
+        "summary": "Generate a Quote",
+        "description": "Before converting, you must generate a quote. The quote locks in the conversion rate for a specific duration (default: 10 minutes).",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "destination_currency": {
+                    "type": "string",
+                    "example": "USD"
+                  },
+                  "source_currency": {
+                    "type": "string",
+                    "example": "NGN"
+                  },
+                  "source_amount": {
+                    "type": "number",
+                    "example": 1500
+                  }
+                },
+                "required": [
+                  "destination_currency",
+                  "source_currency",
+                  "source_amount"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "quote_id": {
+                          "type": "string"
+                        },
+                        "conversion_rate": {
+                          "type": "number"
+                        },
+                        "expires_in_minutes": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "quote_id": "quote:f9d96be7-5653-4e90-a5ad-4420db7b0195",
+                    "conversion_rate": 1600,
+                    "expires_in_minutes": 10
+                  },
+                  "message": "Quote generated"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/merchant/conversions/convert": {
+      "post": {
+        "x-mintlify-docs-path": "conversions/execute-conversions",
+        "summary": "Execute Conversion",
+        "description": "Finalizes the conversion using a valid quote_id obtained from the “Generate a Quote” endpoint.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "quote_id": {
+                    "type": "string",
+                    "example": "quote:98a5d6d3-7cbc-4c7d-b4f6-d3bbbbe340b6"
+                  }
+                },
+                "required": ["quote_id"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "quote_id": {
+                          "type": "string"
+                        },
+                        "debit_transaction_id": {
+                          "type": "integer"
+                        },
+                        "credit_transaction_id": {
+                          "type": "integer"
+                        },
+                        "settlement": {
+                          "type": "string"
+                        },
+                        "sla_minutes": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "quote_id": "quote:98a5d6d3-7cbc-4c7d-b4f6-d3bbbbe340b6",
+                    "debit_transaction_id": 2605,
+                    "credit_transaction_id": 2606,
+                    "settlement": "automatic",
+                    "sla_minutes": 0
+                  },
+                  "message": "Conversion initialized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/merchant/conversions": {
+      "get": {
+        "x-mintlify-docs-path": "conversions/query-conversions",
+        "summary": "List Conversions",
+        "description": "Retrieves a history of conversion transactions.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A paginated list of conversions.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "data": [
+                    {
+                      "quote_id": "quote:98a5d6d3-7cbc-4c7d-b4f6-d3bbbbe340b6",
+                      "debit_transaction_id": 2605,
+                      "credit_transaction_id": 2606,
+                      "status": "completed",
+                      "created_at": "2025-04-18T10:30:00.000000Z"
+                    }
+                  ],
+                  "message": "Conversions retrieved"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/merchant/conversions/{conversion_id}/dispute": {
+      "post": {
+        "x-mintlify-docs-path": "conversions/dispute-conversions",
+        "summary": "Dispute Conversion",
+        "description": "Allows a merchant to raise a dispute on a specific conversion transaction (e.g., if credit is delayed beyond SLA).",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "conversion_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the conversion to dispute."
+          }
+        ],
+        "requestBody": {
+          "description": "Optional reason for the dispute.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "example": "Credit not received after SLA."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Dispute raised successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "type": "delayed",
+                  "description": "Conversion pending beyond SLA; no credit yet."
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
+
   "components": {
     "securitySchemes": {
       "bearerAuth": {

@@ -1,0 +1,34 @@
+---
+title: "Get Rates"
+---
+
+This API module allows merchants to query exchange rates, generate time-bound quotes, and execute currency conversions. It supports both automatic and manual settlement flows.
+
+## Get Specific Exchange Rate
+
+Retrieves the current exchange rate, Service Level Agreement (SLA), and settlement type for a specific currency pair.
+
+| Method | URL             |
+| ------ | --------------- |
+| GET    | /merchant/rates |
+
+### Query Parameters
+
+| Parameter            | Description                                                                                     |
+| -------------------- | ----------------------------------------------------------------------------------------------- |
+| source_currency      | The three-letter ISO 4217 currency code of the currency you are converting from. Example: "NGN" |
+| destination_currency | The three-letter ISO 4217 currency code of the currency you are converting to. Example: "USD"   |
+
+## Get Rates by Destination Currency
+
+This endpoint retrieves all available exchange rates for a given destination currency. It's useful when you need to see all possible conversion rates to a single currency you intend to fund.
+
+| Method | URL                                                    |
+| ------ | ------------------------------------------------------ |
+| POST   | https://pay.connectramp.com/merchant/rates/destination |
+
+### Request Body Payload
+
+| Parameter            | Description                                                                                   |
+| -------------------- | --------------------------------------------------------------------------------------------- |
+| destination_currency | The three-letter ISO 4217 currency code of the currency you are converting to. Example: "NGN" |

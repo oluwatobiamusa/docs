@@ -3,11 +3,10 @@
   "theme": "mint",
   "name": "Cray Finance API Documentation",
   "colors": {
-  "primary": "#184790",
-  "light": "#3B6CB0",
-  "dark": "#0F2E60"
-}
-,
+    "primary": "#184790",
+    "light": "#3B6CB0",
+    "dark": "#0F2E60"
+  },
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
@@ -33,9 +32,7 @@
           },
           {
             "group": "AI tools",
-            "pages": [
-              "index"
-            ]
+            "pages": ["index"]
           }
         ]
       },
@@ -83,9 +80,7 @@
           },
           {
             "group": "Endpoint Examples",
-            "pages": [
-              "wallet/endpoint/get-wallet-balance"
-            ]
+            "pages": ["wallet/endpoint/get-wallet-balance"]
           }
         ]
       },
@@ -94,9 +89,7 @@
         "groups": [
           {
             "group": "Cray Pay-in Channels",
-            "pages": [
-              "pay-ins/overview"
-            ]
+            "pages": ["pay-ins/overview"]
           },
           {
             "group": "Endpoint Examples (Card collection)",
@@ -112,17 +105,6 @@
               "pay-ins/momo-endpoint/initiate",
               "pay-ins/momo-endpoint/requery"
             ]
-            "group": "API documentation",
-            "pages": ["api-reference/introduction"]
-          }
-        ]
-      },
-      {
-        "tab": "Pay-ins",
-        "groups": [
-          {
-            "group": "API documentation",
-            "pages": ["api-reference/introduction"]
           }
         ]
       },
@@ -149,8 +131,25 @@
         "tab": "Conversions",
         "groups": [
           {
-            "group": "API documentation",
-            "pages": ["api-reference/introduction"]
+            "group": "Conversions",
+            "pages": [
+              "conversions/get-rates",
+              "conversions/quotes",
+              "conversions/execute-conversion",
+              "conversions/query-conversions",
+              "conversions/dispute-conversions"
+            ]
+          },
+          {
+            "group": "Enpoint Examples",
+            "pages": [
+              "conversions/endpoint/get-specific-exchange-rates",
+              "conversions/endpoint/get-rates-by-destination-currency",
+              "conversions/endpoint/quotes",
+              "conversions/endpoint/execute-conversions",
+              "conversions/endpoint/query-conversions",
+              "conversions/endpoint/dispute-conversions"
+            ]
           }
         ]
       },
@@ -158,8 +157,15 @@
         "tab": "Refunds",
         "groups": [
           {
-            "group": "API documentation",
-            "pages": ["api-reference/introduction"]
+            "group": "Refunds",
+            "pages": ["refund/overview"]
+          },
+          {
+            "group": "Endpoint examples",
+            "pages": [
+              "refund/endpoint/initiate-refund",
+              "refund/endpoint/check-refund-status"
+            ]
           }
         ]
       }

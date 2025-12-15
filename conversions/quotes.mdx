@@ -1,0 +1,17 @@
+---
+title: "Generate a Quote"
+---
+
+Before converting, you must generate a quote. The quote locks in the conversion rate for a specific duration (default: 10 minutes).
+
+| Method | URL              |
+| ------ | ---------------- |
+| POST   | /merchant/quotes |
+
+### Request Body Payload
+
+| Parameter            | Description                                                        |
+| -------------------- | ------------------------------------------------------------------ |
+| source_currency      | The currency you are converting from. Example: `NGN`               |
+| destination_currency | The currency you are converting to. Example: `USD`                 |
+| source_amount        | The amount in the source currency to be converted. Example: `1500` |

@@ -1,0 +1,15 @@
+---
+title: "Dispute Conversion"
+---
+
+Allows a merchant to raise a dispute on a specific conversion transaction (e.g., if credit is delayed beyond SLA).
+
+| Method | URL                                           |
+| ------ | --------------------------------------------- |
+| POST   | /merchant/conversions/{conversion_id}/dispute |
+
+### Path Parameters
+
+| Parameter       | Description                              |
+| --------------- | ---------------------------------------- |
+| `conversion_id` | The ID of the conversion to be disputed. |
