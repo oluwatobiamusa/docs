@@ -9,10 +9,15 @@
     "version": "1.0.0"
   },
   "servers": [
-    {
-      "url": "https://pay.connectramp.com/api"
-    }
-  ],
+  {
+    "url": "https://pay.connectramp.com/api",
+    "description": "Live URL"
+  },
+  {
+    "url": "https://dev-gateman.v3.connectramp.com/api",
+    "description": "Staging URL"
+  }
+],
   "security": [
     {
       "apiKey": []
