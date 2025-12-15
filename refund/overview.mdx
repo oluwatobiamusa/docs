@@ -19,3 +19,28 @@ The Initiate endpoint is your first step to easily getting money back to a custo
 | pan           | Mobile Money number or identifier (often the customer’s wallet number). Example: “4696660001638370”                              |
 | subaccount_id | The ID of the subaccount initiating the transaction. Used to route or attribute the transaction correctly. Example: “9999999999” |
 | reference     | A unique identifier for the initiated refund transaction. Example: “A74HULEKBXCRGQ2”                                             |
+
+## Partial Refund
+
+The Initiate endpoint is how you easily send back just a portion of a customer’s original payment! It’s super helpful for programmatically managing customer refund workflows, especially when only part of the goods or services are being returned. Just send a POST request to /v2/refund/initiate with the customer reference of the original transaction and the specific refund amount you want to return in the request body. The system processes the request and sends back a status to let you know the partial refund has been successfully initiated!
+
+| Method | URL                                                |
+| ------ | -------------------------------------------------- |
+| POST   | https://pay.connectramp.com/api/v2/refund/initiate |
+
+### Request Body Payload
+
+| Parameter     | Description                                                                                                                      |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| pan           | Mobile Money number or identifier (often the customer’s wallet number). Example: “4696660001638370”                              |
+| subaccount_id | The ID of the subaccount initiating the transaction. Used to route or attribute the transaction correctly. Example: “9999999999” |
+| reference     | A unique identifier for the initiated refund transaction. Example: “A74HULEKBXCRGQ2”                                             |
+| amount        | The amount to be refunded. Can be a partial or full value. Example: “1.2”                                                        |
+
+## Check Refund Status
+
+The GET Query endpoint is your quick and easy way to check on any refund you’ve initiated! It allows you to instantly retrieve all the details and the current status of a specific refund just by using its reference ID as a path variable ( /v2/refund/query/:reference ). This functionality is super useful for tracking the refund process in real-time, helping your business monitor everything seamlessly and provide accurate updates to your customers!
+
+| Method | URL                                                        |
+| ------ | ---------------------------------------------------------- |
+| GET    | https://pay.connectramp.com/api/v2/refund/query/:reference |

@@ -3,11 +3,10 @@
   "theme": "mint",
   "name": "Cray Finance API Documentation",
   "colors": {
-  "primary": "#184790",
-  "light": "#3B6CB0",
-  "dark": "#0F2E60"
-}
-,
+    "primary": "#184790",
+    "light": "#3B6CB0",
+    "dark": "#0F2E60"
+  },
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
@@ -15,10 +14,25 @@
         "tab": "Welcome To Cray Docs!",
         "groups": [
           {
-            "group": "Welcome",
+            "group": "Getting started",
+            "pages": ["index", "quickstart", "development"]
+          },
+          {
+            "group": "Customization",
+            "pages": ["essentials/settings", "essentials/navigation"]
+          },
+          {
+            "group": "Writing content",
             "pages": [
-              "index"
+              "essentials/markdown",
+              "essentials/code",
+              "essentials/images",
+              "essentials/reusable-snippets"
             ]
+          },
+          {
+            "group": "Welcome",
+            "pages": ["index"]
           }
         ]
       },
@@ -37,21 +51,17 @@
           }
         ]
       },
-      
+
       {
         "tab": "Wallet",
         "groups": [
           {
             "group": "API documentation",
-            "pages": [
-              "wallet/overview"
-            ]
+            "pages": ["wallet/overview"]
           },
           {
             "group": "Endpoint Examples",
-            "pages": [
-              "wallet/endpoint/get-wallet-balance"
-            ]
+            "pages": ["wallet/endpoint/get-wallet-balance"]
           }
         ]
       },
@@ -60,9 +70,7 @@
         "groups": [
           {
             "group": "Cray collection Channels",
-            "pages": [
-              "pay-ins/overview"
-            ]
+            "pages": ["pay-ins/overview"]
           },
           {
             "group": "Endpoint Examples (Virtual accounts)",
@@ -90,12 +98,20 @@
         ]
       },
       {
-        "tab": "Pay outs",
+        "tab": "Payouts",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Payouts",
+            "pages": ["pay-outs/payout"]
+          },
+          {
+            "group": "Endpoint examples",
             "pages": [
-              "api-reference/introduction"
+              "pay-outs/endpoint/get-payment-methods",
+              "pay-outs/endpoint/get-banks",
+              "pay-outs/endpoint/account-name-lookup",
+              "pay-outs/endpoint/process-transfer",
+              "pay-outs/endpoint/verify-transaction"
             ]
           }
         ]
@@ -104,9 +120,24 @@
         "tab": "Conversions",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Conversions",
             "pages": [
-              "api-reference/introduction"
+              "conversions/get-rates",
+              "conversions/quotes",
+              "conversions/execute-conversion",
+              "conversions/query-conversions",
+              "conversions/dispute-conversions"
+            ]
+          },
+          {
+            "group": "Endpoint Examples",
+            "pages": [
+              "conversions/endpoint/get-specific-exchange-rates",
+              "conversions/endpoint/get-rates-by-destination-currency",
+              "conversions/endpoint/quotes",
+              "conversions/endpoint/execute-conversions",
+              "conversions/endpoint/query-conversions",
+              "conversions/endpoint/dispute-conversions"
             ]
           }
         ]
@@ -115,9 +146,14 @@
         "tab": "Refunds",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Refunds",
+            "pages": ["refund/overview"]
+          },
+          {
+            "group": "Endpoint examples",
             "pages": [
-              "api-reference/introduction"
+              "refund/endpoint/initiate-refund",
+              "refund/endpoint/check-refund-status"
             ]
           }
         ]
