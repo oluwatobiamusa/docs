@@ -11,7 +11,7 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Welcome To Cray Finance API Documentation",
+        "tab": "Welcome To Cray Docs!",
         "groups": [
           {
             "group": "Getting started",
@@ -33,6 +33,10 @@
           {
             "group": "AI tools",
             "pages": ["index"]
+            "group": "Welcome",
+            "pages": [
+              "index"
+            ]
           }
         ]
       },
@@ -46,37 +50,20 @@
               "cray-docs/using-cray-docs",
               "cray-docs/quick-start",
               "cray-docs/cray-dashboard",
-              "cray-docs/environment",
-              "cray-docs/authentication",
-              "cray-docs/webhooks",
-              "cray-docs/status-codes"
+              "cray-docs/environment"
             ]
           }
         ]
       },
-      {
-        "tab": "Virtual accounts",
-        "groups": [
-          {
-            "group": "API documentation",
-            "pages": ["api-reference/introduction", "api-reference/newfile"]
-          },
-          {
-            "group": "Endpoint Examples",
-            "pages": [
-              "virtual-accounts/endpoint/create",
-              "virtual-accounts/endpoint/otp",
-              "virtual-accounts/endpoint/get"
-            ]
-          }
-        ]
-      },
+      
       {
         "tab": "Wallet",
         "groups": [
           {
-            "group": "Cray Virtual Accounts",
-            "pages": ["virtual-accounts/overview"]
+            "group": "API documentation",
+            "pages": [
+              "wallet/overview"
+            ]
           },
           {
             "group": "Endpoint Examples",
@@ -85,11 +72,21 @@
         ]
       },
       {
-        "tab": "Pay-ins",
+        "tab": "Collections",
         "groups": [
           {
-            "group": "Cray Pay-in Channels",
-            "pages": ["pay-ins/overview"]
+            "group": "Cray collection Channels",
+            "pages": [
+              "pay-ins/overview"
+            ]
+          },
+          {
+            "group": "Endpoint Examples (Virtual accounts)",
+            "pages": [
+              "virtual-accounts/endpoint/create",
+              "virtual-accounts/endpoint/otp",
+              "virtual-accounts/endpoint/get"
+            ]
           },
           {
             "group": "Endpoint Examples (Card collection)",
@@ -100,7 +97,7 @@
             ]
           },
           {
-            "group": "Endpoint Examples (MoMo collection)",
+            "group": "Endpoint Examples (Mobile Money collection)",
             "pages": [
               "pay-ins/momo-endpoint/initiate",
               "pay-ins/momo-endpoint/requery"
@@ -109,20 +106,12 @@
         ]
       },
       {
-        "tab": "Payouts",
+        "tab": "Pay outs",
         "groups": [
           {
-            "group": "Pay-outs",
-            "pages": ["pay-outs/payout"]
-          },
-          {
-            "group": "Endpoint examples",
+            "group": "API documentation",
             "pages": [
-              "pay-outs/endpoint/get-banks",
-              "pay-outs/endpoint/get-payment-methods",
-              "pay-outs/endpoint/account-name-lookup",
-              "pay-outs/endpoint/process-transfer",
-              "pay-outs/endpoint/verify-transaction"
+              "api-reference/introduction"
             ]
           }
         ]
@@ -131,24 +120,9 @@
         "tab": "Conversions",
         "groups": [
           {
-            "group": "Conversions",
+            "group": "API documentation",
             "pages": [
-              "conversions/get-rates",
-              "conversions/quotes",
-              "conversions/execute-conversion",
-              "conversions/query-conversions",
-              "conversions/dispute-conversions"
-            ]
-          },
-          {
-            "group": "Enpoint Examples",
-            "pages": [
-              "conversions/endpoint/get-specific-exchange-rates",
-              "conversions/endpoint/get-rates-by-destination-currency",
-              "conversions/endpoint/quotes",
-              "conversions/endpoint/execute-conversions",
-              "conversions/endpoint/query-conversions",
-              "conversions/endpoint/dispute-conversions"
+              "api-reference/introduction"
             ]
           }
         ]
@@ -157,14 +131,9 @@
         "tab": "Refunds",
         "groups": [
           {
-            "group": "Refunds",
-            "pages": ["refund/overview"]
-          },
-          {
-            "group": "Endpoint examples",
+            "group": "API documentation",
             "pages": [
-              "refund/endpoint/initiate-refund",
-              "refund/endpoint/check-refund-status"
+              "api-reference/introduction"
             ]
           }
         ]
@@ -179,13 +148,13 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:hello@crayfi.com"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Get started",
+      "href": "https://app.crayfi.com/"
     }
   },
   "contextual": {

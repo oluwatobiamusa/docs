@@ -8,14 +8,19 @@
     },
     "version": "1.0.0"
   },
-  "servers": [
-    {
-      "url": "https://dev-gateman.v3.connectramp.com/api/virtual-accounts"
-    }
-  ],
+ "servers": [
+  {
+    "url": "https://pay.connectramp.com/api",
+    "description": "Live URL"
+  },
+  {
+    "url": "https://dev-gateman.v3.connectramp.com/api",
+    "description": "Staging URL"
+  }
+],
   "security": [
     {
-      "apiKey": []
+      "bearerAuth": []
     }
   ],
   "paths": {
@@ -335,10 +340,11 @@
       }
     },
     "securitySchemes": {
-      "apiKey": {
-        "type": "apiKey",
-        "name": "api-key",
-        "in": "header"
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Enter your bearer token in the format: Bearer <token>"
       }
     }
   }
