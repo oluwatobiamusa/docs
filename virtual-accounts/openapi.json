@@ -338,7 +338,8 @@
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer",
-        "in": "header"
+        "bearerFormat": "JWT",
+        "description": "Enter your bearer token in the format: Bearer <token>"
       }
     }
   }
