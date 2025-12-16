@@ -14,17 +14,9 @@
         "tab": "Welcome To Cray Docs!",
         "groups": [
           {
-            "group": "Welcome",
-            "pages": ["index"]
-          }
-        ]
-      },
-      {
-        "tab": "Cray Docs",
-        "groups": [
-          {
             "group": "API documentation",
             "pages": [
+              "index",
               "cray-docs/overview",
               "cray-docs/using-cray-docs",
               "cray-docs/quick-start",
