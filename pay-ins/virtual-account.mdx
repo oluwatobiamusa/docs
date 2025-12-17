@@ -1,0 +1,140 @@
+---
+title: "Virtual Accounts"
+description: "Cray Finance Virtual Accounts offer dedicated accounts for easy collection and reconciliation."
+---
+
+Cray Finance Virtual Accounts provide a powerful tool for streamlining your collections and reconciliation process. By generating a dedicated virtual account number for each customer or transaction, you can enable them to receive payments directly via bank transfer.
+
+This allows for:
+
+- **Easy Customer Payments:** Customers simply transfer funds to a unique account number.
+- **Automated Reconciliation:** Since each account is tied to a specific entity or reference, your system can instantly and accurately link the incoming payment to the correct customer or invoice, eliminating manual tracking.
+
+We support the creation of both **Permanent** (tied to a customer for continuous use) and **Temporary** (for one-time or specific collections) virtual accounts.
+
+### **Create virtual account:**
+
+| Method | URL                          | Description                                                                                  |
+| ------ | ---------------------------- | -------------------------------------------------------------------------------------------- |
+| POST   | /api/virtual-accounts/create | Generates one or more virtual account numbers associated with the provided customer details. |
+
+**Request body payload:**
+
+| Parameter            | Description                                                                                                    | Example                                     |
+| -------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| BVN                  | Bank Verification Number of the customer or corporate entity.                                                  | "22192474887"                               |
+| Type                 | Type of account holder. Must be Corporate or Individual.                                                       | "Corporate"                                 |
+| NIN                  | National Identification Number of the account holder (often required for individuals).                         | "11111122221"                               |
+| virtual_account_type | Specifies the account purpose: Permanent (long-term customer account) or Temporary (for a single transaction). | "Permanent"                                 |
+| account_name         | The desired name to be assigned to the virtual account.                                                        | "BOlaOla"                                   |
+| rc_number            | Company registration number (required for Corporate accounts).                                                 | "99988828822"                               |
+| currency             | The currency for the virtual account. Currently supports NGN.                                                  | "NGN"                                       |
+| reference            | A unique identifier you generate for this specific creation request (e.g., a UUID or internal customer ID).    | "9ad98621-6763-491f-9a02-e0aa0d955318"      |
+| customer_email       | The email address of the customer for identification and communication.                                        | "[hello@gmail.com](mailto:hello@gmail.com)" |
+
+**Example request:**
+
+```bash
+curl --location -g 'https://pay.connectramp.com/api/virtual-accounts/create' \
+--header 'api-key: {{secret_key}}' \
+--data-raw '{
+    "bvn": "22192474887",
+    "type": "Corporate",
+    "nin": "11111122221",
+    "virtual_account_type": "Permanent",
+    "account_name": "BOlaOla",
+    "rc_number": "99988828822",
+    "currency": "NGN",
+    "reference": "cbf0d060-1544-4a53-a00b-7cb75a3eb59d",
+    "customer_email": "hello@gmail.com"
+}
+'
+```
+
+**Example response:**
+
+```json
+{
+  "success": true,
+  "message": "Action was Successful",
+  "data": [
+    {
+      "bankCode": "035",
+      "bankName": "Wema bank",
+      "accountNumber": "4114669663",
+      "accountName": "BOl"
+    },
+    {
+      "bankCode": "232",
+      "bankName": "Sterling bank",
+      "accountNumber": "2242249783",
+      "accountName": "BOl"
+    }
+  ]
+}
+```
+
+### **Submit OTP to Complete Virtual Account Creation (Wema Bank Only)**
+
+After successfully creating a virtual account, an **OTP (One-Time Password)** is sent to the customer’s registered email address. This OTP must be submitted to verify the account creation and activate the virtual wallet.
+
+| Method | URL                                   | Description                                                                                  |
+| ------ | ------------------------------------- | -------------------------------------------------------------------------------------------- |
+| POST   | /api/virtual-accounts/generate-wallet | Generates one or more virtual account numbers associated with the provided customer details. |
+
+**Request body payload:**
+
+| Parameter      | Description                                            |
+| -------------- | ------------------------------------------------------ |
+| otp            | The one-time password sent to the customer’s email.    |
+| customer_email | The email address associated with the virtual account. |
+
+**Example request:**
+
+```bash
+curl --location -g 'https://pay.connectramp.com/api/virtual-accounts/generate-wallet' \
+--header 'api-key: {{secret_key}}' \
+--data-raw '{
+    "otp": "768238",
+    "customer_email": "hello@gmail.com"
+}
+'
+```
+
+**Example response:**
+
+```json
+{
+  "success": true,
+  "message": "Action was Successful"
+}
+```
+
+### Get Subaccounts
+
+| Method | URL                 | Description                                           |
+| ------ | ------------------- | ----------------------------------------------------- |
+| GET    | /api/get-subaccount | Fetches the full list of your configured subaccounts. |
+
+**Example request:**
+
+```bash
+curl --location -g 'https://pay.connectramp.com/api/get-subaccount' \
+--header 'Authorization: Bearer sk_live_your_secret_key'
+```
+
+**Example response:**
+
+```json
+{
+  "status": true,
+  "message": "SubAccount Details",
+  "data": [
+    {
+      "uuid": "9999999999",
+      "company_name": "test",
+      "company_email": "test@gmail.com"
+    }
+  ]
+}
+```

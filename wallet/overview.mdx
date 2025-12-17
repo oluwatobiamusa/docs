@@ -1,5 +1,100 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Cray wallets"
+description: "Description of your new file."
 ---
 
+Cray Wallets are digital accounts that allow your application to **track and display balances** in multiple African currencies. Currently, Cray supports the following currencies:
+
+- Kenyan Shilling (KES)
+- Nigerian Naira (NGN)
+- Ghanaian Cedi (GHS)
+- Zambian Kwacha (ZMW)
+- West African CFA Franc (XOF)
+
+**Key points about Cray Wallets:**
+
+1. **Balance Display Only**
+   - Wallets reflect the available balance in each supported currency.
+   - They do **not automatically convert** between currencies; each wallet balance is tied to a specific currency.
+2. **Multi-Currency Support**
+   - You can create separate wallets for different currencies if your users or organization operate across multiple regions.
+   - The API returns balances in the currency associated with each wallet.
+3. **Read & Track Balances via API**
+   - Use the Cray Wallets API to retrieve balances.
+   - Wallets provide a clear, real-time view of funds available per currency.
+4. **Integration with Cray Products**
+   - Wallets can be linked to transfers, payouts, and cards.
+   - They act as a single point of reference for all your multi-currency financial operations within Cray.
+
+| Method | URL          | Description        |
+| ------ | ------------ | ------------------ |
+| Get    | /api/balance | Get wallet balance |
+
+**Request parameter:**
+
+| Parameter | Description                      | Value         |
+| --------- | -------------------------------- | ------------- |
+| Currency  | Filter accounts by currency code | NGN, USD, GHS |
+
+**Example request:**
+
+```bash
+curl --location -g 'https://pay.connectramp.com/api/balance?currency=NGN' \
+--header 'api-key: {{secret_key}}' \
+'
+```
+
+**Example response:**
+
+<Tabs>
+  <Tab title="Accounts Found">
+    ```json
+    {
+        "status": "success",
+        "message": "Account balance retrieved successfully",
+        "data": {
+            "accounts": [
+                {
+                    "id": "account-uuid-1",
+                    "account_name": "Main Account",
+                    "currency": "NGN",
+                    "account_type": "SAVINGS",
+                    "account_number": "1234567890",
+                    "available_balance": 50000.00,
+                    "locked_balance": 5000.00,
+                    "actual_balance": 55000.00
+                },
+                {
+                    "id": "account-uuid-2",
+                    "account_name": "USD Account",
+                    "currency": "USD",
+                    "account_type": "CURRENT",
+                    "account_number": "0987654321",
+                    "available_balance": 1000.00,
+                    "locked_balance": 0.00,
+                    "actual_balance": 1000.00
+                }
+            ]
+        }
+    }
+    ```
+  </Tab>
+  <Tab title="No Accounts Found">
+    ```json
+    {
+        "status": "success",
+        "message": "No accounts found",
+        "data": []
+    }
+    ```
+  </Tab>
+  <Tab title=" Missing mifos_id">
+    ```json
+    {
+        "status": false,
+        "message": "Unable to fetch account balance at this time, please try again",
+        "error": []
+    }
+    ```
+  </Tab>
+</Tabs>

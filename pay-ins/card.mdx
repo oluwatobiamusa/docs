@@ -1,0 +1,212 @@
+---
+title: "Card collections"
+description: "Card Processing enables the secure handling of all payment card transactions through the Cray Finance API, supporting various card types and industry-standard verification methods. This service manages the entire lifecycle of card payments, from initial validation and authorization to final processing and settlement. It provides you with detailed transaction results and webhooks, which are essential for timely and accurate reconciliation purposes."
+---
+
+### Initiate card payment
+
+The**Initiate**  endpoint begins a new payment flow by securely creating a transaction session with all specified parameters (card details, amount, customer info, etc.). This request establishes the foundation for subsequent payment operations, returning a unique identifier that must be referenced throughout the transaction lifecycle.
+
+| Method | URL              |
+| ------ | ---------------- |
+| POST   | /api/v2/initiate |
+
+**Request Body Payload:**
+
+| Parameter            | Description                                                                                                       |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| reference            | A unique identifier for the transaction. It’s used to track or reference the payment later. Usually a UUID .      |
+| amount               | The transaction amount to be charged. Example: “50”.                                                              |
+| narration            | A short description of the transaction’s purpose (e.g., “Payment for services”).                                  |
+| currency             | The currency in which the payment is being made. Example: “USD”.                                                  |
+| card_data            | Contains the credit card information for the transaction.                                                         |
+| pan                  | Card number (e.g., “5399832641760090”).                                                                           |
+| cvv                  | 3-digit security code on the card (e.g., “146”).                                                                  |
+| expiryMonth          | 2-digit expiration month of the card (e.g., “05”).                                                                |
+| expiryYear           | 2-digit expiration year (e.g., “50” = 2050).                                                                      |
+| callback_URL         | The endpoint on your server to receive payment status updates after processing (e.g., “https://callbackurl.com”). |
+| metadata             | Custom key-value pairs for internal use. Example: “reason”: “Payment for F1”                                      |
+| billing_information  | The billing address of the cardholder.                                                                            |
+| postcodeZip          | ZIP or postal code.                                                                                               |
+| street               | Street name or address.                                                                                           |
+| city                 | City name                                                                                                         |
+| country              | 3-letter ISO country code (e.g., “TUR” for Turkey).                                                               |
+| stateProvince        | State or province name.                                                                                           |
+| customer_information | Basic details about the customer.                                                                                 |
+| email                | Customer’s email address.                                                                                         |
+| firstName            | Customer’s first name.                                                                                            |
+| lastName             | Customer’s last name.                                                                                             |
+| mobilePhone          | Customer’s phone number in international format.                                                                  |
+| subaccount_id        | The unique ID of the subaccount responsible for the transaction. This is obtained via the “Get Subaccount” API.   |
+
+**Example request:**
+
+```bash
+curl --location 'https://pay.connectramp.com/api/v2/initiate' \
+--header 'Authorization: Bearer lrs_kJpfu1q2cR7zFeIqyW3dzv66NPVhhwku' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "reference": "4aeb118e-5009-450a-94fc-d74f6cd88646",
+    "amount": "1",
+    "narration": "Narration heeeere",
+    "currency": "USD",
+    "card_data": {
+        "pan": "5399832641760090",
+        "cvv": "146",
+        "expiryMonth": "05",
+        "expiryYear": "50"
+    },
+    "callback_url": "https://redirect_url.com",
+    "metadata": {
+        "reason": "Payment for F1"
+    },
+    "device_information": {
+        "http_browser_language": "en-US",
+        "http_browser_java_enabled": false,
+        "http_browser_javascript_enabled": true,
+        "http_browser_color_depth": "24",
+        "http_browser_screen_height": "820",
+        "http_browser_screen_width": "360",
+        "http_browser_time_difference": "",
+        "user_agent_browser_value": "Mozilla/5.0 (Linux; Android 12; Infinix X6819) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Mobile Safari/537.36",
+        "device_channel": "Browser",
+        "ip_address": "54.144.139.131"
+    },
+    "billing_information": {
+        "postcodezip": "100001",
+        "street": "lagos",
+        "city": "lagos",
+        "country": "NGA",
+        "stateProvince": "lagos"
+    },
+    "customer_information": {
+        "email": "test@testmail.com",
+        "firstName": "testFirstName",
+        "lastName": "testLastName",
+        "mobilePhone": "+1 555 1234 567"
+    },
+    "subaccount_id": "b0e1a8c2-5d9f-4f3b-9d72-6a3e2f8e5c14"
+    }
+'
+```
+
+**Example response:**
+
+```json
+{
+  "status": true,
+  "message": "Transaction Initialized",
+  "data": {
+    "status": "AUTHENTICATION_INITIATED",
+    "transaction_id": "X27TKSDUPL8VNRHJ9Z3Y"
+  }
+}
+```
+
+### **Process Payment: Charge Endpoint**
+
+The **Charge** endpoint processes payment transactions against customer payment methods, capturing funds for products or services. This essential endpoint supports multiple currencies, custom metadata, and provides detailed response data including authorization status and transaction identifiers.
+
+| Method | URL            |
+| ------ | -------------- |
+| POST   | /api/v2/charge |
+
+**Request Body Payload:**
+
+| Parameter      | Description                                                                                 |
+| -------------- | ------------------------------------------------------------------------------------------- |
+| transaction_id | A unique identifier for the transaction you want to charge. Example: “SRK4NC92PFHLGZW78A3E” |
+
+**Example request:**
+
+```bash
+curl --location 'https://pay.connectramp.com/api/v2/charge' \
+--header 'Authorization: Bearer lrs_kJpfu1q2cR7zFeIqyW3dzv66NPVhhwku' \
+--header 'Content-Type: application/json' \
+--data '{
+    "transaction_id": "SRK4NC92PFHLGZW78A3E"
+}'
+```
+
+**Example response:**
+
+<Tabs>
+  <Tab title="JSON Redirect Auth Data">
+    ```json
+    {
+      "status": true,
+      "message": "Charge attempted",
+      "data": {
+        "status": "redirect_auth",
+        "reference": "921ba7dc-b080-4da9-886e-a18920fa7b2f",
+        "redirect_auth_data": {
+          "customizedHtml": {
+            "3ds2": {
+              "acsUrl": "https://acsv2.m2pfintech.com/emv/auth/process/10058/creq",
+              "cReq": "eyJ0aHJlZURTU2VydmVyVHJhbnNJRCI6ImU1ZjVmY2YxLTk5YmMtNDZmYy1hNTkzLTExMjM2ODAwNGFmOCIsImFjc1RyYW5zSUQiOiIyNWQ3MGU5OC05OGQ2LTQzOTAtODhlYi1hNTFlMThhZjk0OWQiLCJjaGFsbGVuZ2VXaW5kb3dTaXplIjoiMDUiLCJtZXNzYWdlVHlwZSI6IkNSZXEiLCJtZXNzYWdlVmVyc2lvbiI6IjIuMi4wIn0"
+            }
+          },
+          "domainName": "acsv2.m2pfintech.com",
+          "html": "<div>      var e=document.getElementById(\"threedsChallengeRedirectForm\"); if (e) { e.submit(); if (e.parentNode !== null) { e.parentNode.removeChild(e); } }  </div>"
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="URL Redirect Auth Data">
+    ```json
+    {
+        "status": true,
+        "message": "Charge attempted",
+        "data": {
+            "status": "redirect_auth",
+            "reference": "286ba835-6ec4-4545-b008-0338881b741c",
+            "redirect_auth_data": "https://dev-gateman.v3.connectramp.com/api/load-threedes?modal_url=https%3A%2F%2Fstandard.paystack.co%2Fcharge%2Fauth%2Fd2d50f49neovqb5cce2%3Flang%3Den&redirect_url=https%3A%2F%2Fdev-gateman.v3.connectramp.com%2Fapi%2Fvalidate-3ds%2F286ba835-6ec4-4545-b008-0338881b741c"
+        }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Query transaction
+
+The**Query Transaction**  endpoint lets you pull up all the detailed info about any transaction using its unique ID. This is your go-to tool for easily checking payment statuses, amounts, and everything you need for quick reconciliation and monitoring.
+
+| Method | URL                   |
+| ------ | --------------------- |
+| GET    | /api/query/:reference |
+
+**Example request:**
+
+```bash
+curl --location 'https://pay.connectramp.com/api/query/F6L2RN8TM7AHZ491SCGQ' \
+--header 'Authorization: Bearer lrs_m73eti9belRA826JoFRxt0iRzIR4FVF1'
+```
+
+**Example response:**
+
+```json
+{
+  "status": true,
+  "message": "Charge attempted",
+  "data": {
+    "status": "Successful",
+    "reference": "87c89286-afbc-4776-adfd-665c9927b2db",
+    "provider_reference": "F6L2RN8TM7AHZ491SCGQ",
+    "amount": 5,
+    "net_amount": 4.73,
+    "fee": 0.28,
+    "payment_channel": "card",
+    "redirect_url": "https://redirect_url.com",
+    "callback_url": "https://redirect_url.com",
+    "customer": {
+      "name": "Deion Haag",
+      "email": "user@joinramp.co"
+    },
+    "metadata": "",
+    "retrieval_reference_number": "774848",
+    "stan": "999595958",
+    "created": "2025-03-21T07:47:03.000000Z"
+  }
+}
+```

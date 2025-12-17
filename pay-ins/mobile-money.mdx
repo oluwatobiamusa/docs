@@ -1,0 +1,93 @@
+---
+title: "Mobile Money"
+description: "Mobile Money (MoMo) is a game-changer for payments, especially in Africa and other emerging markets! This service lets your users make payments directly from their mobile phone wallets, offering a secure, widespread, and incredibly convenient alternative to traditional banking. Integrating MoMo through Cray Finance means you can seamlessly tap into this massive user base, enabling quick and reliable transactions that feel native to their mobile experience. It’s the simple way to expand your reach and make collecting payments effortlessly accessible."
+---
+
+### **Initiate Mobile Money (MoMo) Transaction**
+
+The**Initiate**  endpoint is how you kick off a Mobile Money (MoMo) payment! This endpoint is designed to immediately trigger a payment request to a user’s mobile wallet, using their phone number and preferred payment provider. It lets you specify all the transaction details like the amount, currency, and a unique customer reference. It’s super useful for enabling seamless and efficient MoMo payments in applications targeting regions where mobile money is super prevalent.
+
+| Method | URL                                              |
+| ------ | ------------------------------------------------ |
+| GET    | https://pay.connectramp.com/api/v2/momo/initiate |
+
+**Request body payload:**
+
+| **Parameter**      | Description                                                                                                                                             |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| customer_reference | A unique identifier for the customer or transaction, often a UUID. Used to track or reconcile payments. Example: “16401e05-0c12-4ccc-bbff-ee1a767d39f2” |
+| amount             | The amount to be charged or paid. Example: “20”                                                                                                         |
+| currency           | The currency of the transaction. Example: “GHS”, "XOF", "NGN", "KES"                                                                                    |
+| phone_no           | The customer’s phone number in international format. Example: “233801234567”                                                                            |
+| payment_provider   | The Mobile Money service provider to be used (e.g., “MTN”, “AIRTELTIGO”, “VODAFONE”, "MPESA", "Opay").                                                  |
+
+**Example request:**
+
+```bash
+curl --location 'https://pay.connectramp.com/api/v2/momo/initiate \
+--header 'Authorization: Bearer SECRET-WYJQBGduZLunDK9kacxhN1U6343vDM9I' \
+--data '{
+    "customer_reference": "e4d7c3b8-5f29-4b46-81a6-8d98c1e75812",
+    "amount": "10",
+    "currency": "NGN",
+    "phone_no": "07020615945",
+    "payment_provider": "opay",
+    "otp": false,
+    "return_url": "https://returnurl.com"
+}'
+```
+
+**Example response:**
+
+```json
+{
+    "status": true,
+    "message": "Transaction is processing",
+    "data": {
+        "status": "Processing",
+        "reference": "TNW4UKB1XQZSVP86E7AR",
+        "customer_reference": "b6f4268e-2e20-4167-af84-a13f46f8344a",
+        "amount": "3950.00",
+        "currency": "NGN",
+        "phone_no": "+2348146152814",
+        "provider_message": null,
+        "payment_provider": "Opay",
+        "redirect_url": null,
+        "date": "2025-11-24T14:42:19.000000Z"
+    }
+}
+```
+
+### Query transaction
+
+The**Query**  endpoint is your quick check-in to see exactly what happened with a Mobile Money transaction! It allows you to instantly retrieve the final status of a specific payment by using the unique `customer_reference` from the very start of the process. This is super useful for checking whether a transaction was successful, pending, or failed, giving you and your users real-time visibility. It’s the ideal tool for post-payment verification and making sure your reconciliation processes are perfectly automated!
+
+| Method | URL                                                            |
+| ------ | -------------------------------------------------------------- |
+| GET    | https://pay.connectramp.com/api/v2/requery/:customer_reference |
+
+**Example request:**
+
+```bash
+curl --location 'https://pay.connectramp.com/momo/requery/:customer_reference' \
+--header 'Authorization: Bearer lrs_m73eti9belRA826JoFRxt0iRzIR4FVF1'
+```
+
+**Example response:**
+
+```json
+{
+  "status": true,
+  "message": "Transaction confirmation status",
+  "data": {
+    "status": "Failed",
+    "reference": "2JDSN4LBZWCRQEA9GXFH",
+    "customer_reference": "ad75b9bb-2501-4761-8980-42b525e21c37",
+    "amount": "20.00",
+    "currency": "GHS",
+    "phone_no": "233801234567",
+    "payment_provider": "MTN",
+    "date": "2025-07-30T09:31:29.000000Z"
+  }
+}
+```

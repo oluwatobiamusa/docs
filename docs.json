@@ -46,7 +46,12 @@
         "groups": [
           {
             "group": "Cray collection Channels",
-            "pages": ["pay-ins/overview"]
+            "pages": [
+              "pay-ins/overview",
+              "pay-ins/virtual-account",
+              "pay-ins/card",
+              "pay-ins/mobile-money"
+            ]
           },
           {
             "group": "Endpoint Examples (Virtual accounts)",
