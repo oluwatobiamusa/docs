@@ -1,34 +1,138 @@
 ---
-title: "Get Rates"
+title: "How Conversions Work"
 ---
 
-This API module allows merchants to query exchange rates, generate time-bound quotes, and execute currency conversions. It supports both automatic and manual settlement flows.
+This guide provides a step-by-step overview of the currency conversion process, from checking exchange rates to disputing a transaction.
 
-## Get Specific Exchange Rate
+---
 
-Retrieves the current exchange rate, Service Level Agreement (SLA), and settlement type for a specific currency pair.
+### 1. Get Exchange Rates
 
-| Method | URL             |
-| ------ | --------------- |
-| GET    | /merchant/rates |
+Before initiating a conversion, you can check the current exchange rates.
 
-### Query Parameters
+#### A. Get a Specific Exchange Rate
 
-| Parameter            | Description                                                                                     |
-| -------------------- | ----------------------------------------------------------------------------------------------- |
-| source_currency      | The three-letter ISO 4217 currency code of the currency you are converting from. Example: "NGN" |
-| destination_currency | The three-letter ISO 4217 currency code of the currency you are converting to. Example: "USD"   |
+**Endpoint**: `GET /merchant/rates`
 
-## Get Rates by Destination Currency
+Retrieves the exchange rate, Service Level Agreement (SLA), and settlement type for a specific currency pair.
 
-This endpoint retrieves all available exchange rates for a given destination currency. It's useful when you need to see all possible conversion rates to a single currency you intend to fund.
+```json Success
+{
+  "success": true,
+  "data": [
+    {
+      "id": 4,
+      "source_currency": "EUR",
+      "destination_currency": "NGN",
+      "rate": "5002.000000",
+      "sla": 0,
+      "settlement": "automatic",
+      "status": "Active"
+    },
+    {
+      "id": 19,
+      "source_currency": "USD",
+      "destination_currency": "NGN",
+      "rate": "1450.000000",
+      "sla": 3,
+      "settlement": "automatic",
+      "status": "active"
+    }
+  ]
+}
+```
 
-| Method | URL                                                    |
-| ------ | ------------------------------------------------------ |
-| POST   | https://pay.connectramp.com/merchant/rates/destination |
+#### B. Get Rates by Destination Currency
 
-### Request Body Payload
+Endpoint: GET /merchant/rates/destination
 
-| Parameter            | Description                                                                                   |
-| -------------------- | --------------------------------------------------------------------------------------------- |
-| destination_currency | The three-letter ISO 4217 currency code of the currency you are converting to. Example: "NGN" |
+Retrieves all available exchange rates for a given destination currency.
+
+### 2. Generate a Quote
+
+Endpoint: POST /merchant/quotes
+
+Before converting, you must generate a quote. The quote locks in the conversion rate for a specific duration (default: 10 minutes).
+
+```json Request
+{
+  "destination_currency": "USD",
+  "source_currency": "NGN",
+  "source_amount": 1500
+}
+```
+
+```json Success
+{
+  "success": true,
+  "data": {
+    "quote_id": "quote:f9d96be7-5653-4e90-a5ad-4420db7b0195",
+    "conversion_rate": 1600,
+    "expires_in_minutes": 10
+  },
+  "message": "Quote generated"
+}
+```
+
+### 3. Execute Conversion
+
+Endpoint: POST /merchant/conversions/convert
+
+Finalizes the conversion using a valid quote_id obtained from the "Generate a Quote" endpoint.
+
+```json Request
+{
+  "quote_id": "quote:98a5d6d3-7cbc-4c7d-b4f6-d3bbbbe340b6"
+}
+```
+
+```json Success
+{
+  "success": true,
+  "data": {
+    "quote_id": "quote:98a5d6d3-7cbc-4c7d-b4f6-d3bbbbe340b6",
+    "debit_transaction_id": 2605,
+    "credit_transaction_id": 2606,
+    "settlement": "automatic",
+    "sla_minutes": 0
+  },
+  "message": "Conversion initialized"
+}
+```
+
+### 4. List Conversions
+
+Endpoint: GET /merchant/conversions
+
+Retrieves a history of conversion transactions.
+
+```json Success
+{
+  "success": true,
+  "data": [
+    {
+      "quote_id": "quote:98a5d6d3-7cbc-4c7d-b4f6-d3bbbbe340b6",
+      "debit_transaction_id": 2605,
+      "credit_transaction_id": 2606,
+      "status": "completed",
+      "created_at": "2025-04-18T10:30:00.000000Z"
+    }
+  ],
+  "message": "Conversions retrieved"
+}
+```
+
+### 5. Dispute Conversion
+
+Endpoint: POST /merchant/conversions/{conversion_id}/dispute
+
+Allows a merchant to raise a dispute on a specific conversion transaction (e.g., if credit is delayed beyond SLA).
+
+URL Parameters
+conversion_id (string, required): The ID of the conversion to dispute.
+
+```json Request
+{
+  "reason": "Credit not received after SLA."
+}
+```
