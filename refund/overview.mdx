@@ -4,6 +4,14 @@ title: "Refund"
 
 The general functionality that enables a merchant to return funds to a customer after a successful payment is called the Refund System or Refund Processing. This is a critical component of a payment platform like Cray Finance, which provides capabilities for merchants to manage these reversals.
 
+## Supported Currencies
+
+- **USD**: United States Dollar
+- **ZMW**: Zambian Kwacha
+- **GHS**: Ghanaian Cedi
+- **XOF**: West African CFA franc
+- **NGN**: Nigerian Naira
+
 ## Initiate
 
 The Initiate endpoint is your first step to easily getting money back to a customer! It’s super simple: just send a POST request to /v2/refund/initiate. It only requires the customer reference of the original successful transaction in the request body, and instantly returns a status response telling you whether the refund process has been successfully initiated. This endpoint is essential for processing customer refunds quickly and programmatically!
