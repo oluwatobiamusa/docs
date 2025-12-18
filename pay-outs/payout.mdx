@@ -2,202 +2,114 @@
 title: "Payouts"
 ---
 
-The Payouts System is a core feature that makes it super easy for your business to disburse funds to anyone—like vendors, partners, or customers! This essential system supports the seamless initiation of transfers and provides real-time tracking of all payout statuses. It’s designed to ensure total transparency and timely settlements, so you always know exactly when your funds reach their destination.
+This guide provides a developer-focused walkthrough of the Cray Finance Payouts API. Integrating our payout functionality involves a series of API calls designed to ensure accuracy, security, and a smooth user experience. Following this workflow will help you build a robust payout system.
 
-## Get banks
+## Supported Payout Currencies
 
-The GET Banks endpoint is your one-stop shop to easily grab a comprehensive list of all supported banks! This is super useful for making your app smooth for users. You can use it to instantly populate bank options during user onboarding or when they’re setting up payout and transfer operations, which helps ensure total accuracy and cuts down on frustrating input errors!
+Our platform supports payouts in the following currencies:
 
-| Method | URL                                                         |
-| ------ | ----------------------------------------------------------- |
-| GET    | https://pay.connectramp.com/api/payout/banks?countryCode=GH |
+- **USD**: United States Dollar
+- **ZMW**: Zambian Kwacha
+- **GHS**: Ghanaian Cedi
+- **XOF**: West African CFA franc
+- **NGN**: Nigerian Naira
 
-### Request Parameters
+## Payout Process Overview
 
-| Parameter               | Description                                                                |
-| ----------------------- | -------------------------------------------------------------------------- |
-| country_code (optional) | Used only for Mobile Money or Ghanaian account verification. Example: “GH” |
+The payout workflow is designed to be sequential and idempotent. Each step provides necessary information for the next, culminating in the final disbursement. The core process is as follows:
 
-## Get Payment Methods
+1.  **Fetch Available Payment Methods**: Dynamically determine which payout channels are available for a given country.
+2.  **Fetch Supported Banks**: Retrieve an up-to-date list of supported banks for bank transfer operations.
+3.  **Validate Beneficiary Account**: Perform a pre-transaction check to verify account details and receive a reference ID.
+4.  **Initiate Disbursement**: Execute the payout transaction using the reference ID to send funds to the recipient.
+5.  **Requery Transaction Status**: Asynchronously check the final status of the payout.
 
-The GET Payment Methods endpoint is your handy way to instantly see all available payout options for a specific country! You just use the countryCode in the path, and it tells you exactly which payment methods—like bank transfer, mobile money, or wallet options—are supported in that region. This is super useful for dynamically showing only valid payout channels and making sure your users can select the correct options during disbursement setup!
+---
 
-| Method | URL                                                                  |
-| ------ | -------------------------------------------------------------------- |
-| GET    | https://pay.connectramp.com/api/payout/payment-methods/{countryCode} |
+### 1. Fetch Available Payment Methods
 
-### Request Parameters
+**Endpoint**: `GET /payout/payment-methods/{countryCode}`
 
-| Parameter               | Description                                                                |
-| ----------------------- | -------------------------------------------------------------------------- |
-| country_code (optional) | Used only for Mobile Money or Ghanaian account verification. Example: “GH” |
+Before initiating a payout, your application needs to know which payment channels (e.g., bank transfer, mobile money) are supported in the target country. By calling this endpoint with a country code, you receive a list of valid payment methods.
 
-## Account name lookup
+#### URL Parameters
 
-The Validate endpoint is your handy tool for making sure money goes to the right person! It allows you to validate a bank account number instantly using just the provided account number and bank code. It quickly returns the corresponding account name, which is super helpful for you to confirm the beneficiary’s details before processing any payouts or transfers. This quick verification step totally prevents errors and ensures your funds are always sent to the correct recipient!
+- `countryCode` (string, required): The two-letter ISO 3166-1 alpha-2 country code (e.g., `NG` for Nigeria).
 
-| Method | URL                                                      |
-| ------ | -------------------------------------------------------- |
-| POST   | https://pay.connectramp.com/api/payout/accounts/validate |
+---
 
-### Request Body Payload
+### 2. Fetch Supported Banks
 
-| Parameter               | Description                                                                                                   |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------- |
-| account_number          | The recipient’s bank or mobile money account number to verify. Example: “0112345678”                          |
-| bank_code               | The bank or mobile money provider code. Example: “058” for GTBank, “090267” for Kuda, “999998” for test, etc. |
-| country_code (optional) | Used only for Mobile Money or Ghanaian account verification. Example: “GH”                                    |
+**Endpoint**: `GET /payout/banks`
 
-## Process Transfer
+For bank transfer payouts, it's crucial to provide users with an accurate list of supported institutions. This endpoint returns a comprehensive list of all banks integrated with our system. It requires no parameters.
 
-The POST Disburse endpoint is what you use to easily send money from your merchant wallet right into a beneficiary’s bank account! This request is super important for seamless and secure disbursements to your vendors, partners, or customers. It requires your api-key for authorization and accepts a simple JSON payload containing the transfer amount, a unique customer reference, the destination bank code, account number, recipient name, and an optional narration. It ensures all your transfers are traceable and processed quickly!
+---
 
-| Method | URL                                             |
-| ------ | ----------------------------------------------- |
-| POST   | https://pay.connectramp.com/api/payout/disburse |
+### 3. Validate Beneficiary Account
 
-### Request Body Payload
+**Endpoint**: `POST /payout/accounts/validate`
 
-<Tabs>
-  <Tab title="NGN">
-    | Parameter          | Description                                                                                                                                                  |
-    | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | customer_reference | A unique reference string for tracking the transaction. Should be unique per request. Example: “2772h727dycncwddfdfdfnnccffhrfjjhhf2dfdhfhhb7dfr3fddhdd2ery” |
-    | account_number     | The beneficiary’s bank or wallet account number. Example: “0171605931”                                                                                       |
-    | bank_code          | The code of the beneficiary’s bank or mobile money provider. Example: “058” for GTBank                                                                       |
-    | amount             | The amount to be transferred. Must be a numeric value as a string. Example: “120”                                                                            |
-    | narration          | A short description or reason for the transfer. Example: “Test Transfer”                                                                                     |
-    | recipient_name     | Full name of the beneficiary. Example: “John DOE”                                                                                                            |
-    | ref_id             | A unique reference ID used to track the transaction.                                                                                                         |
-    | sender_info        | Object containing sender details.                                                                                                                            |
-    | sender_info.name   | The sender’s full name.                                                                                                                                      |
-    | sender_info.phone  | The sender’s phone number.                                                                                                                                   |
-    | sender_info.email  | The sender’s email address.                                                                                                                                  |
-  </Tab>
-  <Tab title="USD">
-    | Parameter                          | Description                                                                                                                                                  |
-    | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | customer_reference                 | A unique reference string for tracking the transaction. Should be unique per request. Example: “2772h727dycncwddfdfdfnnccffhrfjjhhf2dfdhfhhb7dfr3fddhdd2ery” |
-    | account_number                     | The beneficiary’s bank or wallet account number. Example: “0171605931”                                                                                       |
-    | bank_code                          | The code of the beneficiary’s bank or mobile money provider. Example: “058” for GTBank                                                                       |
-    | amount                             | The amount to be transferred. Must be a numeric value as a string. Example: “120”                                                                            |
-    | narration                          | A short description or reason for the transfer. Example: “Test Transfer”                                                                                     |
-    | recipient_name                     | Full name of the beneficiary. Example: “John DOE”                                                                                                            |
-    | sender_info                        | Object containing sender details.                                                                                                                            |
-    | sender_info.name                   | The sender’s full name.                                                                                                                                      |
-    | sender_info.phone                  | The sender’s phone number.                                                                                                                                   |
-    | sender_info.email                  | The sender’s email address.                                                                                                                                  |
-    | receipient_info                    | Object containing the beneficiary’s information.                                                                                                             |
-    | receipient_info.account_number     | The beneficiary’s bank account number.                                                                                                                       |
-    | receipient_info.account_name       | The beneficiary’s account name.                                                                                                                              |
-    | receipient_info.routing_number     | Routing number of the beneficiary’s bank (typically used for U.S. transfers).                                                                                |
-    | receipient_info.account_type       | Type of recipient’s account (e.g., checking, savings).                                                                                                       |
-    | receipient_info.receipient_address | Object with the beneficiary’s address details.                                                                                                               |
-    | receipient_address.countryCode     | Beneficiary’s country code.                                                                                                                                  |
-    | receipient_address.state           | Beneficiary’s state.                                                                                                                                         |
-    | receipient_address.city            | Beneficiary’s city.                                                                                                                                          |
-    | receipient_address.address         | Beneficiary’s street address.                                                                                                                                |
-    | receipient_address.postalCode      | Beneficiary’s postal or ZIP code.                                                                                                                            |
-    | currency                           | The currency of the transaction (e.g., USD).                                                                                                                 |
-    | countryCode                        | Country where the transaction is initiated or processed from.                                                                                                |
-    | payment_method                     | Selected method of payment (e.g., wire).                                                                                                                     |
-  </Tab>
-  <Tab title="ZMW">
-    | Parameter                      | Description                                                                                                                                                  |
-    | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | customer_reference             | A unique reference string for tracking the transaction. Should be unique per request. Example: “2772h727dycncwddfdfdfnnccffhrfjjhhf2dfdhfhhb7dfr3fddhdd2ery” |
-    | account_number                 | The beneficiary’s bank or wallet account number. Example: “0171605931”                                                                                       |
-    | amount                         | The amount to be transferred. Must be a numeric value as a string. Example: “120”                                                                            |
-    | narration                      | A short description or reason for the transfer. Example: “Test Transfer”                                                                                     |
-    | receipient_info                | Object containing the beneficiary’s information.                                                                                                             |
-    | receipient_info.account_number | The beneficiary’s bank account number.                                                                                                                       |
-    | countryCode                    | A two letter code used to identify a country. (e.g. ZM)                                                                                                      |
-    | currency                       | The currency of the transaction (e.g., XOF).                                                                                                                 |
-  </Tab>
-  <Tab title="KES">
-    | Parameter                          | Description                                                                                                                                                  |
-    | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | customer_reference                 | A unique reference string for tracking the transaction. Should be unique per request. Example: “2772h727dycncwddfdfdfnnccffhrfjjhhf2dfdhfhhb7dfr3fddhdd2ery” |
-    | account_number                     | The beneficiary’s bank or wallet account number. Example: “0171605931”                                                                                       |
-    | bank_code                          | The code of the beneficiary’s bank or mobile money provider. Example: “058” for GTBank                                                                       |
-    | amount                             | The amount to be transferred. Must be a numeric value as a string. Example: “120”                                                                            |
-    | narration                          | A short description or reason for the transfer. Example: “Test Transfer”                                                                                     |
-    | recipient_name                     | Full name of the beneficiary. Example: “John DOE”                                                                                                            |
-    | sender_info                        | Object containing sender details.                                                                                                                            |
-    | sender_info.name                   | The sender’s full name.                                                                                                                                      |
-    | sender_info.phone                  | The sender’s phone number.                                                                                                                                   |
-    | sender_info.email                  | The sender’s email address.                                                                                                                                  |
-    | receipient_info                    | Object containing the beneficiary’s information.                                                                                                             |
-    | receipient_info.account_number     | The beneficiary’s bank account number.                                                                                                                       |
-    | receipient_info.account_name       | The beneficiary’s account name.                                                                                                                              |
-    | receipient_info.routing_number     | Routing number of the beneficiary’s bank (typically used for U.S. transfers).                                                                                |
-    | receipient_info.account_type       | Type of recipient’s account (e.g., checking, savings).                                                                                                       |
-    | receipient_info.receipient_address | Object with the beneficiary’s address details.                                                                                                               |
-    | receipient_address.countryCode     | Beneficiary’s country code.                                                                                                                                  |
-    | receipient_address.state           | Beneficiary’s state.                                                                                                                                         |
-    | receipient_address.city            | Beneficiary’s city.                                                                                                                                          |
-    | receipient_address.address         | Beneficiary’s street address.                                                                                                                                |
-    | receipient_address.postalCode      | Beneficiary’s postal or ZIP code.                                                                                                                            |
-    | currency                           | The currency of the transaction (e.g., KES).                                                                                                                 |
-  </Tab>
-  <Tab title="GHS">
-    | Parameter                          | Description                                                                                                                                                  |
-    | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | customer_reference                 | A unique reference string for tracking the transaction. Should be unique per request. Example: “2772h727dycncwddfdfdfnnccffhrfjjhhf2dfdhfhhb7dfr3fddhdd2ery” |
-    | account_number                     | The beneficiary’s bank or wallet account number. Example: “0171605931”                                                                                       |
-    | bank_code                          | The code of the beneficiary’s bank or mobile money provider. Example: “058” for GTBank                                                                       |
-    | amount                             | The amount to be transferred. Must be a numeric value as a string. Example: “120”                                                                            |
-    | narration                          | A short description or reason for the transfer. Example: “Test Transfer”                                                                                     |
-    | recipient_name                     | Full name of the beneficiary. Example: “John DOE”                                                                                                            |
-    | sender_info                        | Object containing sender details.                                                                                                                            |
-    | sender_info.name                   | The sender’s full name.                                                                                                                                      |
-    | sender_info.phone                  | The sender’s phone number.                                                                                                                                   |
-    | sender_info.email                  | The sender’s email address.                                                                                                                                  |
-    | receipient_info                    | Object containing the beneficiary’s information.                                                                                                             |
-    | receipient_info.account_number     | The beneficiary’s bank account number.                                                                                                                       |
-    | receipient_info.account_name       | The beneficiary’s account name.                                                                                                                              |
-    | receipient_info.routing_number     | Routing number of the beneficiary’s bank (typically used for U.S. transfers).                                                                                |
-    | receipient_info.account_type       | Type of recipient’s account (e.g., checking, savings).                                                                                                       |
-    | receipient_info.receipient_address | Object with the beneficiary’s address details.                                                                                                               |
-    | receipient_address.countryCode     | Beneficiary’s country code.                                                                                                                                  |
-    | receipient_address.state           | Beneficiary’s state.                                                                                                                                         |
-    | receipient_address.city            | Beneficiary’s city.                                                                                                                                          |
-    | receipient_address.address         | Beneficiary’s street address.                                                                                                                                |
-    | receipient_address.postalCode      | Beneficiary’s postal or ZIP code.                                                                                                                            |
-    | currency                           | The currency of the transaction (e.g., GHS).                                                                                                                 |
-  </Tab>
-  <Tab title="XOF">
-    | Parameter                          | Description                                                                                                                                                  |
-    | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | customer_reference                 | A unique reference string for tracking the transaction. Should be unique per request. Example: “2772h727dycncwddfdfdfnnccffhrfjjhhf2dfdhfhhb7dfr3fddhdd2ery” |
-    | account_number                     | The beneficiary’s bank or wallet account number. Example: “0171605931”                                                                                       |
-    | bank_code                          | The code of the beneficiary’s bank or mobile money provider. Example: “058” for GTBank                                                                       |
-    | amount                             | The amount to be transferred. Must be a numeric value as a string. Example: “120”                                                                            |
-    | narration                          | A short description or reason for the transfer. Example: “Test Transfer”                                                                                     |
-    | recipient_name                     | Full name of the beneficiary. Example: “John DOE”                                                                                                            |
-    | sender_info                        | Object containing sender details.                                                                                                                            |
-    | sender_info.name                   | The sender’s full name.                                                                                                                                      |
-    | sender_info.phone                  | The sender’s phone number.                                                                                                                                   |
-    | sender_info.email                  | The sender’s email address.                                                                                                                                  |
-    | receipient_info                    | Object containing the beneficiary’s information.                                                                                                             |
-    | receipient_info.account_number     | The beneficiary’s bank account number.                                                                                                                       |
-    | receipient_info.account_name       | The beneficiary’s account name.                                                                                                                              |
-    | receipient_info.routing_number     | Routing number of the beneficiary’s bank (typically used for U.S. transfers).                                                                                |
-    | receipient_info.account_type       | Type of recipient’s account (e.g., checking, savings).                                                                                                       |
-    | receipient_info.receipient_address | Object with the beneficiary’s address details.                                                                                                               |
-    | receipient_address.countryCode     | Beneficiary’s country code.                                                                                                                                  |
-    | receipient_address.state           | Beneficiary’s state.                                                                                                                                         |
-    | receipient_address.city            | Beneficiary’s city.                                                                                                                                          |
-    | receipient_address.address         | Beneficiary’s street address.                                                                                                                                |
-    | receipient_address.postalCode      | Beneficiary’s postal or ZIP code.                                                                                                                            |
-    | currency                           | The currency of the transaction (e.g., XOF).                                                                                                                 |
-  </Tab>
-</Tabs>
+To prevent failed transactions, validate the beneficiary's account details before attempting a disbursement. By submitting the user's account number and bank code, the API returns the registered account name and a unique reference ID (`ref_id`) for the validation session. **This ID is required to process the transaction in the next step.**
 
-## Verify Transaction
+#### Request Body
 
-The GET Requery endpoint is your instant way to check on any money you’ve sent out! It allows you to immediately retrieve the current status of a specific payout using its unique `transaction_id` as a path parameter (`/api/payout/requery/{transaction_id}`). This is super useful for confirming whether a disbursement was successful, pending, or failed, which ensures transparency and makes troubleshooting or reconciliation processes a total breeze!
+- `account_number` (string, required): The beneficiary's bank account number.
+- `bank_code` (string, required): The unique code for the beneficiary's bank, retrieved from the `GET /payout/banks` endpoint.
 
-| Method | URL                                                             |
-| ------ | --------------------------------------------------------------- |
-| GET    | https://pay.connectramp.com/api/payout/requery/{transaction_id} |
+#### Example Payload
+
+```json
+{
+  "account_number": "0112345678",
+  "bank_code": "058"
+}
+```
+
+The response will contain a `ref_id` in the data object, which you must pass to the disbursement endpoint.
+
+---
+
+### 4. Initiate Disbursement
+
+**Endpoint**: `POST /payout/disburse`
+
+Once the account is validated, you can initiate the payout. This endpoint processes the actual fund transfer to the recipient's account. The `ref_id` from the validation step must be included in the request to link the disbursement to a verified account.
+
+#### Example Payload
+
+- `customer_reference` (string, required): A unique identifier for the transaction from your system.
+- `amount` (number, required): The amount to be disbursed.
+- `narration` (string, required): A brief description of the transaction.
+- `ref_id` (string, required): The reference ID obtained from the account validation step. This links the disbursement to a successful validation.
+
+The exact structure of the payload will vary depending on the payout currency. The example below is for a disbursement in **NGN**. You can test the endpoint on the process transfer page listed on the sidebar menu to see other currencies' payload.
+
+```json
+{
+  "customer_reference": "your_unique_reference",
+  "account_number": "0123456789",
+  "bank_code": "058",
+  "amount": "10",
+  "narration": "Testing",
+  "recipient_name": "John Doe",
+  "ref_id": "sess_692824141b221c00d70876e5",
+  "sender_info": {
+    "name": "Johnson",
+    "phone": "1234567890",
+    "email": "johnson@example.com"
+  }
+}
+```
+
+---
+
+### 5. Requery Transaction Status
+
+**Endpoint**: `GET /payout/requery/{transaction_id}`
+
+Payouts are often processed asynchronously. After initiating a disbursement, use this endpoint to determine its final status.
+
+#### URL Parameters
+
+- `transaction_id` (string, required): The unique transaction ID returned by the `POST /payout/disburse` endpoint.
