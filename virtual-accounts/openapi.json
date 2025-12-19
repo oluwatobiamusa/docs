@@ -10,11 +10,11 @@
   },
  "servers": [
   {
-    "url": "https://pay.connectramp.com/api",
+    "url": "https://pay.connectramp.com",
     "description": "Live URL"
   },
   {
-    "url": "https://dev-gateman.v3.connectramp.com/api",
+    "url": "https://dev-gateman.v3.connectramp.com",
     "description": "Staging URL"
   }
 ],
@@ -24,7 +24,7 @@
     }
   ],
   "paths": {
-    "/create": {
+    "/api/virtual-accounts/create": {
       "post": {
         "description": "Creates a new virtual bank account for a customer or business entity",
         "requestBody": {
@@ -62,7 +62,7 @@
         }
       }
     },
-    "/generate-wallet": {
+    "/api/virtual-accounts/generate-wallet": {
       "post": {
         "description": "Generates one or more virtual account numbers associated with the provided customer details.",
         "requestBody": {
@@ -100,7 +100,7 @@
         }
       }
     },
-    "/get-subaccount": {
+    "/api/get-subaccount": {
       "get": {
         "description": "Returns list of all subaccounts currently associated with your primary Cray Finance account",
         "responses": {
