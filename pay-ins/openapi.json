@@ -10,11 +10,11 @@
   },
   "servers": [
   {
-    "url": "https://pay.connectramp.com/api",
+    "url": "https://pay.connectramp.com",
     "description": "Live URL"
   },
   {
-    "url": "https://dev-gateman.v3.connectramp.com/api",
+    "url": "https://dev-gateman.v3.connectramp.com",
     "description": "Staging URL"
   }
 ],
@@ -24,7 +24,7 @@
     }
   ],
   "paths": {
-    "/initiate": {
+    "/api/v2/initiate": {
       "post": {
         "summary": "Initiate Payment",
         "description": "Initiates a card payment transaction and returns authentication details",
@@ -63,7 +63,7 @@
         }
       }
     },
-    "/charge": {
+    "/api/v2/charge": {
       "post": {
         "summary": "Charge Transaction",
         "description": "Attempts to charge a previously initialized transaction",
@@ -102,7 +102,7 @@
         }
       }
     },
-    "/query/{customer_reference}": {
+    "/api/query/{customer_reference}": {
       "get": {
         "summary": "Query Transaction",
         "description": "Retrieves the status and details of a transaction using the customer reference",
@@ -152,7 +152,7 @@
         }
       }
     },
-    "/momo/initiate": {
+    "/api/v2/momo/initiate": {
   "post": {
     "summary": "Initiate Mobile Money Collection",
     "description": "Attempts to trigger a payment request to a user's mobile wallet, using their phone number and preferred payment provider.",
@@ -191,7 +191,7 @@
     }
   }
 },
-    "/requery/{customer_reference}": {
+    "/api/v2/momo/requery/{customer_reference}": {
       "get": {
         "summary": "Requery Transaction",
         "description": "Your quick check-in to see exactly what happened with a Mobile Money transaction",
