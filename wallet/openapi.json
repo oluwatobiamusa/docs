@@ -24,7 +24,7 @@
     }
   ],
   "paths": {
-    "/balance": {
+    "/api/balance": {
       "get": {
         "description": "Returns all Cray accounts/wallets and their respective balances",
         "responses": {
