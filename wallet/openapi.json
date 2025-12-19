@@ -10,11 +10,11 @@
   },
   "servers": [
   {
-    "url": "https://pay.connectramp.com/api",
+    "url": "https://pay.connectramp.com",
     "description": "Live URL"
   },
   {
-    "url": "https://dev-gateman.v3.connectramp.com/api",
+    "url": "https://dev-gateman.v3.connectramp.com",
     "description": "Staging URL"
   }
 ],
@@ -24,7 +24,7 @@
     }
   ],
   "paths": {
-    "/balance": {
+    "/api/balance": {
       "get": {
         "description": "Returns all Cray accounts/wallets and their respective balances",
         "responses": {
