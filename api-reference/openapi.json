@@ -30,7 +30,7 @@
         "description": "The GET Banks endpoint is your one-stop shop to easily grab a comprehensive list of all supported banks! This is super useful for making your app smooth for users. You can use it to instantly populate bank options during user onboarding or when they’re setting up payout and transfer operations, which helps ensure total accuracy and cuts down on frustrating input errors!",
         "security": [
           {
-            "apiKeyAuth": []
+            "bearerAuth": []
           }
         ],
         "parameters": [
@@ -96,7 +96,7 @@
         "description": "The GET Payment Methods endpoint is your handy way to instantly see all available payout options for a specific country! You just use the {countryCode} in the path, and it tells you exactly which payment methods—like bank transfer, mobile money, or wallet options—are supported in that region. This is super useful for dynamically showing only valid payout channels and making sure your users can select the correct options during disbursement setup!",
         "security": [
           {
-            "apiKeyAuth": []
+            "bearerAuth": []
           }
         ],
         "parameters": [
@@ -177,7 +177,7 @@
         "description": "The Validate endpoint is your handy tool for making sure money goes to the right person! It allows you to validate a bank account number instantly using just the provided account number and bank code. It quickly returns the corresponding account name, which is super helpful for you to confirm the beneficiary’s details before processing any payouts or transfers. This quick verification step totally prevents errors and ensures your funds are always sent to the correct recipient!",
         "security": [
           {
-            "apiKeyAuth": []
+            "bearerAuth": []
           }
         ],
         "requestBody": {
@@ -257,7 +257,7 @@
         "description": "The POST Disburse endpoint is what you use to easily send money from your merchant wallet right into a beneficiary’s bank account! This request is super important for seamless and secure disbursements to your vendors, partners, or customers. It requires your api-key for authorization and accepts a simple JSON payload containing the transfer amount, a unique customer reference, the destination bank code, account number, recipient name, and an optional narration. It ensures all your transfers are traceable and processed quickly!",
         "security": [
           {
-            "apiKeyAuth": []
+            "bearerAuth": []
           }
         ],
         "requestBody": {
@@ -534,7 +534,7 @@
         "description": "The GET Requery endpoint is your instant way to check on any money you’ve sent out! It allows you to immediately retrieve the current status of a specific payout using its unique transaction_id as a path parameter. This is super useful for confirming whether a disbursement was successful, pending, or failed, which ensures transparency and makes troubleshooting or reconciliation processes a total breeze!",
         "security": [
           {
-            "apiKeyAuth": []
+            "bearerAuth": []
           }
         ],
         "parameters": [
@@ -1318,7 +1318,7 @@
       "apiKeyAuth": {
         "type": "apiKey",
         "in": "header",
-        "name": "api-key"
+        "name": "bearer"
       }
     }
   }
