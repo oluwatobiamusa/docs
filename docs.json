@@ -170,6 +170,9 @@
       "vscode"
     ]
   },
+  "ai": {
+    "enabled": true
+  },
   "footer": {
     "socials": {
       "linkedin": "https://www.linkedin.com/company/cray-finance/"
