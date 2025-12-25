@@ -173,10 +173,12 @@
   "ai": {
     "enabled": true
   },
+   "branding": {
+  "poweredBy": false
+},
   "footer": {
     "socials": {
       "linkedin": "https://www.linkedin.com/company/cray-finance/"
-    },
-    "branding": false
+    }
   }
 }
