@@ -21,7 +21,7 @@ Follow these steps to tell Cray Finance where to send your event notifications:
 - Enter Your Endpoint URL: In the “URL” field, paste the secure URL from your application that is built to listen for incoming webhook data.
 
 <Note>
-  **__Important:__** For security, this URL must be an HTTPS endpoint (it must start with https://). HTTP URLs will not be accepted.
+  ****Important:**** For security, this URL must be an HTTPS endpoint (it must start with https://). HTTP URLs will not be accepted.
 </Note>
 
 - Save Your Configuration: Click the “Set Webhook” or “Save” button.
@@ -33,11 +33,11 @@ To ensure that the webhook events you receive are truly sent by our system and h
 
 We strongly recommend that you verify this signature before processing any webhook event.
 
-### The Signature Header 
+### The Signature Header
 
 Every webhook request will include a custom HTTP header containing the signature: X-Webhook-Signature
 
-### How the Signature is Generated 
+### How the Signature is Generated
 
 We generate the signature using the following formula:
 
@@ -168,7 +168,13 @@ Webhooks that could not be successfully delivered after the standard retry perio
 
 This endpoint is your primary tool for monitoring and troubleshooting webhook delivery issues.
 
-Endpoint: Get All Permanently Failed Webhooks Method URL Description GET /api/payout/failedWebhook Retrieves a list of all webhook delivery attempts that have permanently failed. Example Request You must include your Secret Key in the Authorization header to access this endpoint.
+Endpoint: Get All Permanently Failed Webhooks 
+
+| Method | URL                       | Description                                                                    |
+| ------ | ------------------------- | ------------------------------------------------------------------------------ |
+| `GET`  | /api/payout/failedWebhook | Retrieves a list of all webhook delivery attempts that have permanently failed |
+
+Example Request You must include your Secret Key in the Authorization header to access this endpoint.
 
 ```bash
 curl -X GET 'https://pay.connectramp.com/payout/failedWebhook' \
