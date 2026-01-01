@@ -3,7 +3,7 @@ title: "Cray wallets"
 mode: "wide"
 ---
 
-Cray Wallets are digital accounts that allow your application to **track and display balances** in multiple African currencies. Currently, Cray supports the following currencies:
+Cray Wallets are digital accounts that allow your application to **track and display balances** in multiple currencies. Currently, Cray supports the following currencies:
 
 - Kenyan Shilling (KES)
 - Nigerian Naira (NGN)
@@ -40,7 +40,7 @@ Cray Wallets are digital accounts that allow your application to **track and dis
 
 ```bash
 curl --location -g 'https://pay.connectramp.com/api/balance?currency=NGN' \
---header 'api-key: {{secret_key}}' \
+--header 'Authorization: Bearer <token>' \
 '
 ```
 
