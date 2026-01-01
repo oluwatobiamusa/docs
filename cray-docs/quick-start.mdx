@@ -3,9 +3,9 @@ title: "Quick Start"
 description: "You will see the request interface below. Follow these steps to send your first API request."
 ---
 
-### **1. Visit our API Reference**
+### **1. Visit our Endpoint Examples**
 
-The [API Reference](https://docs.crayfi.com/api-reference/) tool is an interactive template set up to allow you to quickly simulate API calls to your CrayFinance account and immediately view the results, helping you understand how our endpoints work.
+The endpoint examples tool is an interactive template set up to allow you to quickly simulate API calls to your CrayFinance account and immediately view the results, helping you understand how our endpoints work.
 
 ### 2. Authentication
 
@@ -45,11 +45,11 @@ If you are sending data to the API (like creating a new transaction), click the 
 
 Click the **Send Request** button. The response will appear at the bottom of the tool:
 
-| Status Code          | Error message                   |
-| -------------------- | ------------------------------- |
-| `OK (200)`           | Success                         |
-| `Unauthorized (401`) | Check your Bearer Token         |
-| `Bad request (400)`  | Check your JSON body formatting |
+| Status Code          | Error message                          |
+| -------------------- | -------------------------------------- |
+| `OK (200)`           | Success                                |
+| `Unauthorized (401`) | Invalid credentials supplied in header |
+| `Bad request (400)`  | Check your JSON body formatting        |
 
 <Tip>
   **Response Body:** The data returned by the server, automatically formatted for readability
