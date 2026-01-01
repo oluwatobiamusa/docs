@@ -14,24 +14,17 @@ To start receiving these notifications, you must register a secure URL (a webhoo
 Follow these steps to tell Cray Finance where to send your event notifications:
 
 - Log in to your Cray Finance Dashboard.
-
 - Navigate to the Your Business section from the main navigation menu.
-
 - Click on the Webhook tab.
-
 - On this page, find the Webhook Configuration section.
-
 - Enable Webhooks: Check the box labeled “Enable Webhooks.” This activates the feature.
-
 - Enter Your Endpoint URL: In the “URL” field, paste the secure URL from your application that is built to listen for incoming webhook data.
 
 <Note>
-  _**_Important:_**_ For security, this URL must be an HTTPS endpoint (it must
-  start with https://). HTTP URLs will not be accepted.
+  **__Important:__** For security, this URL must be an HTTPS endpoint (it must start with https://). HTTP URLs will not be accepted.
 </Note>
 
 - Save Your Configuration: Click the “Set Webhook” or “Save” button.
-
 - Once saved, Cray Finance will immediately begin sending live event data to this URL whenever a relevant event occurs in your account.
 
 ## Webhook Security: Verifying Signatures
@@ -40,11 +33,12 @@ To ensure that the webhook events you receive are truly sent by our system and h
 
 We strongly recommend that you verify this signature before processing any webhook event.
 
-The Signature Header
-Every webhook request will include a custom HTTP header containing the signature:
+### The Signature Header 
 
-X-Webhook-Signature
-How the Signature is Generated
+Every webhook request will include a custom HTTP header containing the signature: X-Webhook-Signature
+
+### How the Signature is Generated 
+
 We generate the signature using the following formula:
 
 ```php
@@ -52,26 +46,19 @@ Signature = base64_encode( hash_hmac('sha256', `<JSON_PAYLOAD>`, `<YOUR_SECRET>`
 ```
 
 - Algorithm: HMAC-SHA256
-
 - Key: Your unique Webhook Secret Key (provided in your dashboard).
-
 - Payload: The raw JSON body of the request.
-
 - Encoding: The binary hash output is encoded in Base64.
 
 ## Verifying the Signature (Step-by-Step)
 
 To verify the webhook, your server should follow these steps:
 
-Retrieve the Header: Extract the signature string from the X-Webhook-Signature header.
-
-Get the Raw Body: Read the raw request body bytes. Do not parse the JSON into an object yet; you must use the exact raw string bytes as they were sent.
-
-Compute the Hash: Use your Secret Key and the Raw Body to compute the HMAC-SHA256 hash.
-
-Encode: Convert the computed hash to a Base64 string.
-
-Compare: Compare your computed signature with the signature in the header. Use a constant-time string comparison function to prevent timing attacks.
+1. Retrieve the Header: Extract the signature string from the X-Webhook-Signature header.
+2. Get the Raw Body: Read the raw request body bytes. Do not parse the JSON into an object yet; you must use the exact raw string bytes as they were sent.
+3. Compute the Hash: Use your Secret Key and the Raw Body to compute the HMAC-SHA256 hash.
+4. Encode: Convert the computed hash to a Base64 string.
+5. Compare: Compare your computed signature with the signature in the header. Use a constant-time string comparison function to prevent timing attacks.
 
 Code Examples
 
@@ -181,19 +168,14 @@ Webhooks that could not be successfully delivered after the standard retry perio
 
 This endpoint is your primary tool for monitoring and troubleshooting webhook delivery issues.
 
-Endpoint: Get All Permanently Failed Webhooks
-Method URL Description
-GET /api/payout/failedWebhook Retrieves a list of all webhook delivery attempts that have permanently failed.
-Example Request
-You must include your Secret Key in the Authorization header to access this endpoint.
+Endpoint: Get All Permanently Failed Webhooks Method URL Description GET /api/payout/failedWebhook Retrieves a list of all webhook delivery attempts that have permanently failed. Example Request You must include your Secret Key in the Authorization header to access this endpoint.
 
 ```bash
 curl -X GET 'https://pay.connectramp.com/payout/failedWebhook' \
 -H 'Authorization: Bearer sk_live_your_secret_key'
 ```
 
-Example Response
-The response returns an array of objects, where each object represents a single failed webhook delivery attempt.
+Example Response The response returns an array of objects, where each object represents a single failed webhook delivery attempt.
 
 ```json
 {
@@ -288,16 +270,15 @@ The response returns an array of objects, where each object represents a single 
 }
 ```
 
-Retry Failed Webhook
-If a webhook delivery fails (e.g., your server was down or returned a non-200 status code), Cray Finance will retry the delivery automatically for a period. If all retries are exhausted, the event will remain in the failed log.
+Retry Failed Webhook If a webhook delivery fails (e.g., your server was down or returned a non-200 status code), Cray Finance will retry the delivery automatically for a period. If all retries are exhausted, the event will remain in the failed log.
 
 You can use this endpoint to manually reprocess a specific failed webhook notification after you have resolved the issue with your endpoint (network errors, server downtime, etc.).
 
 Endpoint: Retry a Specific Failed Webhook
 
-| Method | URL                                   |
-| ------ | ------------------------------------- |
-| `GET`  | /api/payout/failedWebhook/{webhookId} |
+| Method | URL                                 |
+| ------ | ----------------------------------- |
+| `GET`  | /api/payout/failedWebhook/webhookId |
 
 To retry the delivery of the failed webhook with the ID 50:
 
@@ -306,8 +287,7 @@ curl -X GET 'https://pay.connectramp.com/payout/failedWebhook/50' \
 -H 'Authorization: Bearer sk_live_your_secret_key'
 ```
 
-Example Response: Successful Retry
-A successful response indicates that the system has accepted the request and is attempting to redeliver the webhook payload to your endpoint.
+Example Response: Successful Retry A successful response indicates that the system has accepted the request and is attempting to redeliver the webhook payload to your endpoint.
 
 ```json
 {
