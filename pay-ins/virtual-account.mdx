@@ -36,7 +36,7 @@ We support the creation of both **Permanent** (tied to a customer for continuous
 
 ```bash
 curl --location -g 'https://pay.connectramp.com/api/virtual-accounts/create' \
---header 'api-key: {{secret_key}}' \
+--header 'Authorization: Bearer <token>' \
 --data-raw '{
     "bvn": "22192474887",
     "type": "Corporate",
@@ -93,7 +93,7 @@ After successfully creating a virtual account, an **OTP (One-Time Password)** is
 
 ```bash
 curl --location -g 'https://pay.connectramp.com/api/virtual-accounts/generate-wallet' \
---header 'api-key: {{secret_key}}' \
+--header 'Authorization: Bearer <token>' \
 --data-raw '{
     "otp": "768238",
     "customer_email": "hello@gmail.com"
