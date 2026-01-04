@@ -744,7 +744,7 @@
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT",
-        "description": "Bearer authentication header of the form Bearer <token>, where <token> is your auth token."
+        "description": "Bearer authentication header of the form Bearer `<token>`, where `<token>` is your auth token."
       }
     }
   }
