@@ -15,6 +15,14 @@ This transaction failed an internal fraud detection mechanism. It may have been 
 
 The transaction amount exceeded the maximum allowed limit for a single transaction, as defined by cardholder or account policy. To proceed, the transaction must be split or limits adjusted.
 
+## CLR005 – Security Violation Mismatch
+
+The transaction failed due to a security validation mismatch between the request details and the expected security parameters (such as authentication data, encryption, or integrity checks). To proceed, ensure that all security credentials, signatures, and request headers are correctly generated and aligned with the required security configuration.
+
+## CLR006 — CardType not allowed
+
+The transaction was declined because the specified card type is not permitted for this operation, merchant, or account configuration. To proceed, use an allowed card type or update the merchant or account settings to support this card type.
+
 ## Pending — Initiated Charge
 
 The transaction has been initiated and is awaiting further processing. It may be awaiting auser action (e.g., OTP or 3D Secure authentication).
