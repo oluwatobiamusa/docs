@@ -254,7 +254,7 @@
       "post": {
         "x-mintlify-docs-path": "pay-outs/payout",
         "summary": "Process Transfer",
-        "description": "The POST Disburse endpoint is what you use to easily send money from your merchant wallet right into a beneficiary’s bank account! This request is super important for seamless and secure disbursements to your vendors, partners, or customers. It requires your api-key for authorization and accepts a simple JSON payload containing the transfer amount, a unique customer reference, the destination bank code, account number, recipient name, and an optional narration. It ensures all your transfers are traceable and processed quickly!",
+        "description": "The POST Disburse endpoint is what you use to easily send money from your merchant wallet right into a beneficiary’s bank account! This request is super important for seamless and secure disbursements to your vendors, partners, or customers. It requires your API key for authorization and accepts a simple JSON payload containing the transfer amount, a unique customer reference, the destination bank code, account number, recipient name, and an optional narration. It ensures all your transfers are traceable and processed quickly!",
         "security": [
           {
             "bearerAuth": []
