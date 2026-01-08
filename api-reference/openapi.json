@@ -850,7 +850,7 @@
         }
       }
     },
-    "/merchant/rates": {
+    "/v2/merchant/rates": {
       "get": {
         "x-mintlify-docs-path": "conversions/overview",
         "summary": "Get Specific Exchange Rate",
@@ -948,7 +948,7 @@
         }
       }
     },
-    "/merchant/rates/destination": {
+    "/v2/merchant/rates/destination": {
       "get": {
         "x-mintlify-docs-path": "conversions/overview",
         "summary": "Get Rates by Destination Currency",
@@ -1046,7 +1046,7 @@
         }
       }
     },
-    "/merchant/quotes": {
+    "/v2/merchant/quotes": {
       "post": {
         "x-mintlify-docs-path": "conversions/quotes",
         "summary": "Generate a Quote",
@@ -1130,7 +1130,7 @@
         }
       }
     },
-    "/merchant/conversions/convert": {
+    "/v2/merchant/conversions/convert": {
       "post": {
         "x-mintlify-docs-path": "conversions/execute-conversions",
         "summary": "Execute Conversion",
@@ -1210,7 +1210,7 @@
         }
       }
     },
-    "/merchant/conversions": {
+    "/v2/merchant/conversions": {
       "get": {
         "x-mintlify-docs-path": "conversions/query-conversions",
         "summary": "List Conversions",
@@ -1244,7 +1244,7 @@
         }
       }
     },
-    "/merchant/conversions/{conversion_id}/dispute": {
+    "/v2/merchant/conversions/{conversion_id}/dispute": {
       "post": {
         "x-mintlify-docs-path": "conversions/dispute-conversions",
         "summary": "Dispute Conversion",
