@@ -26,7 +26,7 @@
   "paths": {
     "/api/v2/initiate": {
       "post": {
-        "summary": "Initiate Payment",
+        "summary": "Initiate Card Transaction",
         "description": "Initiates a card payment transaction and returns authentication details",
         "requestBody": {
           "description": "Card payment initiation details",
@@ -55,7 +55,7 @@
     },
     "/api/v2/charge": {
       "post": {
-        "summary": "Charge Transaction",
+        "summary": "Process Payment",
         "description": "Attempts to charge a previously initialized transaction",
         "requestBody": {
           "description": "Transaction charge details",
