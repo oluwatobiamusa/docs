@@ -20,7 +20,7 @@ Before initiating a conversion, you can check the current exchange rates.
 
 #### A. Get a Specific Exchange Rate
 
-**Endpoint**: `GET /merchant/rates`
+**Endpoint**: `POST /merchant/rates`
 
 Retrieves the exchange rate, Service Level Agreement (SLA), and settlement type for a specific currency pair.
 
@@ -52,13 +52,13 @@ Retrieves the exchange rate, Service Level Agreement (SLA), and settlement type 
 
 #### B. Get Rates by Destination Currency
 
-Endpoint: GET /merchant/rates/destination
+Endpoint: POST /merchant/rates/destination
 
 Retrieves all available exchange rates for a given destination currency.
 
 ### 2. Generate a Quote
 
-Endpoint: POST /merchant/quotes
+Endpoint: POST /merchant/quote
 
 Before converting, you must generate a quote. The quote locks in the conversion rate for a specific duration (default: 10 minutes).
 

@@ -851,7 +851,7 @@
       }
     },
     "/v2/merchant/rates": {
-      "get": {
+      "post": {
         "x-mintlify-docs-path": "conversions/overview",
         "summary": "Get Specific Exchange Rate",
         "description": "Retrieves the current exchange rate, Service Level Agreement (SLA), and settlement type for a specific currency pair.",
@@ -949,7 +949,7 @@
       }
     },
     "/v2/merchant/rates/destination": {
-      "get": {
+      "post": {
         "x-mintlify-docs-path": "conversions/overview",
         "summary": "Get Rates by Destination Currency",
         "description": "Retrieves all available exchange rates for a given destination currency.",
@@ -1046,7 +1046,7 @@
         }
       }
     },
-    "/v2/merchant/quotes": {
+    "/v2/merchant/quote": {
       "post": {
         "x-mintlify-docs-path": "conversions/quotes",
         "summary": "Generate a Quote",
