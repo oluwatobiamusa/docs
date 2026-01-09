@@ -15,14 +15,6 @@ This transaction failed an internal fraud detection mechanism. It may have been 
 
 The transaction amount exceeded the maximum allowed limit for a single transaction, as defined by cardholder or account policy. To proceed, the transaction must be split or limits adjusted.
 
-## CLR005 – Security Violation Mismatch
-
-The transaction failed due to a security validation mismatch between the request details and the expected security parameters (such as authentication data, encryption, or integrity checks). To proceed, ensure that all security credentials, signatures, and request headers are correctly generated and aligned with the required security configuration.
-
-## CLR006 — CardType not allowed
-
-The transaction was declined because the specified card type is not permitted for this operation, merchant, or account configuration. To proceed, use an allowed card type or update the merchant or account settings to support this card type.
-
 ## Pending — Initiated Charge
 
 The transaction has been initiated and is awaiting further processing. It may be awaiting auser action (e.g., OTP or 3D Secure authentication).
@@ -38,5 +30,35 @@ The transaction could not be completed due to an error. This may be due to insuf
 ## Abandoned
 
 The user initiated the transaction but did not complete the required steps. This typically happens when users close the app/browser, get redirected without finalizing payment, or fail to respond to authentication prompts.
+
+## NGN Payout errors
+
+- **PMN-96-422** = System Malfunction
+- **PMN-59-422** = Suspected Fraud
+
+## Virtual Account Creation
+
+| Message                                                      | **Description**                                                                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------------- |
+| **BVN Validation Failed. Please try again in a few seconds** | **BVN has been used to create an individual static account for this business before** |
+
+## Mobile Money Collections
+
+| **Error Descriptions**                                                                                                                                                                                                             |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Cherished Customer, the PIN you have entered exceeds the allowed PIN length, your PIN length should be 4 digits. Thank You.**                                                                                                    |
+| **Dear Customer, you have insufficient funds. Avail. Balance: . 5 successive invalid transfers will lock your account. Thank you.**                                                                                                |
+| **Default or Generic error code used when there is no specific error mapping. This predominantly occurs due to insufficient customer funds to complete the transaction. Also related to service denied Platform is not reachable** |
+| **Insufficient customer funds to complete the transaction**                                                                                                                                                                        |
+| **Insufficient customer funds to complete the transaction or limit reached**                                                                                                                                                       |
+| **Internal processing error**                                                                                                                                                                                                      |
+| **LOW_BALANCE_OR_PAYEE_LIMIT_REACHED_OR_NOT_ALLOWED**                                                                                                                                                                              |
+| **MSISDN of the number from whom the money was requested is invalid.**                                                                                                                                                             |
+| **OTP verification failed**                                                                                                                                                                                                        |
+| **Payment Request Failed**                                                                                                                                                                                                         |
+| **SENDER_ACCOUNT_NOT_ACTIVE**                                                                                                                                                                                                      |
+| **The MSISDN being paid to is invalid.**                                                                                                                                                                                           |
+| **Transaction timeout**                                                                                                                                                                                                            |
+| **Wrong pin was entered by the customer**                                                                                                                                                                                          |
 
 Understanding these statuses helps in monitoring transaction outcomes and implementing appropriate business logic.
