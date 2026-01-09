@@ -43,7 +43,7 @@ The**Initiate**  endpoint begins a new payment flow by securely creating a tran
 
 ```bash
 curl --location 'https://pay.connectramp.com/api/v2/initiate' \
---header 'Authorization: Bearer lrs_kJpfu1q2cR7zFeIqyW3dzv66NPVhhwku' \
+--header 'Authorization: Bearer <token>' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "reference": "4aeb118e-5009-450a-94fc-d74f6cd88646",
@@ -121,7 +121,7 @@ The **Charge** endpoint processes payment transactions against customer payment 
 
 ```bash
 curl --location 'https://pay.connectramp.com/api/v2/charge' \
---header 'Authorization: Bearer lrs_kJpfu1q2cR7zFeIqyW3dzv66NPVhhwku' \
+--header 'Authorization: Bearer <token>' \
 --header 'Content-Type: application/json' \
 --data '{
     "transaction_id": "SRK4NC92PFHLGZW78A3E"
@@ -180,7 +180,7 @@ The**Query Transaction**  endpoint lets you pull up all the detailed info about
 
 ```bash
 curl --location 'https://pay.connectramp.com/api/query/F6L2RN8TM7AHZ491SCGQ' \
---header 'Authorization: Bearer lrs_m73eti9belRA826JoFRxt0iRzIR4FVF1'
+--header 'Authorization: Bearer <token>'
 ```
 
 **Example response:**
