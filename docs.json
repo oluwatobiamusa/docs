@@ -22,7 +22,8 @@
               "cray-docs/cray-dashboard",
               "cray-docs/environment",
               "cray-docs/authentication",
-              "cray-docs/webhooks"
+              "cray-docs/webhooks",
+              "cray-docs/status-codes"
             ]
           }
         ]
@@ -173,9 +174,9 @@
   "ai": {
     "enabled": true
   },
-   "branding": {
-  "poweredBy": false
-},
+  "branding": {
+    "poweredBy": false
+  },
   "footer": {
     "socials": {
       "linkedin": "https://www.linkedin.com/company/cray-finance/"
