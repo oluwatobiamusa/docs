@@ -3,31 +3,33 @@ title: "Status Codes"
 description: "Cray Finance categorizes transaction outcomes into distinct statuses."
 ---
 
-## CLR001 – Security Violation
+## Card Processing
+
+### CLR001 – Security Violation
 
 This transaction was flagged and declined due to exceeding the allowed number of transactions within a specific time frame (velocity limit) for the card. This is a preventive measure against potential misuse or automated fraudulent activity.
 
-## CLR002 – Security Violation
+### CLR002 – Security Violation
 
 This transaction failed an internal fraud detection mechanism. It may have been identified as suspicious due to unusual patterns such as high-risk geolocation, blacklisted accounts, or anomalies in behavior based on historical data.
 
-## CLR003 – Single Transaction Limit Exceeded
+### CLR003 – Single Transaction Limit Exceeded
 
 The transaction amount exceeded the maximum allowed limit for a single transaction, as defined by cardholder or account policy. To proceed, the transaction must be split or limits adjusted.
 
-## Pending — Initiated Charge
+### Pending — Initiated Charge
 
 The transaction has been initiated and is awaiting further processing. It may be awaiting auser action (e.g., OTP or 3D Secure authentication).
 
-## Successful
+### Successful
 
 The transaction was processed and authorized without any issues.
 
-## Failed
+### Failed
 
 The transaction could not be completed due to an error. This may be due to insufficient funds, declined authorization, or system-level interruptions.
 
-## Abandoned
+### Abandoned
 
 The user initiated the transaction but did not complete the required steps. This typically happens when users close the app/browser, get redirected without finalizing payment, or fail to respond to authentication prompts.
 
@@ -36,29 +38,70 @@ The user initiated the transaction but did not complete the required steps. This
 - **PMN-96-422** = System Malfunction
 - **PMN-59-422** = Suspected Fraud
 
-## Virtual Account Creation
+## Wallet Status Codes
 
-| Message                                                      | **Description**                                                                       |
-| ------------------------------------------------------------ | ------------------------------------------------------------------------------------- |
-| **BVN Validation Failed. Please try again in a few seconds** | **BVN has been used to create an individual static account for this business before** |
+### E01 – Invalid PIN Length
 
-## Mobile Money Collections
+The transaction failed because the provided PIN does not meet the required length. To proceed, ensure the PIN matches the configured minimum and maximum length.
 
-| **Error Descriptions**                                                                                                                                                                                                                |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1. **Cherished Customer, the PIN you have entered exceeds the allowed PIN length, your PIN length should be 4 digits. Thank You.**                                                                                                    |
-| 2. **Dear Customer, you have insufficient funds. Avail. Balance: . 5 successive invalid transfers will lock your account. Thank you.**                                                                                                |
-| 3. **Default or Generic error code used when there is no specific error mapping. This predominantly occurs due to insufficient customer funds to complete the transaction. Also related to service denied Platform is not reachable** |
-| 4. **Insufficient customer funds to complete the transaction**                                                                                                                                                                        |
-| 5. **Insufficient customer funds to complete the transaction or limit reached**                                                                                                                                                       |
-| 6. **Internal processing error**                                                                                                                                                                                                      |
-| 7. **LOW_BALANCE_OR_PAYEE_LIMIT_REACHED_OR_NOT_ALLOWED**                                                                                                                                                                              |
-| 8. **MSISDN of the number from whom the money was requested is invalid.**                                                                                                                                                             |
-| 9. **OTP verification failed**                                                                                                                                                                                                        |
-| 10. **Payment Request Failed**                                                                                                                                                                                                        |
-| 11. **SENDER_ACCOUNT_NOT_ACTIVE**                                                                                                                                                                                                     |
-| 12. **The MSISDN being paid to is invalid.**                                                                                                                                                                                          |
-| 13. **Transaction timeout**                                                                                                                                                                                                           |
-| 14. **Wrong pin was entered by the customer**                                                                                                                                                                                         |
+### E02 – Insufficient Balance
+
+The sender’s wallet does not have enough funds to complete the transaction. To proceed, fund the wallet and retry.
+
+### E03 – Insufficient Balance (Default)
+
+The transaction could not be completed due to insufficient wallet balance. To proceed, ensure the sender has adequate funds.
+
+### E04 – System Error (ETP)
+
+The transaction failed due to a temporary system error on the payment processing platform. Please retry the transaction later.
+
+### E05 – Insufficient Balance
+
+The sender’s wallet balance is insufficient to process the transaction. To proceed, top up the wallet and retry.
+
+### E06 – Insufficient Balance or Limit Reached
+
+The transaction failed because the sender’s wallet balance is insufficient or a transaction limit has been reached. To proceed, ensure sufficient balance and verify applicable limits.
+
+### E07 – Internal Processing Error
+
+The transaction could not be completed due to an internal processing error. Please retry the transaction or contact support if the issue persists.
+
+### E08 – Transaction Limit Exceeded
+
+The transaction amount exceeds the allowed wallet, daily, or per-transaction limit. To proceed, reduce the amount or adjust the applicable limits.
+
+### E09 – Invalid Sender MSISDN
+
+The sender’s mobile number (MSISDN) is invalid or improperly formatted. To proceed, provide a valid and correctly formatted MSISDN.
+
+### E10 – Invalid OTP
+
+The one-time password (OTP) provided is incorrect or has expired. To proceed, request a new OTP and retry.
+
+### E11 – Payment Request Failed
+
+The payment request could not be initiated or completed successfully. Please retry the request or contact support if the issue persists.
+
+### E12 – Sender Account Not Active
+
+The sender’s mobile money account is inactive, suspended, or not registered. To proceed, activate the account before retrying.
+
+### E13 – Invalid Payee MSISDN
+
+The recipient’s mobile number (MSISDN) is invalid or improperly formatted. To proceed, provide a valid recipient MSISDN.
+
+### E14 – Transaction Timeout During Approval
+
+The transaction timed out while awaiting user or system approval. Please retry the transaction.
+
+### E15 – Transaction Timeout
+
+The transaction could not be completed due to a timeout. Please retry the transaction later.
+
+### E16 – Wrong PIN
+
+The transaction failed because an incorrect PIN was provided. To proceed, enter the correct PIN.
 
 Understanding these statuses helps in monitoring transaction outcomes and implementing appropriate business logic.
