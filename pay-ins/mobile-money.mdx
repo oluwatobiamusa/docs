@@ -25,7 +25,7 @@ The**Initiate**  endpoint is how you kick off a Mobile Money (MoMo) payment! Th
 
 ```bash
 curl --location 'https://pay.connectramp.com/api/v2/momo/initiate \
---header 'Authorization: Bearer SECRET-WYJQBGduZLunDK9kacxhN1U6343vDM9I' \
+--header 'Authorization: Bearer <token>' \
 --data '{
     "customer_reference": "e4d7c3b8-5f29-4b46-81a6-8d98c1e75812",
     "amount": "10",
@@ -70,7 +70,7 @@ The**Query**  endpoint is your quick check-in to see exactly what happened with 
 
 ```bash
 curl --location 'https://pay.connectramp.com/momo/requery/:customer_reference' \
---header 'Authorization: Bearer lrs_m73eti9belRA826JoFRxt0iRzIR4FVF1'
+--header 'Authorization: Bearer <token>'
 ```
 
 **Example response:**
