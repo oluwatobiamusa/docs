@@ -490,7 +490,8 @@
     "payment_provider": {
       "description": "Mobile money provider(s). Can be comma-separated for multiple options",
       "type": "string",
-      "example": "MTN,moov,celtis,wave,mixx,coris"
+      "enum": ["MTN", "moov", "celtis", "wave", "coris", "mixx"],
+      "example": "MTN"
     },
     "otp": {
       "description": "Whether OTP verification is required",
@@ -510,7 +511,8 @@
     "country": {
       "description": "Country or countries for the transaction (required for XOF currency)",
       "type": "string",
-      "example": "benin,senegal,togo,ivory coast"
+      "enum": ["benin", "senegal", "togo", "ivory coast"],
+      "example": "benin"
     },
     "return_url": {
       "description": "URL to redirect the user after payment completion",
