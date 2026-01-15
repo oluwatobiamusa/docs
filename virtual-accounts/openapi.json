@@ -169,7 +169,7 @@
           "provider": {
             "description": "Virtual account provider",
             "type": "string",
-            "enum": ["monnify", "WEMA"],
+            "enum": ["monnify", "Wema", "Bloc"],
             "example": "monnify"
           }
         }
